@@ -17,82 +17,21 @@ namespace Input
         // Update is called once per frame
         void Update()
         {
-            foreach (Joystick joystick in Joystick.all)
+            foreach ((Joystick joystick, int index) in Joystick.all.Select((j, i) => (j, i)))
             {
-                float x, y;
+                StickControl stick = joystick.stick;
 
-                Try(() =>
-                    {
-                        Vector2Control hatSwich = joystick.hatswitch;
-                        x = hatSwich.x.ReadValue();
-                        if (x != 0)
-                        {
-                            Debug.LogError($"Hatswitch x: {x}");
-                        }
-
-                        y = hatSwich.y.ReadValue();
-                        if (y != 0)
-                        {
-                            Debug.LogError($"Hatswitch y: {y}");
-                        }
-                    });
-
-
-                Try(() =>
-                    {
-                        StickControl stick = joystick.stick;
-                        x = stick.x.ReadValue();
-                        if (x != 0)
-                        {
-                            Debug.LogError($"Stick x: {x}");
-                        }
-
-                        y = stick.y.ReadValue();
-                        if (y != 0)
-                        {
-                            Debug.LogError($"Stick y: {y}");
-                        }
-                    });
-
-            }
-
-            foreach (Gamepad gamepad in Gamepad.all)
-            {
-                
-                float x, y;
-
-                Try(() =>
+                float x = stick.x.ReadValue();
+                if (x != 0)
                 {
-                    StickControl stick = gamepad.leftStick;
-                    x = stick.x.ReadValue();
-                    if (x != 0)
-                    {
-                        Debug.LogError($"Stick x: {x}");
-                    }
+                    Debug.LogError($"Stick {index} x: {x}");
+                }
 
-                    y = stick.y.ReadValue();
-                    if (y != 0)
-                    {
-                        Debug.LogError($"Stick y: {y}");
-                    }
-                });
-                
-
-                Try(() =>
+                float y = stick.y.ReadValue();
+                if (y != 0)
                 {
-                    StickControl stick = gamepad.rightStick;
-                    x = stick.x.ReadValue();
-                    if (x != 0)
-                    {
-                        Debug.LogError($"Stick x: {x}");
-                    }
-
-                    y = stick.y.ReadValue();
-                    if (y != 0)
-                    {
-                        Debug.LogError($"Stick y: {y}");
-                    }
-                });
+                    Debug.LogError($"Stick {index} y: {y}");
+                }
 
             }
         }
