@@ -15,24 +15,44 @@ public class CrabClaw : MonoBehaviour
     {
         Neutral,
         Blocking,
+        Attacking
+    }
+
+    enum AttackingState
+    {
+        None,
         WindingUp,
         Lunging,
         Snipping,
         Recoiling
     }
 
-    private static readonly Dictionary<ClawState, float> stateTimes = new()
+    private static readonly Dictionary<AttackingState, float> stateTimes = new()
     {
-        [ClawState.Neutral] = 0,
-        [ClawState.Blocking] = 0,
-        [ClawState.WindingUp] = 0.2f,
-        [ClawState.Lunging] = 0.2f,
-        [ClawState.Snipping] = 0.2f,
-        [ClawState.Recoiling] = 0.2f,
+        [AttackingState.None] = 0,
+        [AttackingState.WindingUp] = 0.3f,
+        [AttackingState.Lunging] = 0.1f,
+        [AttackingState.Snipping] = 0.3f,
+        [AttackingState.Recoiling] = 0.3f,
     };
 
     [SerializeField]
     private CrabBody crabBody;
+
+    [SerializeField]
+    private GameObject clawNeutral;
+
+    [SerializeField]
+    private GameObject clawBlock;
+
+    [SerializeField]
+    private GameObject clawBack;
+
+    [SerializeField]
+    private GameObject clawLunge;
+
+    [SerializeField]
+    private GameObject clawSnip;
 
     [SerializeField]
     private Player player;
@@ -40,10 +60,18 @@ public class CrabClaw : MonoBehaviour
     [SerializeField]
     private ClawSide clawSide;
 
-    ClawState state = ClawState.Neutral;
+    ClawState clawState = ClawState.Neutral;
+    AttackingState attackingState = AttackingState.None;
     CrabDirection crabDirection;
 
-    float timer = 0.0f;
+    float attackTimer = 0.0f;
+
+    bool clawAnimDirty = false;
+
+    CrabBody GetBody()
+    {
+        return crabBody;
+    }
 
     private void Awake()
     {
@@ -57,26 +85,29 @@ public class CrabClaw : MonoBehaviour
             OnAttack();
         }
 
-        if (timer <= 0)
+        if (clawState == ClawState.Attacking)
         {
-            if (state == ClawState.WindingUp)
+            if (attackTimer <= 0)
             {
-                ChangeState(ClawState.Lunging);
+                if (attackingState == AttackingState.WindingUp)
+                {
+                    ChangeAttackingState(AttackingState.Lunging);
+                }
+                else if (attackingState == AttackingState.Lunging)
+                {
+                    ChangeAttackingState(AttackingState.Snipping);
+                }
+                else if (attackingState == AttackingState.Snipping || attackingState == AttackingState.Recoiling)
+                {
+                    ChangeClawState(ClawState.Neutral);
+                    OnDirectionChanged(crabDirection);
+                }
             }
-            else if (state == ClawState.Lunging)
+            else
             {
-                ChangeState(ClawState.Snipping);
+                attackTimer -= Time.deltaTime;
             }
-            else if (state == ClawState.Snipping || state == ClawState.Recoiling)
-            {
-                ChangeState(ClawState.Neutral);
-                OnDirectionChanged(crabDirection);
-            }
-        }
-        else
-        {
-            timer -= Time.deltaTime;
-        }
+        }    
 
         UpdateClaw();
     }
@@ -86,119 +117,97 @@ public class CrabClaw : MonoBehaviour
     {
         crabDirection = direction;
 
-        if (state == ClawState.Neutral || state == ClawState.Blocking)
+        if (clawState != ClawState.Attacking)
         {
             if (direction == CrabDirection.Forward)
             {
-                ChangeState(ClawState.Neutral);
+                ChangeClawState(ClawState.Neutral);
             }
             else if (direction == CrabDirection.Backward)
             {
-                ChangeState(ClawState.Blocking);
+                ChangeClawState(ClawState.Blocking);
             }
             else if (direction == CrabDirection.Left)
             {
-                if (clawSide == ClawSide.Left) ChangeState(ClawState.Blocking);
-                else ChangeState(ClawState.Neutral);
+                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Blocking);
+                else ChangeClawState(ClawState.Neutral);
             }
             else if (direction == CrabDirection.Right)
             {
-                if (clawSide == ClawSide.Left) ChangeState(ClawState.Neutral);
-                else ChangeState(ClawState.Blocking);
+                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Neutral);
+                else ChangeClawState(ClawState.Blocking);
             }
         }
     }
 
     void OnAttack()
     {
-        if (state == ClawState.Neutral)
+        if (clawState == ClawState.Neutral)
         {
-            ChangeState(ClawState.WindingUp);
+            ChangeClawState(ClawState.Attacking);
+            ChangeAttackingState(AttackingState.WindingUp);
         }
     }
 
-    void ChangeState(ClawState newState)
+    void ChangeClawState(ClawState newState)
     {
-        state = newState;
+        clawState = newState;
 
-        timer = stateTimes[newState];
+        if (clawState != ClawState.Attacking)
+        {
+            ChangeAttackingState(AttackingState.None);
+        }
+
+        clawAnimDirty = true;
     }
 
-    // Update claw position and rotation based on state and side.
+    void ChangeAttackingState(AttackingState newState)
+    {
+        attackingState = newState;
+
+        attackTimer = stateTimes[newState];
+
+        clawAnimDirty = true;
+    }
+
+    // Update which claw frame is active based on clawState and attackingState.
     private void UpdateClaw()
     {
-        bool defaultRotation = true;
-
-        if (state == ClawState.Neutral)
+        if (!clawAnimDirty)
         {
-            float yPos = clawSide == ClawSide.Left ? 0.6f : -0.6f;
-
-            transform.localPosition = new Vector3(0.6f, yPos, 0);
-            transform.localEulerAngles = new Vector3(0, 0, 270);
-        }
-        else if (state == ClawState.Blocking)
-        {
-            defaultRotation = false;
-
-            if (clawSide == ClawSide.Left)
-            {
-                transform.localPosition = new Vector3(0.9f, 0.4f, 0);
-                transform.localEulerAngles = new Vector3(0, 0, 200);
-            }
-            else
-            {
-                transform.localPosition = new Vector3(0.9f, -0.4f, 0);
-                transform.localEulerAngles = new Vector3(0, 0, 340);
-            }
-        }
-        else if (state == ClawState.WindingUp)
-        {
-            if (clawSide == ClawSide.Left)
-            {
-                transform.localPosition = new Vector3(0.5f, 0.6f, 0);
-            }
-            else
-            {
-                transform.localPosition = new Vector3(0.5f, -0.6f, 0);
-            }
-        }
-        else if (state == ClawState.Lunging)
-        {
-            if (clawSide == ClawSide.Left)
-            {
-                transform.localPosition = new Vector3(0.9f, 0.6f, 0);
-            }
-            else
-            {
-                transform.localPosition = new Vector3(0.9f, -0.6f, 0);
-            }
-        }
-        else if (state == ClawState.Snipping)
-        {
-            if (clawSide == ClawSide.Left)
-            {
-                transform.localPosition = new Vector3(1.2f, 0.6f, 0);
-            }
-            else
-            {
-                transform.localPosition = new Vector3(1.2f, -0.6f, 0);
-            }
-        }
-        else if (state == ClawState.Recoiling)
-        {
-            if (clawSide == ClawSide.Left)
-            {
-                transform.localPosition = new Vector3(0.5f, 0.6f, 0);
-            }
-            else
-            {
-                transform.localPosition = new Vector3(0.5f, -0.6f, 0);
-            }
+            return;
         }
 
-        if (defaultRotation)
+        clawAnimDirty = false;
+
+        clawNeutral.SetActive(false);
+        clawBlock.SetActive(false);
+        clawBack.SetActive(false);
+        clawLunge.SetActive(false);
+        clawSnip.SetActive(false);
+
+        if (clawState == ClawState.Neutral)
         {
-            transform.localEulerAngles = new Vector3(0, 0, 270);
+            clawNeutral.SetActive(true);
+        }
+        else if (clawState == ClawState.Blocking)
+        {
+            clawBlock.SetActive(true);
+        }
+        else if (clawState == ClawState.Attacking)
+        {
+            if (attackingState == AttackingState.WindingUp || attackingState == AttackingState.Recoiling)
+            {
+                clawBack.SetActive(true);
+            }
+            else if (attackingState == AttackingState.Lunging)
+            {
+                clawLunge.SetActive(true);
+            }
+            else if (attackingState == AttackingState.Snipping)
+            {
+                clawSnip.SetActive(true);
+            }
         }
     }
 
@@ -206,21 +215,31 @@ public class CrabClaw : MonoBehaviour
     // Else, if we hit an eye and we are snipping, kill that eye.
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        CrabClaw hitClaw = collision.gameObject.GetComponent<CrabClaw>();
-        
-        if (state != ClawState.Neutral && state != ClawState.Blocking && hitClaw != null)
+        if (clawState == ClawState.Attacking)
         {
-            ChangeState(ClawState.Recoiling);
-        }
-        else
-        {
-            CrabEye hitEye = collision.gameObject.GetComponent<CrabEye>();
+            CrabClaw hitClaw = collision.gameObject.GetComponent<CrabClaw>();
+            CrabBody hitBody = collision.gameObject.GetComponent<CrabBody>();
 
-            if (hitEye != null && hitEye.GetPlayer() != player)
+            if (hitBody != null)
             {
-                if (state == ClawState.Snipping)
+                hitBody.OnPushed();
+                ChangeAttackingState(AttackingState.Recoiling);
+            }
+            else if (hitClaw)
+            {
+                hitClaw.crabBody.OnPushed();
+                ChangeAttackingState(AttackingState.Recoiling);
+            }
+            else
+            {
+                CrabEye hitEye = collision.gameObject.GetComponent<CrabEye>();
+
+                if (hitEye != null && hitEye.GetPlayer() != player)
                 {
-                    hitEye.Die();
+                    if (attackingState == AttackingState.Snipping)
+                    {
+                        hitEye.Die();
+                    }
                 }
             }
         }

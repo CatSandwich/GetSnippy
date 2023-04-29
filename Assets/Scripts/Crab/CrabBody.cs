@@ -30,6 +30,9 @@ public class CrabBody : MonoBehaviour
     float horizontalSpeed = 0.25f;
 
     [SerializeField]
+    float pushedSpeed = 0.25f;
+
+    [SerializeField]
     private Input.InputManager inputManager;
 
     [SerializeField]
@@ -91,6 +94,18 @@ public class CrabBody : MonoBehaviour
             speed = 0;
         }
 
+        MoveTo(direction, speed);
+
+        Move?.Invoke();
+    }
+
+    public void OnPushed()
+    {
+        MoveTo(ToVector2(CrabDirection.Backward), pushedSpeed);
+    }
+
+    void MoveTo(Vector2 direction, float speed)
+    {
         string otherPlayer;
         if (player == Player.Player1) otherPlayer = "Player2";
         else otherPlayer = "Player1";
@@ -101,8 +116,6 @@ public class CrabBody : MonoBehaviour
         {
             rb2d.MovePosition(rb2d.position + direction * speed);
         }
-
-        Move?.Invoke();
     }
 
     CrabDirection ToCrabDirection(Vector2 direction)
