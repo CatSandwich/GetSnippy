@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 namespace Input
@@ -35,10 +36,10 @@ namespace Input
         };
         #endregion
 
-        public PlayerInput(StickControl leftStick, StickControl rightStick)
+        public PlayerInput(Joystick leftJoystick, Joystick rightJoystick)
         {
-            LeftStick = new StickInput(leftStick);
-            RightStick = new StickInput(rightStick);
+            LeftStick = new StickInput(leftJoystick);
+            RightStick = new StickInput(rightJoystick);
 
             LeftStick.PositionChanged += _ => OnStickMoved();
             RightStick.PositionChanged += _ => OnStickMoved();

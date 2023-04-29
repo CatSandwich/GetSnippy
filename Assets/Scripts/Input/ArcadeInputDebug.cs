@@ -1,4 +1,7 @@
+using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,13 +14,8 @@ namespace Input
 
         void Start()
         {
-            foreach (InputDevice device in InputSystem.devices)
-            {
-                Debug.LogError(device.GetType() + " - " + device.description);
-            }
-
-            Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3)?.stick, Joystick.all.ElementAtOrDefault(1)?.stick);
-            Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0)?.stick, Joystick.all.ElementAtOrDefault(2)?.stick);
+            Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3), Joystick.all.ElementAtOrDefault(1));
+            Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0), Joystick.all.ElementAtOrDefault(2));
 
             Player1.ChangeDirection += v2 => Debug.LogError($"P1 Direction changed: {v2}");
             Player1.Move += () => Debug.LogError("P1 Move");
