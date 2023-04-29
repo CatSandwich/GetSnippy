@@ -22,6 +22,6 @@ public class DirectionIndicator : MonoBehaviour
 
     void OnDirectionChanged(Vector2 direction)
     {
-        transform.eulerAngles = DirectionRotations[direction];
+        transform.localEulerAngles = DirectionRotations[direction];
     }
 }
