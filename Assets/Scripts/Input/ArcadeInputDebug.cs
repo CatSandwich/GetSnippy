@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 namespace Input
 {
@@ -19,6 +16,14 @@ namespace Input
             Stick2 = _bind(1);
             Stick3 = _bind(2);
             Stick4 = _bind(3);
+        }
+
+        void Update()
+        {
+            Stick1.Update();
+            Stick2.Update();
+            Stick3.Update();
+            Stick4.Update();
         }
 
         private StickInput _bind(int index)
