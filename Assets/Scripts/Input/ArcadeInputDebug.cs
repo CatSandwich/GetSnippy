@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,63 +19,93 @@ namespace Input
         {
             foreach (Joystick joystick in Joystick.all)
             {
-                Vector2Control hatSwich = joystick.hatswitch;
+                float x, y;
 
-                float x = hatSwich.x.ReadValue();
-                if (x != 0)
-                {
-                    Debug.LogError($"Hatswitch x: {x}");
-                }
+                Try(() =>
+                    {
+                        Vector2Control hatSwich = joystick.hatswitch;
+                        x = hatSwich.x.ReadValue();
+                        if (x != 0)
+                        {
+                            Debug.LogError($"Hatswitch x: {x}");
+                        }
 
-                float y = hatSwich.y.ReadValue();
-                if (y != 0)
-                {
-                    Debug.LogError($"Hatswitch y: {y}");
-                }
+                        y = hatSwich.y.ReadValue();
+                        if (y != 0)
+                        {
+                            Debug.LogError($"Hatswitch y: {y}");
+                        }
+                    });
 
-                StickControl stick = joystick.stick;
-                x = stick.x.ReadValue();
-                if (x != 0)
-                {
-                    Debug.LogError($"Stick x: {x}");
-                }
 
-                y = stick.y.ReadValue();
-                if (y != 0)
-                {
-                    Debug.LogError($"Stick y: {y}");
-                }
+                Try(() =>
+                    {
+                        StickControl stick = joystick.stick;
+                        x = stick.x.ReadValue();
+                        if (x != 0)
+                        {
+                            Debug.LogError($"Stick x: {x}");
+                        }
+
+                        y = stick.y.ReadValue();
+                        if (y != 0)
+                        {
+                            Debug.LogError($"Stick y: {y}");
+                        }
+                    });
+
             }
 
             foreach (Gamepad gamepad in Gamepad.all)
             {
-                StickControl stick = gamepad.leftStick;
                 
-                float x = stick.x.ReadValue();
-                if (x != 0)
-                {
-                    Debug.LogError($"Stick x: {x}");
-                }
+                float x, y;
 
-                float y = stick.y.ReadValue();
-                if (y != 0)
+                Try(() =>
                 {
-                    Debug.LogError($"Stick y: {y}");
-                }
+                    StickControl stick = gamepad.leftStick;
+                    x = stick.x.ReadValue();
+                    if (x != 0)
+                    {
+                        Debug.LogError($"Stick x: {x}");
+                    }
+
+                    y = stick.y.ReadValue();
+                    if (y != 0)
+                    {
+                        Debug.LogError($"Stick y: {y}");
+                    }
+                });
                 
-                stick = gamepad.rightStick;
 
-                x = stick.x.ReadValue();
-                if (x != 0)
+                Try(() =>
                 {
-                    Debug.LogError($"Stick x: {x}");
-                }
+                    StickControl stick = gamepad.rightStick;
+                    x = stick.x.ReadValue();
+                    if (x != 0)
+                    {
+                        Debug.LogError($"Stick x: {x}");
+                    }
 
-                y = stick.y.ReadValue();
-                if (y != 0)
-                {
-                    Debug.LogError($"Stick y: {y}");
-                }
+                    y = stick.y.ReadValue();
+                    if (y != 0)
+                    {
+                        Debug.LogError($"Stick y: {y}");
+                    }
+                });
+
+            }
+        }
+
+        void Try(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch(Exception)
+            {
+                // This is a horrible idea
             }
         }
     }
