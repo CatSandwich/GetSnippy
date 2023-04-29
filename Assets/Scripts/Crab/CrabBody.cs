@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class CrabBody : MonoBehaviour
 {
-    // Crabs are faster side to side
-    const float VERTICAL_SPEED = 0.5f;
-    const float HORIZONTAL_SPEED = 0.25f;
-
     private static readonly Dictionary<Vector2, CrabDirection> Player1DirectionMapping = new()
     {
         [Vector2.up] = CrabDirection.Left,
@@ -24,6 +20,13 @@ public class CrabBody : MonoBehaviour
         [Vector2.down] = CrabDirection.Left,
         [Vector2.left] = CrabDirection.Forward
     };
+
+    // Crabs are faster side to side
+    [SerializeField]
+    float verticalSpeed = 0.5f;
+
+    [SerializeField]
+    float horizontalSpeed = 0.25f;
 
     [SerializeField]
     private Input.InputManager inputManager;
@@ -57,11 +60,11 @@ public class CrabBody : MonoBehaviour
 
         if (direction.y > 0 || direction.y < 0)
         {
-            transform.Translate(direction * VERTICAL_SPEED);
+            transform.Translate(direction * verticalSpeed);
         }
         else if (direction.x > 0 || direction.x < 0)
         {
-            transform.Translate(direction * HORIZONTAL_SPEED);
+            transform.Translate(direction * horizontalSpeed);
         }
 
         Move?.Invoke();
