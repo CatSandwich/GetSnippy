@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 218694845457630421}
   - component: {fileID: 218694845457630422}
   - component: {fileID: 7572187858017421151}
+  - component: {fileID: 2183610243410141910}
   m_Layer: 6
   m_Name: Crab
   m_TagString: Untagged
@@ -263,7 +264,6 @@ MonoBehaviour:
   verticalSpeed: 0.5
   horizontalSpeed: 0
   pushedSpeed: 0.25
-  inputManager: {fileID: 0}
   player: 0
   numEyes: 2
 --- !u!114 &7572187858017421151
@@ -281,6 +281,19 @@ MonoBehaviour:
   neutralSprite: {fileID: 706397893, guid: ecc881cf06e5c724ab18bb4a355f294d, type: 3}
   leftSprite: {fileID: -1796897156, guid: ecc881cf06e5c724ab18bb4a355f294d, type: 3}
   rightSprite: {fileID: 1763230167, guid: ecc881cf06e5c724ab18bb4a355f294d, type: 3}
+--- !u!114 &2183610243410141910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218694845457630423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f01aac204d3dca4eb63324259dda7fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: 0
 --- !u!1 &218694845945193675
 GameObject:
   m_ObjectHideFlags: 0
