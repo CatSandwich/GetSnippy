@@ -24,6 +24,14 @@ namespace Input
             Vector2.left
         };
 
+        private static readonly Dictionary<Vector2, string> DirectionStrings = new()
+        {
+            [Vector2.up] = "Up",
+            [Vector2.right] = "Right",
+            [Vector2.down] = "Down",
+            [Vector2.left] = "Left"
+        };
+
         private static readonly Dictionary<Vector2, KeyCode> LeftKeyMapping = new()
         {
             [Vector2.up] = KeyCode.W,
@@ -34,10 +42,10 @@ namespace Input
 
         private static readonly Dictionary<Vector2, KeyCode> RightKeyMapping = new()
         {
-            [Vector2.up] = KeyCode.W,
-            [Vector2.right] = KeyCode.D,
-            [Vector2.down] = KeyCode.S,
-            [Vector2.left] = KeyCode.A
+            [Vector2.up] = KeyCode.UpArrow,
+            [Vector2.right] = KeyCode.RightArrow,
+            [Vector2.down] = KeyCode.DownArrow,
+            [Vector2.left] = KeyCode.LeftArrow
         };
         #endregion
 
@@ -53,6 +61,14 @@ namespace Input
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+
+        public void Start()
+        {
+            DirectionChanged += dir =>
+            {
+                Debug.Log(DirectionStrings[dir]);
+            };
         }
 
         public void Update()
