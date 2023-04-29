@@ -146,6 +146,7 @@ MonoBehaviour:
   horizontalSpeed: 0.25
   inputManager: {fileID: 0}
   player: 0
+  numEyes: 2
 --- !u!114 &7572187858017421151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +174,7 @@ GameObject:
   - component: {fileID: 218694845945193672}
   - component: {fileID: 218694845945193673}
   - component: {fileID: 1285877906569116060}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Left eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,6 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccdd19d849b81b41bc428d1a6e0f5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crabBody: {fileID: 0}
   player: 0
 --- !u!1 &218694846813327400
 GameObject:
@@ -288,7 +290,7 @@ GameObject:
   - component: {fileID: 218694846813327829}
   - component: {fileID: 218694846813327830}
   - component: {fileID: 6857483014978434791}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Right eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,6 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccdd19d849b81b41bc428d1a6e0f5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crabBody: {fileID: 0}
   player: 0
 --- !u!1 &218694846996783056
 GameObject:
@@ -402,7 +405,7 @@ GameObject:
   - component: {fileID: 218694846996783071}
   - component: {fileID: 218694846996783070}
   - component: {fileID: 218694846996783069}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Direction Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +504,7 @@ GameObject:
   - component: {fileID: 1950515690735645564}
   - component: {fileID: 8846534207214773248}
   - component: {fileID: 368165989320829576}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Right claw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +633,7 @@ GameObject:
   - component: {fileID: 1556395724271156}
   - component: {fileID: 3843925079023356905}
   - component: {fileID: 7961662766296599688}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Left claw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
