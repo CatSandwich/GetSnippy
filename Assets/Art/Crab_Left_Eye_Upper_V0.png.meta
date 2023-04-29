@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 22
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -103,7 +103,152 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Crab_Left_Eye_Upper_V0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 72
+        height: 96
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -1, y: 14}
+        - {x: -7, y: 14}
+        - {x: -16, y: 12}
+        - {x: -16, y: 2}
+        - {x: -3, y: 2}
+        - {x: 1, y: 4}
+        - {x: 1, y: 10}
+      tessellationDetail: 0.5
+      bones: []
+      spriteID: c9d405e29f466374dba5e41801db8207
+      internalID: 620432684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Left_Eye_Upper_V0_1
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 72
+        height: 96
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3, y: 12}
+        - {x: -12, y: 12}
+        - {x: -16, y: 9}
+        - {x: -16, y: 4}
+        - {x: -14, y: 1}
+        - {x: -7, y: 0}
+        - {x: -2, y: 0}
+        - {x: 1, y: 4}
+        - {x: 1, y: 10}
+      tessellationDetail: 0.5
+      bones: []
+      spriteID: 94962080cc7953244ad07fe823ff40ae
+      internalID: 1743899967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Left_Eye_Upper_V0_2
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 72
+        height: 96
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -11, y: 13}
+        - {x: -18, y: 11}
+        - {x: -18, y: 4}
+        - {x: -13, y: 1}
+        - {x: -6, y: 1}
+        - {x: -2, y: 5}
+        - {x: -2, y: 9}
+        - {x: -4, y: 13}
+      tessellationDetail: 0.5
+      bones: []
+      spriteID: d30503a0c6182ed44ad327be57c5574b
+      internalID: 1071355556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Left_Eye_Upper_V0_3
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 72
+        height: 96
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -16, y: 12}
+        - {x: -18, y: 7}
+        - {x: -18, y: 5}
+        - {x: -14, y: 0}
+        - {x: -5, y: 0}
+        - {x: -2, y: 2}
+        - {x: -2, y: 8}
+        - {x: -6, y: 12}
+      tessellationDetail: 0.5
+      bones: []
+      spriteID: e5108aa7adb53ac4293b7b5200876238
+      internalID: -2065341210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Left_Eye_Upper_V0_4
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 72
+        height: 96
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -8, y: 13}
+        - {x: -16, y: 11}
+        - {x: -16, y: 2}
+        - {x: -11, y: 1}
+        - {x: 2, y: 1}
+        - {x: 4, y: 5}
+        - {x: 4, y: 9}
+        - {x: 3, y: 13}
+      tessellationDetail: 0.5
+      bones: []
+      spriteID: 703c6741bddd9974f9125025c87b3682
+      internalID: -2114332641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -114,7 +259,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Crab_Left_Eye_Upper_V0_0: 620432684
+      Crab_Left_Eye_Upper_V0_2: 1071355556
+      Crab_Left_Eye_Upper_V0_3: -2065341210
+      Crab_Left_Eye_Upper_V0_4: -2114332641
+      Crab_Left_Eye_Upper_V0_1: 1743899967
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

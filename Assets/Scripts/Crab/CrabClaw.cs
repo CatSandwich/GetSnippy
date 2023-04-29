@@ -11,7 +11,7 @@ public class CrabClaw : MonoBehaviour
         Right
     }
 
-    enum ClawState
+    public enum ClawState
     {
         Neutral,
         Blocking,
@@ -59,6 +59,8 @@ public class CrabClaw : MonoBehaviour
 
     [SerializeField]
     private ClawSide clawSide;
+
+    public event Action<ClawState> StateChanged;
 
     ClawState clawState = ClawState.Neutral;
     AttackingState attackingState = AttackingState.None;
@@ -159,6 +161,8 @@ public class CrabClaw : MonoBehaviour
         }
 
         clawAnimDirty = true;
+
+        StateChanged?.Invoke(clawState);
     }
 
     void ChangeAttackingState(AttackingState newState)

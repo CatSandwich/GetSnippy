@@ -261,7 +261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   verticalSpeed: 0.5
-  horizontalSpeed: 0.25
+  horizontalSpeed: 0
+  pushedSpeed: 0.25
   inputManager: {fileID: 0}
   player: 0
   numEyes: 2
@@ -290,8 +291,9 @@ GameObject:
   m_Component:
   - component: {fileID: 218694845945193674}
   - component: {fileID: 218694845945193672}
-  - component: {fileID: 218694845945193673}
+  - component: {fileID: 8585667286185788274}
   - component: {fileID: 1285877906569116060}
+  - component: {fileID: 5626062971606887198}
   m_Layer: 0
   m_Name: Left eye
   m_TagString: Untagged
@@ -307,8 +309,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218694845945193675}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.65, y: 0.18, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 218694845457630418}
@@ -355,7 +357,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 620432684, guid: 8f8e06f4f98446d408bd7fed4d53126a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -366,8 +368,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &218694845945193673
-CircleCollider2D:
+--- !u!61 &8585667286185788274
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -379,9 +381,19 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000035762787, y: -0.000000059604645}
+  m_Offset: {x: 1.4, y: 0.25}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0.5}
+    oldSize: {x: 3.2727273, y: 4.3636365}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.4999999
+  m_Size: {x: 0.7, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!114 &1285877906569116060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,8 +406,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccdd19d849b81b41bc428d1a6e0f5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crabBody: {fileID: 0}
+  crabBody: {fileID: 218694845457630422}
   player: 0
+--- !u!114 &5626062971606887198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218694845945193675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7744d304c319f04eafd06e179d004e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobTime: 0.5
+  crabClaw: {fileID: 7961662766296599688}
+  neutralSprite: {fileID: 620432684, guid: 8f8e06f4f98446d408bd7fed4d53126a, type: 3}
+  neutralBobSprite: {fileID: 1743899967, guid: 8f8e06f4f98446d408bd7fed4d53126a, type: 3}
+  guardSprite: {fileID: 1071355556, guid: 8f8e06f4f98446d408bd7fed4d53126a, type: 3}
+  guardBobSprite: {fileID: -2065341210, guid: 8f8e06f4f98446d408bd7fed4d53126a, type: 3}
+  lungeSprite: {fileID: -2114332641, guid: 8f8e06f4f98446d408bd7fed4d53126a, type: 3}
+  deadSprite: {fileID: 932965575, guid: ac924f20ffae3ef4296d0291ae1b0c56, type: 3}
+  deadBobSprite: {fileID: -1517418532, guid: ac924f20ffae3ef4296d0291ae1b0c56, type: 3}
 --- !u!1 &218694846813327400
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,8 +439,9 @@ GameObject:
   m_Component:
   - component: {fileID: 218694846813327831}
   - component: {fileID: 218694846813327829}
-  - component: {fileID: 218694846813327830}
+  - component: {fileID: 9170906815058705039}
   - component: {fileID: 6857483014978434791}
+  - component: {fileID: 1849067481046745841}
   m_Layer: 0
   m_Name: Right eye
   m_TagString: Untagged
@@ -423,8 +457,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218694846813327400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.65, y: -0.18, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 218694845457630418}
@@ -471,7 +505,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -479823987, guid: 0d070230db479354aa674aaa67dfac01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -482,8 +516,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &218694846813327830
-CircleCollider2D:
+--- !u!61 &9170906815058705039
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -495,9 +529,19 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000047683716, y: 0.000000059604645}
+  m_Offset: {x: 1.4, y: -0.25}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0.5}
+    oldSize: {x: 3.2727273, y: 4.3636365}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.4999999
+  m_Size: {x: 0.7, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!114 &6857483014978434791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,8 +554,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccdd19d849b81b41bc428d1a6e0f5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crabBody: {fileID: 0}
+  crabBody: {fileID: 218694845457630422}
   player: 0
+--- !u!114 &1849067481046745841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218694846813327400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7744d304c319f04eafd06e179d004e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobTime: 0.5
+  crabClaw: {fileID: 368165989320829576}
+  neutralSprite: {fileID: -479823987, guid: 0d070230db479354aa674aaa67dfac01, type: 3}
+  neutralBobSprite: {fileID: 647347781, guid: 0d070230db479354aa674aaa67dfac01, type: 3}
+  guardSprite: {fileID: -1493790368, guid: 0d070230db479354aa674aaa67dfac01, type: 3}
+  guardBobSprite: {fileID: 2036058490, guid: 0d070230db479354aa674aaa67dfac01, type: 3}
+  lungeSprite: {fileID: -517584912, guid: 0d070230db479354aa674aaa67dfac01, type: 3}
+  deadSprite: {fileID: -1157336208, guid: 7ec1d37bf1b3fbf40ad005da02053a02, type: 3}
+  deadBobSprite: {fileID: -1120619637, guid: 7ec1d37bf1b3fbf40ad005da02053a02, type: 3}
 --- !u!1 &218694846996783056
 GameObject:
   m_ObjectHideFlags: 0
