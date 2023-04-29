@@ -31,6 +31,8 @@ public class CrabBody : MonoBehaviour
     [SerializeField]
     private Player player;
 
+    public event Action Move;
+
     public event Action<CrabDirection> DirectionChanged;
     private CrabDirection crabDirection = CrabDirection.Forward;
 
@@ -43,7 +45,13 @@ public class CrabBody : MonoBehaviour
         DirectionChanged?.Invoke(crabDirection);
     }
 
-    void OnMove() 
+    void OnDirectionChanged(Vector2 direction)
+    {
+        crabDirection = ToCrabDirection(direction);
+        DirectionChanged?.Invoke(crabDirection);
+    }
+
+    void OnMove()
     {
         Vector2 direction = ToVector2(crabDirection);
 
@@ -55,12 +63,8 @@ public class CrabBody : MonoBehaviour
         {
             transform.Translate(direction * HORIZONTAL_SPEED);
         }
-    }
 
-    void OnDirectionChanged(Vector2 direction)
-    {
-        crabDirection = ToCrabDirection(direction);
-        DirectionChanged?.Invoke(crabDirection);
+        Move?.Invoke();
     }
 
     CrabDirection ToCrabDirection(Vector2 direction)
