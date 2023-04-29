@@ -82,7 +82,7 @@ namespace Input
 
         private void CheckIn()
         {
-            if (LeftStick.Position == Vector2Int.right && LeftStick.Position == Vector2Int.left)
+            if (LeftStick.Position == Vector2Int.right && RightStick.Position == Vector2Int.left)
             {
                 In?.Invoke();
             }
@@ -90,7 +90,7 @@ namespace Input
 
         private void CheckOut()
         {
-            if (LeftStick.Position == Vector2Int.left && LeftStick.Position == Vector2Int.right)
+            if (LeftStick.Position == Vector2Int.left && RightStick.Position == Vector2Int.right)
             {
                 Out?.Invoke();
             }

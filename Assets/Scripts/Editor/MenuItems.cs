@@ -6,18 +6,17 @@ using UnityEditor;
 public class MenuItems
 {
     private static readonly string GitBashPath = @"C:\Program Files\Git\git-bash.exe";
+    private static readonly FileInfo GitBashFile = new(GitBashPath);
 
-    [MenuItem("Scripts/Open Git Bash")]
-	public static void OpenGitBash()
-	{
-        FileInfo gitBash = new(GitBashPath);
-        Process.Start(gitBash.FullName, $"--cd=\"{Environment.CurrentDirectory}\"");
-	}
+    [MenuItem("Scripts/Open Git Bash")] 
+    public static void OpenGitBash()
+    {
+        Process.Start(GitBashFile.FullName, $"--cd=\"{Environment.CurrentDirectory}\"");
+    }
 
     [MenuItem("Scripts/Open Git Bash", isValidateFunction: true)]
     public static bool HasGitBash()
     {
-        FileInfo gitBash = new(GitBashPath);
-        return gitBash.Exists;
+        return GitBashFile.Exists;
     }
 }

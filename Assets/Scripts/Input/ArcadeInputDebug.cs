@@ -11,6 +11,11 @@ namespace Input
 
         void Start()
         {
+            foreach (InputDevice device in InputSystem.devices)
+            {
+                Debug.LogError(device.GetType() + " - " + device.description);
+            }
+
             Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3)?.stick, Joystick.all.ElementAtOrDefault(1)?.stick);
             Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0)?.stick, Joystick.all.ElementAtOrDefault(2)?.stick);
 
