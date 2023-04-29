@@ -1,116 +1,3 @@
-/*using System;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-
-namespace Input
-{
-    public class ArcadeInputDebug : MonoBehaviour
-    {
-        void Start()
-        {
-            Debug.LogError($"# joysticks: {Joystick.all.Count}");
-            Debug.LogError($"# gamepads: {Gamepad.all.Count}");
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            foreach (Joystick joystick in Joystick.all)
-            {
-                float x, y;
-
-                Try(() =>
-                    {
-                        Vector2Control hatSwich = joystick.hatswitch;
-                        x = hatSwich.x.ReadValue();
-                        if (x != 0)
-                        {
-                            Debug.LogError($"Joystick hatswitch x: {x}");
-                        }
-
-                        y = hatSwich.y.ReadValue();
-                        if (y != 0)
-                        {
-                            Debug.LogError($"Joystick hatswitch y: {y}");
-                        }
-                    });
-
-
-                Try(() =>
-                    {
-                        StickControl stick = joystick.stick;
-                        x = stick.x.ReadValue();
-                        if (x != 0)
-                        {
-                            Debug.LogError($"Joystick stick x: {x}");
-                        }
-
-                        y = stick.y.ReadValue();
-                        if (y != 0)
-                        {
-                            Debug.LogError($"Joystick stick y: {y}");
-                        }
-                    });
-
-            }
-
-            foreach (Gamepad gamepad in Gamepad.all)
-            {
-
-                float x, y;
-
-                Try(() =>
-                    {
-                        StickControl stick = gamepad.leftStick;
-                        x = stick.x.ReadValue();
-                        if (x != 0)
-                        {
-                            Debug.LogError($"Gamepad left stick x: {x}");
-                        }
-
-                        y = stick.y.ReadValue();
-                        if (y != 0)
-                        {
-                            Debug.LogError($"Gamepad left stick y: {y}");
-                        }
-                    });
-
-
-                Try(() =>
-                    {
-                        StickControl stick = gamepad.rightStick;
-                        x = stick.x.ReadValue();
-                        if (x != 0)
-                        {
-                            Debug.LogError($"Gamepad right stick x: {x}");
-                        }
-
-                        y = stick.y.ReadValue();
-                        if (y != 0)
-                        {
-                            Debug.LogError($"Gamepad right stick y: {y}");
-                        }
-                    });
-
-            }
-        }
-
-        void Try(Action action)
-        {
-            try
-            {
-                action();
-            }
-            catch (Exception)
-            {
-                // This is a horrible idea
-            }
-        }
-    }
-}*/
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -118,33 +5,29 @@ namespace Input
 {
     public class ArcadeInputDebug : MonoBehaviour
     {
-        public StickInput Stick1;
-        public StickInput Stick2;
-        public StickInput Stick3;
-        public StickInput Stick4;
+        public PlayerInput Player1;
+        public PlayerInput Player2;
 
         void Start()
         {
-            Application.targetFrameRate = 2;
-            Stick1 = _bind(0);
-            Stick2 = _bind(1);
-            Stick3 = _bind(2);
-            Stick4 = _bind(3);
+            Player1 = new PlayerInput(Joystick.all[3].stick, Joystick.all[1].stick);
+            Player2 = new PlayerInput(Joystick.all[0].stick, Joystick.all[2].stick);
+
+            Player1.ChangeDirection += v2 => Debug.LogError($"P1 Direction changed: {v2}");
+            Player1.Move += () => Debug.Log("P1 Move");
+            Player1.In += () => Debug.Log("P1 In");
+            Player1.Out += () => Debug.Log("P1 Out");
+
+            Player2.ChangeDirection += v2 => Debug.LogError($"P2 Direction changed: {v2}");
+            Player2.Move += () => Debug.Log("P2 Move");
+            Player2.In += () => Debug.Log("P2 In");
+            Player2.Out += () => Debug.Log("P2 Out");
         }
 
         void Update()
         {
-            Stick1.Update();
-            Stick2.Update();
-            Stick3.Update();
-            Stick4.Update();
-        }
-
-        private StickInput _bind(int index)
-        {
-            StickInput input = new(Joystick.all[index].stick);
-            input.PositionChanged += v2 => Debug.LogError($"Stick {index} changed: {v2}");
-            return input;
+            Player1.Update();
+            Player2.Update();
         }
     }
 }

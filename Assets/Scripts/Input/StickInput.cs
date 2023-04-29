@@ -9,6 +9,12 @@ namespace Input
     {
         public event Action<Vector2Int> PositionChanged;
         private readonly StickControl _stick;
+
+        public Vector2Int Position
+        {
+            get => _position;
+            set => _setPosition(value);
+        }
         private Vector2Int _position = Vector2Int.zero;
 
         public StickInput(StickControl stick)
@@ -18,7 +24,7 @@ namespace Input
         
         public void Update()
         {
-            _setPosition(new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round());
+            Position = new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round();
         }
 
         public static bool TryBindJoystick(out StickControl stick)
