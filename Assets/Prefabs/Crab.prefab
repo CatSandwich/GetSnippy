@@ -262,8 +262,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   verticalSpeed: 0.5
-  horizontalSpeed: 0
   pushedSpeed: 0.25
+  forwardHopDistance: 0.25
+  backHopDistance: 0.5
+  hopTime: 0.5
   player: 0
   numEyes: 2
 --- !u!114 &7572187858017421151
@@ -944,6 +946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabBody: {fileID: 218694845457630422}
+  input: {fileID: 2183610243410141910}
   clawNeutral: {fileID: 3900324038963659801}
   clawBlock: {fileID: 2684093872793539053}
   clawBack: {fileID: 6314958215251734521}
@@ -1448,6 +1451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabBody: {fileID: 218694845457630422}
+  input: {fileID: 2183610243410141910}
   clawNeutral: {fileID: 6065025989737413809}
   clawBlock: {fileID: 133478434761429011}
   clawBack: {fileID: 5082087439381841703}

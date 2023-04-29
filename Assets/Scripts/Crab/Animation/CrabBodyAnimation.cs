@@ -24,11 +24,11 @@ public class CrabBodyAnimation : MonoBehaviour
         crabBody = GetComponent<CrabBody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        crabBody.DirectionChanged += OnDirectionChanged;
+        crabBody.ChangeDirection += OnChangeDirection;
         crabBody.Move += OnMove;
     }
 
-    void OnDirectionChanged(CrabDirection direction)
+    void OnChangeDirection(CrabDirection direction)
     {
         crabDirection = direction;
         isNeutral = true;

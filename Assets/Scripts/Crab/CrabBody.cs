@@ -27,20 +27,27 @@ public class CrabBody : MonoBehaviour
     float verticalSpeed = 0.5f;
 
     [SerializeField]
-    float horizontalSpeed = 0.25f;
+    float pushedSpeed = 0.25f;
 
     [SerializeField]
-    float pushedSpeed = 0.25f;
+    float forwardHopDistance= 0.25f;
+
+    [SerializeField]
+    float backHopDistance = 0.5f;
+
+    [SerializeField]
+    float hopTime = 0.5f;
 
     [SerializeField]
     private Player player;
 
     public event Action Move;
-    public event Action<CrabDirection> DirectionChanged;
+    public event Action<CrabDirection> ChangeDirection;
 
     public int numEyes = 2;
 
     private CrabDirection crabDirection = CrabDirection.Forward;
+    private float hopTimer = 0;
 
     private Rigidbody2D rb2d;
     private CapsuleCollider2D cc2d;
@@ -54,12 +61,20 @@ public class CrabBody : MonoBehaviour
         input = GetComponent<Input.CrabInput>();
 
         input.input.Move += OnMove;
-        input.input.ChangeDirection += OnDirectionChanged;
+        input.input.ChangeDirection += OnChangeDirection;
 
-        DirectionChanged?.Invoke(crabDirection);
+        ChangeDirection?.Invoke(crabDirection);
     }
 
-    void OnDirectionChanged(Vector2Int direction)
+    private void Update()
+    {
+        if (hopTimer > 0)
+        {
+            hopTimer -= Time.deltaTime;
+        }
+    }
+
+    void OnChangeDirection(Vector2Int direction)
     {
         if (numEyes <= 0)
         {
@@ -67,7 +82,8 @@ public class CrabBody : MonoBehaviour
         }
 
         crabDirection = ToCrabDirection(direction);
-        DirectionChanged?.Invoke(crabDirection);
+
+        ChangeDirection?.Invoke(crabDirection);
     }
 
     void OnMove()
@@ -78,24 +94,13 @@ public class CrabBody : MonoBehaviour
         }
 
         Vector2Int direction = ToVector2Int(crabDirection);
-        float speed;
 
         if (direction.y > 0 || direction.y < 0)
         {
-            speed = verticalSpeed;
-        }
-        else if (direction.x > 0 || direction.x < 0)
-        {
-            speed = horizontalSpeed;
-        }
-        else
-        {
-            speed = 0;
-        }
+            MoveTo(direction, verticalSpeed);
 
-        MoveTo(direction, speed);
-
-        Move?.Invoke();
+            Move?.Invoke();
+        }
     }
 
     public void OnPushed()

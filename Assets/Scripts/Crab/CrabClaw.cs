@@ -40,6 +40,9 @@ public class CrabClaw : MonoBehaviour
     private CrabBody crabBody;
 
     [SerializeField]
+    private Input.CrabInput input;
+
+    [SerializeField]
     private GameObject clawNeutral;
 
     [SerializeField]
@@ -77,16 +80,18 @@ public class CrabClaw : MonoBehaviour
 
     private void Awake()
     {
-        crabBody.DirectionChanged += OnDirectionChanged;
+        crabBody.ChangeDirection += OnChangeDirection;
+    }
+
+    private void Start()
+    {
+        input.input.Lunge += OnAttack;
+        input.input.Out += OnOut;
+        input.input.In += OnIn;
     }
 
     private void Update()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
-        {
-            OnAttack();
-        }
-
         if (clawState == ClawState.Attacking)
         {
             if (attackTimer <= 0)
@@ -102,7 +107,7 @@ public class CrabClaw : MonoBehaviour
                 else if (attackingState == AttackingState.Snipping || attackingState == AttackingState.Recoiling)
                 {
                     ChangeClawState(ClawState.Neutral);
-                    OnDirectionChanged(crabDirection);
+                    OnChangeDirection(crabDirection);
                 }
             }
             else
@@ -115,31 +120,37 @@ public class CrabClaw : MonoBehaviour
     }
 
     // Set claw state based on CrabDirection
-    void OnDirectionChanged(CrabDirection direction)
+    void OnChangeDirection(CrabDirection direction)
     {
         crabDirection = direction;
 
         if (clawState != ClawState.Attacking)
         {
-            if (direction == CrabDirection.Forward)
+            if (direction == CrabDirection.Forward || direction == CrabDirection.Backward)
             {
                 ChangeClawState(ClawState.Neutral);
             }
-            else if (direction == CrabDirection.Backward)
-            {
-                ChangeClawState(ClawState.Blocking);
-            }
             else if (direction == CrabDirection.Left)
             {
-                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Blocking);
+                if (clawSide == ClawSide.Right) ChangeClawState(ClawState.Blocking);
                 else ChangeClawState(ClawState.Neutral);
             }
             else if (direction == CrabDirection.Right)
             {
-                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Neutral);
-                else ChangeClawState(ClawState.Blocking);
+                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Blocking);
+                else ChangeClawState(ClawState.Neutral);
             }
         }
+    }
+
+    void OnOut()
+    {
+        ChangeClawState(ClawState.Neutral);
+    }
+
+    void OnIn()
+    {
+        ChangeClawState(ClawState.Blocking);
     }
 
     void OnAttack()
@@ -222,14 +233,8 @@ public class CrabClaw : MonoBehaviour
         if (clawState == ClawState.Attacking)
         {
             CrabClaw hitClaw = collision.gameObject.GetComponent<CrabClaw>();
-            CrabBody hitBody = collision.gameObject.GetComponent<CrabBody>();
 
-            if (hitBody != null)
-            {
-                hitBody.OnPushed();
-                ChangeAttackingState(AttackingState.Recoiling);
-            }
-            else if (hitClaw)
+            if (hitClaw)
             {
                 hitClaw.crabBody.OnPushed();
                 ChangeAttackingState(AttackingState.Recoiling);

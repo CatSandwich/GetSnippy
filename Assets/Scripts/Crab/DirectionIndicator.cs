@@ -17,10 +17,10 @@ public class DirectionIndicator : MonoBehaviour
 
     private void Awake()
     {
-        crabBody.DirectionChanged += OnDirectionChanged;
+        crabBody.ChangeDirection += OnChangeDirection;
     }
 
-    void OnDirectionChanged(CrabDirection direction)
+    void OnChangeDirection(CrabDirection direction)
     {
         transform.localEulerAngles = DirectionRotations[direction];
     }
