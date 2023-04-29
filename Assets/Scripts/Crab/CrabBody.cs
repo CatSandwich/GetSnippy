@@ -1,6 +1,7 @@
 using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CrabBody : MonoBehaviour
@@ -35,8 +36,9 @@ public class CrabBody : MonoBehaviour
     private Player player;
 
     public event Action Move;
-
     public event Action<CrabDirection> DirectionChanged;
+
+    public int numEyes = 2;
 
     private CrabDirection crabDirection = CrabDirection.Forward;
 
@@ -57,12 +59,22 @@ public class CrabBody : MonoBehaviour
 
     void OnDirectionChanged(Vector2 direction)
     {
+        if (numEyes <= 0)
+        {
+            return;
+        }
+
         crabDirection = ToCrabDirection(direction);
         DirectionChanged?.Invoke(crabDirection);
     }
 
     void OnMove()
     {
+        if (numEyes <= 0)
+        {
+            return;
+        }
+
         Vector2 direction = ToVector2(crabDirection);
         float speed;
 
@@ -79,7 +91,7 @@ public class CrabBody : MonoBehaviour
             speed = 0;
         }
 
-        String otherPlayer;
+        string otherPlayer;
         if (player == Player.Player1) otherPlayer = "Player2";
         else otherPlayer = "Player1";
 
@@ -92,7 +104,6 @@ public class CrabBody : MonoBehaviour
 
         Move?.Invoke();
     }
-
 
     CrabDirection ToCrabDirection(Vector2 direction)
     {

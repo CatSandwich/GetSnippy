@@ -5,7 +5,12 @@ using UnityEngine;
 public class CrabEye : MonoBehaviour
 {
     [SerializeField]
+    private CrabBody crabBody;
+
+    [SerializeField]
     private Player player;
+
+    bool isDead = false;
 
     public Player GetPlayer()
     {
@@ -14,7 +19,13 @@ public class CrabEye : MonoBehaviour
 
     public void Die()
     {
-        transform.eulerAngles = new Vector3(90, 0, 0);
-        // TODO
+        if (!isDead)
+        {
+            isDead = true;
+            // TODO
+            transform.eulerAngles = new Vector3(90, 0, 0);
+
+            crabBody.numEyes -= 1;
+        }
     }
 }
