@@ -45,10 +45,8 @@ public class CrabBody : MonoBehaviour
 
     void OnOut()
     {
-        Debug.Log("OnOut");
     }
     void OnIn()
     {
-        Debug.Log("OnIn");
     }
 }
