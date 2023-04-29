@@ -8,44 +8,24 @@ namespace Input
 {
     public class ArcadeInputDebug : MonoBehaviour
     {
+        public StickInput Stick1;
+        public StickInput Stick2;
+        public StickInput Stick3;
+        public StickInput Stick4;
+
         void Start()
         {
-            Debug.LogError($"# joysticks: {Joystick.all.Count}");
-            Debug.LogError($"# gamepads: {Gamepad.all.Count}");
+            Stick1 = _bind(0);
+            Stick2 = _bind(1);
+            Stick3 = _bind(2);
+            Stick4 = _bind(3);
         }
 
-        // Update is called once per frame
-        void Update()
+        private StickInput _bind(int index)
         {
-            foreach ((Joystick joystick, int index) in Joystick.all.Select((j, i) => (j, i)))
-            {
-                StickControl stick = joystick.stick;
-
-                float x = stick.x.ReadValue();
-                if (x != 0)
-                {
-                    Debug.LogError($"Stick {index} x: {x}");
-                }
-
-                float y = stick.y.ReadValue();
-                if (y != 0)
-                {
-                    Debug.LogError($"Stick {index} y: {y}");
-                }
-
-            }
-        }
-
-        void Try(Action action)
-        {
-            try
-            {
-                action();
-            }
-            catch(Exception)
-            {
-                // This is a horrible idea
-            }
+            StickInput input = new(Joystick.all[index].stick);
+            input.PositionChanged += v2 => Debug.LogError($"Stick {index} changed: {v2}");
+            return input;
         }
     }
 }
