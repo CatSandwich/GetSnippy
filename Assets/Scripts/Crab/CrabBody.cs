@@ -37,11 +37,18 @@ public class CrabBody : MonoBehaviour
     public event Action Move;
 
     public event Action<CrabDirection> DirectionChanged;
+
     private CrabDirection crabDirection = CrabDirection.Forward;
+
+    private Rigidbody2D rb2d;
+    private CapsuleCollider2D cc2d;
 
     // Start is called before the first frame update
     void Start()
     {
+        rb2d = GetComponent<Rigidbody2D>();
+        cc2d = GetComponent<CapsuleCollider2D>();
+
         inputManager.Move += OnMove;
         inputManager.DirectionChanged += OnDirectionChanged;
 
@@ -57,18 +64,35 @@ public class CrabBody : MonoBehaviour
     void OnMove()
     {
         Vector2 direction = ToVector2(crabDirection);
+        float speed;
 
         if (direction.y > 0 || direction.y < 0)
         {
-            transform.Translate(direction * verticalSpeed);
+            speed = verticalSpeed;
         }
         else if (direction.x > 0 || direction.x < 0)
         {
-            transform.Translate(direction * horizontalSpeed);
+            speed = horizontalSpeed;
+        }
+        else
+        {
+            speed = 0;
+        }
+
+        String otherPlayer;
+        if (player == Player.Player1) otherPlayer = "Player2";
+        else otherPlayer = "Player1";
+
+        LayerMask layerMask = LayerMask.GetMask("Water", otherPlayer);
+        RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, speed, layerMask);
+        if (hit.collider == null)
+        {
+            rb2d.MovePosition(rb2d.position + direction * speed);
         }
 
         Move?.Invoke();
     }
+
 
     CrabDirection ToCrabDirection(Vector2 direction)
     {

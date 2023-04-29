@@ -5,12 +5,6 @@ using UnityEngine;
 public class CrabBodyAnimation : MonoBehaviour
 {
     [SerializeField]
-    private CrabBody crabBody;
-
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-
-    [SerializeField]
     private Sprite neutralSprite;
 
     [SerializeField]
@@ -22,8 +16,14 @@ public class CrabBodyAnimation : MonoBehaviour
     private CrabDirection crabDirection;
     private bool isNeutral = true;
 
+    private CrabBody crabBody;
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
+        crabBody = GetComponent<CrabBody>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         crabBody.DirectionChanged += OnDirectionChanged;
         crabBody.Move += OnMove;
     }
@@ -44,8 +44,6 @@ public class CrabBodyAnimation : MonoBehaviour
 
     void SetSprite()
     {
-        Debug.Log(isNeutral);
-
         if (!isNeutral)
         {
             if (crabDirection == CrabDirection.Left)

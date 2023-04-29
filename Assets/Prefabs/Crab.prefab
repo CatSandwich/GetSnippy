@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 218694845457630418}
   - component: {fileID: 218694845457630419}
-  - component: {fileID: 218694845457630420}
+  - component: {fileID: 6585113291229538479}
   - component: {fileID: 218694845457630421}
   - component: {fileID: 218694845457630422}
   - component: {fileID: 7572187858017421151}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 218694845457630423}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.93, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 218694846996783071}
@@ -93,8 +93,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &218694845457630420
-CircleCollider2D:
+--- !u!70 &6585113291229538479
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -106,9 +106,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Offset: {x: 0.25, y: 0}
+  m_Size: {x: 1.25, y: 2}
+  m_Direction: 0
 --- !u!50 &218694845457630421
 Rigidbody2D:
   serializedVersion: 4
@@ -117,7 +117,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218694845457630423}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -142,6 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 460f35561e019464b970ec0024f755e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  verticalSpeed: 0.5
+  horizontalSpeed: 0.25
   inputManager: {fileID: 0}
   player: 0
 --- !u!114 &7572187858017421151
@@ -156,8 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73619023bedb34d4d9d0e8c06b16a1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crabBody: {fileID: 218694845457630422}
-  spriteRenderer: {fileID: 218694845457630419}
   neutralSprite: {fileID: 706397893, guid: ecc881cf06e5c724ab18bb4a355f294d, type: 3}
   leftSprite: {fileID: -1796897156, guid: ecc881cf06e5c724ab18bb4a355f294d, type: 3}
   rightSprite: {fileID: 1763230167, guid: ecc881cf06e5c724ab18bb4a355f294d, type: 3}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 218694845945193672}
   - component: {fileID: 218694845945193673}
   - component: {fileID: 1285877906569116060}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 218694846813327829}
   - component: {fileID: 218694846813327830}
   - component: {fileID: 6857483014978434791}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 218694846996783071}
   - component: {fileID: 218694846996783070}
   - component: {fileID: 218694846996783069}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Direction Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 1950515690735645564}
   - component: {fileID: 8846534207214773248}
   - component: {fileID: 368165989320829576}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right claw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 1556395724271156}
   - component: {fileID: 3843925079023356905}
   - component: {fileID: 7961662766296599688}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left claw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
