@@ -19,7 +19,7 @@ namespace Input
         
         public void Update()
         {
-            _setPosition(_stick.ReadValue().Round());
+            _setPosition(new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round());
         }
 
         public static bool TryBindJoystick(out StickControl stick)
@@ -43,15 +43,17 @@ namespace Input
         {
             if (_doLog)
             {
-                Debug.Log($"First _setPosition execution: {position}");
+                Debug.LogError($"First _setPosition execution: {position}");
                 _doLog = false;
             }
 
+            Debug.LogError($"Old position: {_position}");
+            Debug.LogError($"New position: {position}");
             if (position != _position)
             {
+                Debug.LogError("Invoked PositionChanged");
                 _position = position;
                 PositionChanged?.Invoke(position);
-                Debug.LogError("Invoked PositionChanged");
             }
         }
     }
