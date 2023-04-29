@@ -17,14 +17,15 @@ namespace Input
         }
         private Vector2Int _position = Vector2Int.zero;
 
-        public StickInput(StickControl stick)
+        public StickInput(Joystick joystick)
         {
-            _stick = stick;
-
-            if (_stick == null)
+            if (joystick == null)
             {
                 Debug.LogWarning("StickInput received a null StickControl. No input will be received.");
+                return;
             }
+
+            _stick = joystick.stick;
         }
         
         public void Update()

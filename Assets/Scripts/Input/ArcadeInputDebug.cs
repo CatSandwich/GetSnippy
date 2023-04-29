@@ -11,13 +11,17 @@ namespace Input
 
         void Start()
         {
-            foreach (InputDevice device in InputSystem.devices)
+            foreach (Joystick joystick in InputSystem.devices.OfType<Joystick>())
             {
-                Debug.LogError(device.GetType() + " - " + device.description);
+                Debug.LogError("----- Joystick -----");
+                foreach (InputControl device in joystick.allControls)
+                {
+                    Debug.LogError(device.GetType());
+                }
             }
 
-            Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3)?.stick, Joystick.all.ElementAtOrDefault(1)?.stick);
-            Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0)?.stick, Joystick.all.ElementAtOrDefault(2)?.stick);
+            Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3), Joystick.all.ElementAtOrDefault(1));
+            Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0), Joystick.all.ElementAtOrDefault(2));
 
             Player1.ChangeDirection += v2 => Debug.LogError($"P1 Direction changed: {v2}");
             Player1.Move += () => Debug.LogError("P1 Move");
