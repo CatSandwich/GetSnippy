@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Input
 {
@@ -59,8 +60,8 @@ namespace Input
         };
         #endregion
 
-        private Vector2? _leftStick;
-        private Vector2? _rightStick;
+        private Vector2 _leftStick = Vector2.zero;
+        private Vector2 _rightStick = Vector2.zero;
 
         #region Unity Events
         public void Awake()
@@ -95,7 +96,7 @@ namespace Input
             {
                 return;
             }
-
+            
             CheckDirectionChange();
             CheckIn();
             CheckOut();
@@ -110,25 +111,25 @@ namespace Input
             {
                 if (GetKeyDown(LeftKeyMapping[dir]))
                 {
-                    _leftStick = dir;
+                    _leftStick += dir;
                     change = true;
                 }
 
                 if (GetKeyDown(RightKeyMapping[dir]))
                 {
-                    _rightStick = dir;
+                    _rightStick += dir;
                     change = true;
                 }
 
                 if (GetKeyUp(LeftKeyMapping[dir]))
                 {
-                    _leftStick = null;
+                    _leftStick -= dir;
                     change = true;
                 }
 
                 if (GetKeyUp(RightKeyMapping[dir]))
                 {
-                    _rightStick = null;
+                    _rightStick -= dir;
                     change = true;
                 }
             }

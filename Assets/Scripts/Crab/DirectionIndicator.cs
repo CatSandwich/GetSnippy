@@ -5,14 +5,14 @@ using UnityEngine;
 public class DirectionIndicator : MonoBehaviour
 {
     [SerializeField]
-    CrabBody crabBody;
+    private CrabBody crabBody;
 
-    private static readonly Dictionary<Vector2, Vector3> DirectionRotations = new()
+    private static readonly Dictionary<CrabDirection, Vector3> DirectionRotations = new()
     {
-        [Vector2.up] = new Vector3(0, 0, 180),
-        [Vector2.right] = new Vector3(0, 0, 90),
-        [Vector2.down] = new Vector3(0, 0, 0),
-        [Vector2.left] = new Vector3(0, 0, 270)
+        [CrabDirection.Left] = new Vector3(0, 0, 180),
+        [CrabDirection.Forward] = new Vector3(0, 0, 90),
+        [CrabDirection.Right] = new Vector3(0, 0, 0),
+        [CrabDirection.Backward] = new Vector3(0, 0, 270)
     };
 
     private void Awake()
@@ -20,7 +20,7 @@ public class DirectionIndicator : MonoBehaviour
         crabBody.DirectionChanged += OnDirectionChanged;
     }
 
-    void OnDirectionChanged(Vector2 direction)
+    void OnDirectionChanged(CrabDirection direction)
     {
         transform.localEulerAngles = DirectionRotations[direction];
     }
