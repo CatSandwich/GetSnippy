@@ -9,10 +9,10 @@ public class CrabBody : MonoBehaviour
     const float HORIZONTAL_SPEED = 0.25f;
 
     [SerializeField]
-    Input.InputManager inputManager;
+    private Input.InputManager inputManager;
 
     public event Action<Vector2> DirectionChanged;
-    Vector2 current_direction = Vector2.right;
+    private Vector2 current_direction = Vector2.right;
 
     // Start is called before the first frame update
     void Start()
