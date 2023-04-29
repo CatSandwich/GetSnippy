@@ -71,7 +71,7 @@ namespace Input
 
         private void CheckMove()
         {
-            (Vector2 left, Vector2 right) = MovementStates[_movementState];
+            (Vector2Int left, Vector2Int right) = MovementStates[_movementState];
 
             if (LeftStick.Position == left && RightStick.Position == right)
             {

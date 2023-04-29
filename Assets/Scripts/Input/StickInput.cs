@@ -20,11 +20,28 @@ namespace Input
         public StickInput(StickControl stick)
         {
             _stick = stick;
+
+            if (_stick == null)
+            {
+                Debug.LogWarning("StickInput received a null StickControl. No input will be received.");
+            }
         }
         
         public void Update()
         {
-            Position = new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round();
+            if (_stick != null)
+            {
+                Position = new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round();
+            }
+        }
+        
+        private void _setPosition(Vector2Int position)
+        {
+            if (position != _position)
+            {
+                _position = position;
+                PositionChanged?.Invoke(position);
+            }
         }
 
         public static bool TryBindJoystick(out StickControl stick)
@@ -41,15 +58,6 @@ namespace Input
             
             stick = null;
             return false;
-        }
-        
-        private void _setPosition(Vector2Int position)
-        {
-            if (position != _position)
-            {
-                _position = position;
-                PositionChanged?.Invoke(position);
-            }
         }
     }
 }

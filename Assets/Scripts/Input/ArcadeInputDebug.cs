@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,18 +11,18 @@ namespace Input
 
         void Start()
         {
-            Player1 = new PlayerInput(Joystick.all[3].stick, Joystick.all[1].stick);
-            Player2 = new PlayerInput(Joystick.all[0].stick, Joystick.all[2].stick);
+            Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3)?.stick, Joystick.all.ElementAtOrDefault(1)?.stick);
+            Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0)?.stick, Joystick.all.ElementAtOrDefault(2)?.stick);
 
             Player1.ChangeDirection += v2 => Debug.LogError($"P1 Direction changed: {v2}");
-            Player1.Move += () => Debug.Log("P1 Move");
-            Player1.In += () => Debug.Log("P1 In");
-            Player1.Out += () => Debug.Log("P1 Out");
+            Player1.Move += () => Debug.LogError("P1 Move");
+            Player1.In += () => Debug.LogError("P1 In");
+            Player1.Out += () => Debug.LogError("P1 Out");
 
             Player2.ChangeDirection += v2 => Debug.LogError($"P2 Direction changed: {v2}");
-            Player2.Move += () => Debug.Log("P2 Move");
-            Player2.In += () => Debug.Log("P2 In");
-            Player2.Out += () => Debug.Log("P2 Out");
+            Player2.Move += () => Debug.LogError("P2 Move");
+            Player2.In += () => Debug.LogError("P2 In");
+            Player2.Out += () => Debug.LogError("P2 Out");
         }
 
         void Update()
