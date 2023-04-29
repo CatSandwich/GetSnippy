@@ -11,7 +11,10 @@ public class CrabBody : MonoBehaviour
     [SerializeField]
     private Input.InputManager inputManager;
 
-    public event Action<Vector2> DirectionChanged;
+    [SerializeField]
+    private Player player;
+
+    public event Action<CrabDirection> DirectionChanged;
     private Vector2 current_direction = Vector2.right;
 
     // Start is called before the first frame update
@@ -19,10 +22,8 @@ public class CrabBody : MonoBehaviour
     {
         inputManager.Move += OnMove;
         inputManager.DirectionChanged += OnDirectionChanged;
-        inputManager.Out += OnOut;
-        inputManager.In += OnIn;
 
-        DirectionChanged?.Invoke(current_direction);
+        DirectionChanged?.Invoke(ToCrabDirection(current_direction));
     }
 
     void OnMove() 
@@ -40,13 +41,26 @@ public class CrabBody : MonoBehaviour
     void OnDirectionChanged(Vector2 direction)
     {
         current_direction = direction;
-        DirectionChanged?.Invoke(direction);
+        DirectionChanged?.Invoke(ToCrabDirection(direction));
     }
 
-    void OnOut()
+    CrabDirection ToCrabDirection(Vector2 direction)
     {
-    }
-    void OnIn()
-    {
+        if (player == Player.Player1)
+        {
+            if (direction == Vector2.right) return CrabDirection.Forward;
+            else if (direction == Vector2.left) return CrabDirection.Backward;
+            else if (direction == Vector2.up) return CrabDirection.Left;
+            else if (direction == Vector2.down) return CrabDirection.Right;
+        }
+        else
+        {
+            if (direction == Vector2.right) return CrabDirection.Backward;
+            else if (direction == Vector2.left) return CrabDirection.Forward;
+            else if (direction == Vector2.up) return CrabDirection.Right;
+            else if (direction == Vector2.down) return CrabDirection.Left;
+        }
+
+        return CrabDirection.Forward;
     }
 }

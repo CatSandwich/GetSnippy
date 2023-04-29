@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
+  player: 0
 --- !u!1 &218694845945193675
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,6 +154,7 @@ GameObject:
   - component: {fileID: 218694845945193674}
   - component: {fileID: 218694845945193672}
   - component: {fileID: 218694845945193673}
+  - component: {fileID: 1285877906569116060}
   m_Layer: 0
   m_Name: Left eye
   m_TagString: Untagged
@@ -243,6 +245,19 @@ CircleCollider2D:
   m_Offset: {x: -0.00000035762787, y: -0.000000059604645}
   serializedVersion: 2
   m_Radius: 0.4999999
+--- !u!114 &1285877906569116060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218694845945193675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ccdd19d849b81b41bc428d1a6e0f5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: 0
 --- !u!1 &218694846813327400
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,6 +269,7 @@ GameObject:
   - component: {fileID: 218694846813327831}
   - component: {fileID: 218694846813327829}
   - component: {fileID: 218694846813327830}
+  - component: {fileID: 6857483014978434791}
   m_Layer: 0
   m_Name: Right eye
   m_TagString: Untagged
@@ -344,6 +360,19 @@ CircleCollider2D:
   m_Offset: {x: -0.00000047683716, y: 0.000000059604645}
   serializedVersion: 2
   m_Radius: 0.4999999
+--- !u!114 &6857483014978434791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218694846813327400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ccdd19d849b81b41bc428d1a6e0f5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: 0
 --- !u!1 &218694846996783056
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +597,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1124ab7d137b11d4488c030b1c37fe8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crabBody: {fileID: 218694845457630422}
   player: 0
+  clawSide: 1
 --- !u!1 &5197669928525456408
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,4 +726,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1124ab7d137b11d4488c030b1c37fe8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crabBody: {fileID: 218694845457630422}
   player: 0
+  clawSide: 0
