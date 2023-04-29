@@ -16,7 +16,7 @@ namespace Input
                 Debug.LogError("----- Joystick -----");
                 foreach (InputControl device in joystick.allControls)
                 {
-                    Debug.LogError(device.GetType());
+                    Debug.LogError(device.displayName + " - " + device.GetType());
                 }
             }
 
