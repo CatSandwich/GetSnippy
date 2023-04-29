@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class CrabBody : MonoBehaviour
 {
-    // Crabs are faster side to side
-    const float VERTICAL_SPEED = 0.5f;
-    const float HORIZONTAL_SPEED = 0.25f;
-
     private static readonly Dictionary<Vector2, CrabDirection> Player1DirectionMapping = new()
     {
         [Vector2.up] = CrabDirection.Left,
@@ -25,11 +21,20 @@ public class CrabBody : MonoBehaviour
         [Vector2.left] = CrabDirection.Forward
     };
 
+    // Crabs are faster side to side
+    [SerializeField]
+    float verticalSpeed = 0.5f;
+
+    [SerializeField]
+    float horizontalSpeed = 0.25f;
+
     [SerializeField]
     private Input.InputManager inputManager;
 
     [SerializeField]
     private Player player;
+
+    public event Action Move;
 
     public event Action<CrabDirection> DirectionChanged;
     private CrabDirection crabDirection = CrabDirection.Forward;
@@ -43,24 +48,26 @@ public class CrabBody : MonoBehaviour
         DirectionChanged?.Invoke(crabDirection);
     }
 
-    void OnMove() 
+    void OnDirectionChanged(Vector2 direction)
+    {
+        crabDirection = ToCrabDirection(direction);
+        DirectionChanged?.Invoke(crabDirection);
+    }
+
+    void OnMove()
     {
         Vector2 direction = ToVector2(crabDirection);
 
         if (direction.y > 0 || direction.y < 0)
         {
-            transform.Translate(direction * VERTICAL_SPEED);
+            transform.Translate(direction * verticalSpeed);
         }
         else if (direction.x > 0 || direction.x < 0)
         {
-            transform.Translate(direction * HORIZONTAL_SPEED);
+            transform.Translate(direction * horizontalSpeed);
         }
-    }
 
-    void OnDirectionChanged(Vector2 direction)
-    {
-        crabDirection = ToCrabDirection(direction);
-        DirectionChanged?.Invoke(crabDirection);
+        Move?.Invoke();
     }
 
     CrabDirection ToCrabDirection(Vector2 direction)
