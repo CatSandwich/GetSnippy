@@ -9,17 +9,22 @@ namespace Input
     {
         public event Action<Vector2Int> PositionChanged;
         private readonly StickControl _stick;
+
+        public Vector2Int Position
+        {
+            get => _position;
+            set => _setPosition(value);
+        }
         private Vector2Int _position = Vector2Int.zero;
 
         public StickInput(StickControl stick)
         {
             _stick = stick;
-            Debug.LogError("StickInput ctor");
         }
         
         public void Update()
         {
-            _setPosition(_stick.ReadValue().Round());
+            Position = new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round();
         }
 
         public static bool TryBindJoystick(out StickControl stick)
@@ -37,21 +42,13 @@ namespace Input
             stick = null;
             return false;
         }
-
-        private bool _doLog = true;
+        
         private void _setPosition(Vector2Int position)
         {
-            if (_doLog)
-            {
-                Debug.Log($"First _setPosition execution: {position}");
-                _doLog = false;
-            }
-
             if (position != _position)
             {
                 _position = position;
                 PositionChanged?.Invoke(position);
-                Debug.LogError("Invoked PositionChanged");
             }
         }
     }

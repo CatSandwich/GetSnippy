@@ -5,33 +5,29 @@ namespace Input
 {
     public class ArcadeInputDebug : MonoBehaviour
     {
-        public StickInput Stick1;
-        public StickInput Stick2;
-        public StickInput Stick3;
-        public StickInput Stick4;
+        public PlayerInput Player1;
+        public PlayerInput Player2;
 
         void Start()
         {
-            Stick1 = _bind(0);
-            Stick2 = _bind(1);
-            Stick3 = _bind(2);
-            Stick4 = _bind(3);
+            Player1 = new PlayerInput(Joystick.all[3].stick, Joystick.all[1].stick);
+            Player2 = new PlayerInput(Joystick.all[0].stick, Joystick.all[2].stick);
+
+            Player1.ChangeDirection += v2 => Debug.LogError($"P1 Direction changed: {v2}");
+            Player1.Move += () => Debug.Log("P1 Move");
+            Player1.In += () => Debug.Log("P1 In");
+            Player1.Out += () => Debug.Log("P1 Out");
+
+            Player2.ChangeDirection += v2 => Debug.LogError($"P2 Direction changed: {v2}");
+            Player2.Move += () => Debug.Log("P2 Move");
+            Player2.In += () => Debug.Log("P2 In");
+            Player2.Out += () => Debug.Log("P2 Out");
         }
 
         void Update()
         {
-            Stick1.Update();
-            Stick2.Update();
-            Stick3.Update();
-            Stick4.Update();
-        }
-
-        private StickInput _bind(int index)
-        {
-            Debug.LogError($"Binding to stick {index}");
-            StickInput input = new(Joystick.all[index].stick);
-            input.PositionChanged += v2 => Debug.LogError($"Stick {index} changed: {v2}");
-            return input;
+            Player1.Update();
+            Player2.Update();
         }
     }
 }
