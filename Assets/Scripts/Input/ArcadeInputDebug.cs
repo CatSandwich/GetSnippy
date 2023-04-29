@@ -28,6 +28,7 @@ namespace Input
 
         private StickInput _bind(int index)
         {
+            Debug.LogError($"Binding to stick {index}");
             StickInput input = new(Joystick.all[index].stick);
             input.PositionChanged += v2 => Debug.LogError($"Stick {index} changed: {v2}");
             return input;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -10,11 +9,12 @@ namespace Input
     {
         public event Action<Vector2Int> PositionChanged;
         private readonly StickControl _stick;
-        private Vector2Int _position;
+        private Vector2Int _position = Vector2Int.zero;
 
         public StickInput(StickControl stick)
         {
             _stick = stick;
+            Debug.LogError("StickInput ctor");
         }
         
         public void Update()
@@ -38,12 +38,20 @@ namespace Input
             return false;
         }
 
+        private bool _doLog = true;
         private void _setPosition(Vector2Int position)
         {
+            if (_doLog)
+            {
+                Debug.Log($"First _setPosition execution: {position}");
+                _doLog = false;
+            }
+
             if (position != _position)
             {
                 _position = position;
                 PositionChanged?.Invoke(position);
+                Debug.LogError("Invoked PositionChanged");
             }
         }
     }
