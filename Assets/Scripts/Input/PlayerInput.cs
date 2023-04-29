@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 namespace Input
 {
@@ -12,9 +11,10 @@ namespace Input
         public event Action Move;
         public event Action Out;
         public event Action In;
+        public event Action Lunge;
 
-        public StickInput LeftStick;
-        public StickInput RightStick;
+        public JoystickInput LeftJoystick;
+        public JoystickInput RightJoystick;
         
         #region Direction Mappings
         private static readonly Vector2Int[] Directions = 
@@ -36,19 +36,27 @@ namespace Input
         };
         #endregion
 
+        private int _numButtonsPressed;
+
         public PlayerInput(Joystick leftJoystick, Joystick rightJoystick)
         {
-            LeftStick = new StickInput(leftJoystick);
-            RightStick = new StickInput(rightJoystick);
+            LeftJoystick = new JoystickInput(leftJoystick);
+            RightJoystick = new JoystickInput(rightJoystick);
 
-            LeftStick.PositionChanged += _ => OnStickMoved();
-            RightStick.PositionChanged += _ => OnStickMoved();
+            LeftJoystick.PositionChanged += _ => OnStickMoved();
+            RightJoystick.PositionChanged += _ => OnStickMoved();
+
+            LeftJoystick.ButtonPressed += _ => OnButtonPressed();
+            RightJoystick.ButtonPressed += _ => OnButtonPressed();
+
+            LeftJoystick.ButtonReleased += _ => OnButtonReleased();
+            RightJoystick.ButtonReleased += _ => OnButtonReleased();
         }
 
         public void Update()
         {
-            LeftStick.Update();
-            RightStick.Update();
+            LeftJoystick.Update();
+            RightJoystick.Update();
         }
 
         private void OnStickMoved()
@@ -59,11 +67,26 @@ namespace Input
             CheckOut();
         }
 
+        private void OnButtonPressed()
+        {
+            _numButtonsPressed++;
+
+            if (_numButtonsPressed == 2)
+            {
+                Lunge?.Invoke();
+            }
+        }
+
+        private void OnButtonReleased()
+        {
+            _numButtonsPressed--;
+        }
+
         private void CheckChangeDirection()
         {
             foreach (Vector2Int direction in Directions)
             {
-                if (LeftStick.Position == direction && RightStick.Position == direction)
+                if (LeftJoystick.StickPosition == direction && RightJoystick.StickPosition == direction)
                 {
                     ChangeDirection?.Invoke(direction);
                 }
@@ -74,7 +97,7 @@ namespace Input
         {
             (Vector2Int left, Vector2Int right) = MovementStates[_movementState];
 
-            if (LeftStick.Position == left && RightStick.Position == right)
+            if (LeftJoystick.StickPosition == left && RightJoystick.StickPosition == right)
             {
                 Move?.Invoke();
                 _movementState = !_movementState;
@@ -83,7 +106,7 @@ namespace Input
 
         private void CheckIn()
         {
-            if (LeftStick.Position == Vector2Int.right && RightStick.Position == Vector2Int.left)
+            if (LeftJoystick.StickPosition == Vector2Int.right && RightJoystick.StickPosition == Vector2Int.left)
             {
                 In?.Invoke();
             }
@@ -91,7 +114,7 @@ namespace Input
 
         private void CheckOut()
         {
-            if (LeftStick.Position == Vector2Int.left && RightStick.Position == Vector2Int.right)
+            if (LeftJoystick.StickPosition == Vector2Int.left && RightJoystick.StickPosition == Vector2Int.right)
             {
                 Out?.Invoke();
             }
