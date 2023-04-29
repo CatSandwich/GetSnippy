@@ -1,4 +1,7 @@
+using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,14 +14,16 @@ namespace Input
 
         void Start()
         {
+            StringBuilder sb = new();
             foreach (Joystick joystick in InputSystem.devices.OfType<Joystick>())
             {
-                Debug.LogError("----- Joystick -----");
+                sb.AppendLine("----- Joystick -----");
                 foreach (InputControl device in joystick.allControls)
                 {
-                    Debug.LogError(device.displayName + " - " + device.GetType());
+                    sb.AppendLine(device.displayName + " - " + device.GetType());
                 }
             }
+            File.WriteAllText($@"{Environment.CurrentDirectory}\log.txt", sb.ToString());
 
             Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3), Joystick.all.ElementAtOrDefault(1));
             Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0), Joystick.all.ElementAtOrDefault(2));
