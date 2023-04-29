@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 namespace Input
 {
@@ -12,7 +11,8 @@ namespace Input
         #region Events
         public event Action Move;
         public event Action<Vector2> DirectionChanged;
-        public event Action Lunge;
+        public event Action Out;
+        public event Action In;
         #endregion
 
         #region Direction Mappings
@@ -49,6 +49,19 @@ namespace Input
         };
         #endregion
 
+        #region Movement Mapping
+        private bool _movementState;
+
+        private static readonly Dictionary<bool, (Vector2, Vector2)> MovementStates = new()
+        {
+            [false] = (Vector2.up, Vector2.down),
+            [true] = (Vector2.down, Vector2.up)
+        };
+        #endregion
+
+        private Vector2? _leftStick;
+        private Vector2? _rightStick;
+
         #region Unity Events
         public void Awake()
         {
@@ -69,31 +82,107 @@ namespace Input
             {
                 Debug.Log(DirectionStrings[dir]);
             };
+
+            Out += () => Debug.Log("Out");
+            In += () => Debug.Log("In");
+            Move += () => Debug.Log("Move");
         }
 
         public void Update()
         {
-            UpdateDirection();
+            // Update joystick configurations, and exit if nothing changed
+            if (!UpdateSticks())
+            {
+                return;
+            }
+
+            CheckDirectionChange();
+            CheckIn();
+            CheckOut();
+            CheckMove();
         }
         #endregion
 
-        private void UpdateDirection()
+        private bool UpdateSticks()
         {
-            foreach (Vector2 direction in Directions)
+            bool change = false;
+            foreach (Vector2 dir in Directions)
             {
-                KeyCode left = LeftKeyMapping[direction];
-                KeyCode right = RightKeyMapping[direction];
-
-                // Check if either key was pressed this frame while the other is also down
-                if (UnityEngine.Input.GetKeyDown(left) && UnityEngine.Input.GetKey(right))
+                if (GetKeyDown(LeftKeyMapping[dir]))
                 {
-                    DirectionChanged?.Invoke(direction);
+                    _leftStick = dir;
+                    change = true;
                 }
-                else if (UnityEngine.Input.GetKey(left) && UnityEngine.Input.GetKeyDown(right))
+
+                if (GetKeyDown(RightKeyMapping[dir]))
                 {
-                    DirectionChanged?.Invoke(direction);
+                    _rightStick = dir;
+                    change = true;
+                }
+
+                if (GetKeyUp(LeftKeyMapping[dir]))
+                {
+                    _leftStick = null;
+                    change = true;
+                }
+
+                if (GetKeyUp(RightKeyMapping[dir]))
+                {
+                    _rightStick = null;
+                    change = true;
+                }
+            }
+            return change;
+        }
+
+        private void CheckDirectionChange()
+        {
+            foreach (Vector2 dir in Directions)
+            {
+                if (_leftStick == dir && _rightStick == dir)
+                {
+                    DirectionChanged?.Invoke(dir);
                 }
             }
         }
+
+        private void CheckIn()
+        {
+            if (_leftStick == Vector2.right && _rightStick == Vector2.left)
+            {
+                In?.Invoke();
+            }
+        }
+
+        private void CheckOut()
+        {
+            if (_leftStick == Vector2.left && _rightStick == Vector2.right)
+            {
+                Out?.Invoke();
+            }
+        }
+
+        private void CheckMove()
+        {
+            (Vector2 left, Vector2 right) = MovementStates[_movementState];
+
+            if (_leftStick == left && _rightStick == right)
+            {
+                Move?.Invoke();
+                _movementState = !_movementState;
+            }
+        }
+
+        #region Input Wrappers
+        private static bool GetKeyDown(KeyCode keycode)
+        {
+            return UnityEngine.Input.GetKeyDown(keycode);
+        }
+
+        private static bool GetKeyUp(KeyCode keycode)
+        {
+            return UnityEngine.Input.GetKeyUp(keycode);
+        }
+        #endregion
     }
 }
