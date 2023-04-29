@@ -14,7 +14,6 @@ namespace Input
         public StickInput(StickControl stick)
         {
             _stick = stick;
-            Debug.LogError("StickInput ctor");
         }
         
         public void Update()
@@ -37,21 +36,11 @@ namespace Input
             stick = null;
             return false;
         }
-
-        private bool _doLog = true;
+        
         private void _setPosition(Vector2Int position)
         {
-            if (_doLog)
-            {
-                Debug.LogError($"First _setPosition execution: {position}");
-                _doLog = false;
-            }
-
-            Debug.LogError($"Old position: {_position}");
-            Debug.LogError($"New position: {position}");
             if (position != _position)
             {
-                Debug.LogError("Invoked PositionChanged");
                 _position = position;
                 PositionChanged?.Invoke(position);
             }
