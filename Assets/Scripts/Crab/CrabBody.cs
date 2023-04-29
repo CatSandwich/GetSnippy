@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,22 @@ public class CrabBody : MonoBehaviour
     const float VERTICAL_SPEED = 0.5f;
     const float HORIZONTAL_SPEED = 0.25f;
 
+    private static readonly Dictionary<Vector2, CrabDirection> Player1DirectionMapping = new()
+    {
+        [Vector2.up] = CrabDirection.Left,
+        [Vector2.right] = CrabDirection.Forward,
+        [Vector2.down] = CrabDirection.Right,
+        [Vector2.left] = CrabDirection.Backward
+    };
+
+    private static readonly Dictionary<Vector2, CrabDirection> Player2DirectionMapping = new()
+    {
+        [Vector2.up] = CrabDirection.Right,
+        [Vector2.right] = CrabDirection.Backward,
+        [Vector2.down] = CrabDirection.Left,
+        [Vector2.left] = CrabDirection.Forward
+    };
+
     [SerializeField]
     private Input.InputManager inputManager;
 
@@ -15,7 +32,7 @@ public class CrabBody : MonoBehaviour
     private Player player;
 
     public event Action<CrabDirection> DirectionChanged;
-    private Vector2 current_direction = Vector2.right;
+    private CrabDirection crabDirection = CrabDirection.Forward;
 
     // Start is called before the first frame update
     void Start()
@@ -23,44 +40,50 @@ public class CrabBody : MonoBehaviour
         inputManager.Move += OnMove;
         inputManager.DirectionChanged += OnDirectionChanged;
 
-        DirectionChanged?.Invoke(ToCrabDirection(current_direction));
+        DirectionChanged?.Invoke(crabDirection);
     }
 
     void OnMove() 
     {
-        if (current_direction.y > 0 || current_direction.y < 0)
+        Vector2 direction = ToVector2(crabDirection);
+
+        if (direction.y > 0 || direction.y < 0)
         {
-            transform.Translate(current_direction * VERTICAL_SPEED);
+            transform.Translate(direction * VERTICAL_SPEED);
         }
-        else if (current_direction.x > 0 || current_direction.x < 0)
+        else if (direction.x > 0 || direction.x < 0)
         {
-            transform.Translate(current_direction * HORIZONTAL_SPEED);
+            transform.Translate(direction * HORIZONTAL_SPEED);
         }
     }
 
     void OnDirectionChanged(Vector2 direction)
     {
-        current_direction = direction;
-        DirectionChanged?.Invoke(ToCrabDirection(direction));
+        crabDirection = ToCrabDirection(direction);
+        DirectionChanged?.Invoke(crabDirection);
     }
 
     CrabDirection ToCrabDirection(Vector2 direction)
     {
         if (player == Player.Player1)
         {
-            if (direction == Vector2.right) return CrabDirection.Forward;
-            else if (direction == Vector2.left) return CrabDirection.Backward;
-            else if (direction == Vector2.up) return CrabDirection.Left;
-            else if (direction == Vector2.down) return CrabDirection.Right;
+            return Player1DirectionMapping[direction]; 
         }
         else
         {
-            if (direction == Vector2.right) return CrabDirection.Backward;
-            else if (direction == Vector2.left) return CrabDirection.Forward;
-            else if (direction == Vector2.up) return CrabDirection.Right;
-            else if (direction == Vector2.down) return CrabDirection.Left;
+            return Player2DirectionMapping[direction];
         }
+    }
 
-        return CrabDirection.Forward;
+    Vector2 ToVector2(CrabDirection direction)
+    {
+        if (player == Player.Player1)
+        {
+            return Player1DirectionMapping.FirstOrDefault(x => x.Value == direction).Key;
+        }
+        else
+        {
+            return Player2DirectionMapping.FirstOrDefault(x => x.Value == direction).Key;
+        }
     }
 }
