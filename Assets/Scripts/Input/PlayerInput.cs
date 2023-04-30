@@ -15,7 +15,6 @@ namespace Input
         public event Action In;
         public event Action LungeLeft;
         public event Action LungeRight;
-        public event Action AnyInput;
 
         public JoystickInput LeftJoystick;
         public JoystickInput RightJoystick;
@@ -44,27 +43,6 @@ namespace Input
             
             RightJoystick.ButtonPressed += _ => OnRightButtonPressed();
             RightJoystick.ButtonReleased += _ => OnRightButtonReleased();
-
-            LeftJoystick.PositionChanged += _ =>
-                {
-                    Debug.LogError("Position changed");
-                    AnyInput?.Invoke();
-                };
-            LeftJoystick.ButtonPressed += _ =>
-                {
-                    Debug.LogError("Button pressed");
-                    AnyInput?.Invoke();
-                };
-            RightJoystick.PositionChanged += _ =>
-                {
-                    Debug.LogError("Position changed");
-                    AnyInput?.Invoke();
-                };
-            RightJoystick.ButtonPressed += _ =>
-                {
-                    Debug.LogError("Button pressed");
-                    AnyInput?.Invoke();
-                };
         }
 
         public void Update()
