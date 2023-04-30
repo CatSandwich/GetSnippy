@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     public CrabBody Crab1Prefab;
     public CrabBody Crab2Prefab;
 
-    public Vector3 Crab1SpawnPoint;
-    public Vector3 Crab2SpawnPoint;
+    private Vector3 Crab1SpawnPoint = new Vector3(-3, 0, 0);
+    private Vector3 Crab2SpawnPoint = new Vector3(3, 0, 0);
 
     public SpriteRenderer BigWaveSR;
     public Sprite BigWave1;
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     protected CrabBody Crab1;
     protected CrabBody Crab2;
+
+    private bool _gameActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Title.activeSelf)
+        if (!_gameActive)
         {
             if (Joystick.all.Any(j => j.stick.x.ReadValue() != 0 || j.stick.y.ReadValue() != 0))
             {
@@ -73,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator OnGameStartCoroutine()
     {
+        _gameActive = true;
         GameStart?.Invoke();
         BigWaveSR.sprite = BigWave1;
         yield return new WaitForSeconds(.5f);
@@ -105,6 +108,7 @@ public class GameManager : MonoBehaviour
         BigWaveSR.sprite = BigWave1;
         yield return new WaitForSeconds(.5f);
         BigWaveSR.sprite = null;
+        _gameActive = false;
     }
 
     void SpawnCrabs()
