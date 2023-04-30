@@ -1,8 +1,4 @@
-using System;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,11 +11,11 @@ namespace Input
 
         void Start()
         {
-            JoystickInput p1LeftStick = new JoystickInput(Joystick.all.ElementAtOrDefault(3));
-            JoystickInput p1RightStick = new JoystickInput(Joystick.all.ElementAtOrDefault(1), new Vector2IntRotatePreprocessor(7));
+            JoystickInput p1LeftStick = new(Joystick.all.ElementAtOrDefault(3));
+            JoystickInput p1RightStick = new(Joystick.all.ElementAtOrDefault(1), Vector2IntRotatePreprocessor.Right);
 
-            JoystickInput p2LeftStick = new JoystickInput(Joystick.all.ElementAtOrDefault(0), new Vector2IntRotatePreprocessor(1));
-            JoystickInput p2RightStick = new JoystickInput(Joystick.all.ElementAtOrDefault(2));
+            JoystickInput p2LeftStick = new(Joystick.all.ElementAtOrDefault(0), Vector2IntRotatePreprocessor.Left);
+            JoystickInput p2RightStick = new(Joystick.all.ElementAtOrDefault(2));
 
             Player1 = new PlayerInput(p1LeftStick, p1RightStick);
             Player2 = new PlayerInput(p2LeftStick, p2RightStick);

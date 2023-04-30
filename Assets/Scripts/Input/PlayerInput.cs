@@ -7,6 +7,9 @@ namespace Input
 {
     public class PlayerInput
     {
+        public static PlayerInput Player1 => new(JoystickInput.Joystick1, JoystickInput.Joystick2);
+        public static PlayerInput Player2 => new(JoystickInput.Joystick3, JoystickInput.Joystick4);
+
         public event Action<Vector2Int> ChangeDirection;
         public event Action Move;
         public event Action Out;
