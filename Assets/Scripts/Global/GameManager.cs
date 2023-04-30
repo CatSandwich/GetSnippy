@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     public CrabBody Crab1Prefab;
     public CrabBody Crab2Prefab;
 
-    public Vector3 Crab1SpawnPoint;
-    public Vector3 Crab2SpawnPoint;
+    private Vector3 Crab1SpawnPoint = new Vector3(-3, 0, 0);
+    private Vector3 Crab2SpawnPoint = new Vector3(3, 0, 0);
 
     public SpriteRenderer BigWaveSR;
     public Sprite BigWave1;
