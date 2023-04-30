@@ -329,20 +329,23 @@ public class CrabClaw : MonoBehaviour
 
     void ChangeClawState(ClawState newState)
     {
-        clawState = newState;
-
-        if (clawState != ClawState.Attacking)
+        if (clawState != ClawState.Stunned)
         {
-            ChangeAttackingState(AttackingState.None);
-        }
+            clawState = newState;
 
-        if (clawState == ClawState.Stunned)
-        {
-            stunnedTimer = stunnedTime;
-        }
+            if (clawState != ClawState.Attacking)
+            {
+                ChangeAttackingState(AttackingState.None);
+            }
 
-        clawAnimDirty = true;
-        StateChanged?.Invoke(clawState);
+            if (clawState == ClawState.Stunned)
+            {
+                stunnedTimer = stunnedTime;
+            }
+
+            clawAnimDirty = true;
+            StateChanged?.Invoke(clawState);
+        }
     }
 
     void ChangeAttackingState(AttackingState newState)
