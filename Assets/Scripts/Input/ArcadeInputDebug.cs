@@ -24,13 +24,15 @@ namespace Input
             Player1.Move += () => Debug.LogError("P1 Move");
             Player1.In += () => Debug.LogError("P1 In");
             Player1.Out += () => Debug.LogError("P1 Out");
-            Player1.Lunge += () => Debug.LogError("P1 Lunge");
+            Player1.LungeLeft += () => Debug.LogError("P1 LungeLeft");
+            Player1.LungeRight += () => Debug.LogError("P1 LungeRight");
 
             Player2.ChangeDirection += v2 => Debug.LogError($"P2 Direction changed: {v2}");
             Player2.Move += () => Debug.LogError("P2 Move");
             Player2.In += () => Debug.LogError("P2 In");
             Player2.Out += () => Debug.LogError("P2 Out");
-            Player2.Lunge += () => Debug.LogError("P2 Lunge");
+            Player2.LungeLeft += () => Debug.LogError("P2 LungeLeft");
+            Player2.LungeRight += () => Debug.LogError("P2 LungeRight");
         }
 
         void Update()
