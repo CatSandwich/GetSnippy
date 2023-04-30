@@ -38,10 +38,10 @@ namespace Input
 
         private int _numButtonsPressed;
 
-        public PlayerInput(Joystick leftJoystick, Joystick rightJoystick)
+        public PlayerInput(JoystickInput leftJoystick, JoystickInput rightJoystick)
         {
-            LeftJoystick = new JoystickInput(leftJoystick);
-            RightJoystick = new JoystickInput(rightJoystick);
+            LeftJoystick = leftJoystick;
+            RightJoystick = rightJoystick;
 
             LeftJoystick.PositionChanged += _ => OnStickMoved();
             RightJoystick.PositionChanged += _ => OnStickMoved();
