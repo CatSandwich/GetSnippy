@@ -85,8 +85,8 @@ public class CrabBody : MonoBehaviour
         {
             input.inputManager.Move += OnMove;
             input.inputManager.ChangeDirection += OnChangeDirection;
-            input.playerInput.Out += OnOut;
-            input.playerInput.In += OnIn;
+            input.inputManager.Out += OnOut;
+            input.inputManager.In += OnIn;
         }
         if (input.playerInput != null)
         {
@@ -162,11 +162,17 @@ public class CrabBody : MonoBehaviour
 
     void OnOut()
     {
+        crabDirection = CrabDirection.Forward;
+        ChangeDirection?.Invoke(crabDirection);
+
         Out?.Invoke();
     }
 
     void OnIn()
     {
+        crabDirection = CrabDirection.Forward;
+        ChangeDirection?.Invoke(crabDirection);
+
         In?.Invoke();
     }
 
