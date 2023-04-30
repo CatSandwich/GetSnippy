@@ -15,7 +15,8 @@ public class CrabClaw : MonoBehaviour
     {
         Neutral,
         Blocking,
-        Attacking
+        Attacking,
+        Stunned
     }
 
     enum AttackingState
@@ -35,6 +36,8 @@ public class CrabClaw : MonoBehaviour
         [AttackingState.Snipping] = 0.3f,
         [AttackingState.Recoiling] = 0.3f,
     };
+
+    private float stunnedTime = 1;
 
     [SerializeField]
     private CrabBody crabBody;
@@ -76,6 +79,7 @@ public class CrabClaw : MonoBehaviour
     CrabDirection crabDirection;
 
     float attackTimer = 0.0f;
+    float stunnedTimer = 0.0f;
 
     bool clawAnimDirty = false;
     bool isFullyDead = false;
@@ -133,6 +137,19 @@ public class CrabClaw : MonoBehaviour
             return;
         }
 
+        if (clawState == ClawState.Stunned)
+        {
+            if (stunnedTimer <= 0)
+            {
+                ResetClaw();
+            }
+            else
+            {
+                stunnedTimer -= Time.deltaTime;
+            }
+
+        }
+
         if (clawState == ClawState.Attacking)
         {
             if (attackTimer <= 0)
@@ -148,8 +165,7 @@ public class CrabClaw : MonoBehaviour
                 }
                 else if (attackingState == AttackingState.Snipping || attackingState == AttackingState.Recoiling)
                 {
-                    ChangeClawState(ClawState.Neutral);
-                    OnChangeDirection(crabDirection);
+                    ResetClaw();
                 }
             }
             else
@@ -159,6 +175,12 @@ public class CrabClaw : MonoBehaviour
         }    
 
         UpdateClaw();
+    }
+
+    void ResetClaw()
+    {
+        ChangeClawState(ClawState.Neutral);
+        OnChangeDirection(crabDirection);
     }
 
     // Call this when we enter Snipping attackState
@@ -293,8 +315,7 @@ public class CrabClaw : MonoBehaviour
 
     void OnStunned()
     {
-        clawState = ClawState.Attacking;
-        attackingState = AttackingState.Recoiling;
+        ChangeClawState(ClawState.Stunned);
     }
 
     void OnDead()
@@ -315,8 +336,12 @@ public class CrabClaw : MonoBehaviour
             ChangeAttackingState(AttackingState.None);
         }
 
-        clawAnimDirty = true;
+        if (clawState == ClawState.Stunned)
+        {
+            stunnedTimer = stunnedTime;
+        }
 
+        clawAnimDirty = true;
         StateChanged?.Invoke(clawState);
     }
 
@@ -367,6 +392,10 @@ public class CrabClaw : MonoBehaviour
             {
                 clawSnip.SetActive(true);
             }
+        }
+        else if (clawState == ClawState.Stunned)
+        {
+            clawBack.SetActive(true);
         }
     }
 }
