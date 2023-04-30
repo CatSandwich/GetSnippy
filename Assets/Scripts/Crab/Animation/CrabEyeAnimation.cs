@@ -40,41 +40,54 @@ public class CrabEyeAnimation : MonoBehaviour
     private Sprite deadBobSprite;
 
     private CrabEye crabEye;
+    private CrabBody crabBody;
     private SpriteRenderer spriteRenderer;
 
     private EyeAnimState state = EyeAnimState.Neutral;
     private float bobTimer = 0;
     private bool isBob = false;
+    private bool isFullyDead = false;
 
     private void Awake()
     {
         bobTimer = bobTime;
 
         crabEye = GetComponent<CrabEye>();
+        crabBody = GetComponentInParent<CrabBody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         crabEye.Snipped += OnEyeDied;
+        crabBody.Died += OnBodyDied;
         crabClaw.StateChanged += OnClawStateChanged;
     }
 
     private void Update()
     {
-        if (bobTimer <= 0)
+        if (!isFullyDead)
         {
-            isBob = !isBob;
+            if (bobTimer <= 0)
+            {
+                isBob = !isBob;
 
-            UpdateEyeSprite();
-            bobTimer += bobTime;
-        }
-        else
-        {
-            bobTimer -= Time.deltaTime;
+                UpdateEyeSprite();
+                bobTimer += bobTime;
+            }
+            else
+            {
+                bobTimer -= Time.deltaTime;
+            }
         }
     }
 
     void OnEyeDied()
     {
         state = EyeAnimState.Dead;
+        UpdateEyeSprite();
+    }
+
+    void OnBodyDied()
+    {
+        isFullyDead = true;
     }
 
     void OnClawStateChanged(CrabClaw.ClawState clawState)

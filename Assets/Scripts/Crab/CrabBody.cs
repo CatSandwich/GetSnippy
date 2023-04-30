@@ -50,6 +50,7 @@ public class CrabBody : MonoBehaviour
     public event Action Move;
     public event Action Hop;
     public event Action<CrabDirection> ChangeDirection;
+    public event Action Died;
 
     private int numEyes = 2;
 
@@ -147,6 +148,11 @@ public class CrabBody : MonoBehaviour
     public void OnEyeSnipped()
     {
         numEyes -= 1;
+
+        if (numEyes <= 0)
+        {
+            Died?.Invoke();
+        }
     }
 
     void MoveTo(Vector2Int direction, float speed)
