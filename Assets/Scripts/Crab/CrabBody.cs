@@ -59,6 +59,8 @@ public class CrabBody : MonoBehaviour
     public event Action Move;
     public event Action Hop;
     public event Action<CrabDirection> ChangeDirection;
+    public event Action Out;
+    public event Action In;
     public event Action Died;
 
     private int numEyes = 2;
@@ -81,11 +83,15 @@ public class CrabBody : MonoBehaviour
         {
             input.inputManager.Move += OnMove;
             input.inputManager.ChangeDirection += OnChangeDirection;
+            input.playerInput.Out += OnOut;
+            input.playerInput.In += OnIn;
         }
         if (input.playerInput != null)
         {
             input.playerInput.Move += OnMove;
             input.playerInput.ChangeDirection += OnChangeDirection;
+            input.playerInput.Out += OnOut;
+            input.playerInput.In += OnIn;
         }
 
         leftEye.Snipped += OnEyeSnipped;
@@ -115,6 +121,7 @@ public class CrabBody : MonoBehaviour
         {
             // Set new movement direction
             crabDirection = newDirection;
+            ChangeDirection?.Invoke(newDirection);
         }
         else if (hopTimer <= 0)
         {
@@ -132,8 +139,6 @@ public class CrabBody : MonoBehaviour
                 Hop?.Invoke();
             }
         }
-
-        ChangeDirection?.Invoke(newDirection);
     }
 
     void OnMove()
@@ -153,7 +158,17 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    public void OnPushed()
+    void OnOut()
+    {
+        Out?.Invoke();
+    }
+
+    void OnIn()
+    {
+        In?.Invoke();
+    }
+
+        public void OnPushed()
     {
         MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), pushedDistance);
     }
