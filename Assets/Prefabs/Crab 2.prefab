@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5979300798875351747}
   - component: {fileID: 5370966102258213308}
   - component: {fileID: 1670461740250085950}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: lc block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,8 +140,8 @@ GameObject:
   - component: {fileID: 218694845457630422}
   - component: {fileID: 7572187858017421151}
   - component: {fileID: 2183610243410141910}
-  m_Layer: 6
-  m_Name: Crab
+  m_Layer: 7
+  m_Name: Crab 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,7 +155,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218694845457630423}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.93, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -209,7 +209,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1573426997, guid: 7ccc4ccfe9a2b50438798f6f00553ba2, type: 3}
+  m_Sprite: {fileID: 1923970596, guid: f6d7dd8c7fc3b6c4d8d4f2edc87fbb6d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -233,7 +233,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.7, y: -0.05}
+  m_Offset: {x: -0.7, y: -0.05}
   m_Size: {x: 1.25, y: 2}
   m_Direction: 0
 --- !u!50 &218694845457630421
@@ -274,7 +274,7 @@ MonoBehaviour:
   forwardHopDistance: 0.5
   backHopDistance: 0.5
   hopTime: 0.5
-  player: 0
+  player: 1
   numEyes: 2
 --- !u!114 &7572187858017421151
 MonoBehaviour:
@@ -288,11 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73619023bedb34d4d9d0e8c06b16a1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neutralSprite: {fileID: -1573426997, guid: 7ccc4ccfe9a2b50438798f6f00553ba2, type: 3}
-  leftSprite: {fileID: -616659768, guid: 7ccc4ccfe9a2b50438798f6f00553ba2, type: 3}
-  rightSprite: {fileID: -1091799968, guid: 7ccc4ccfe9a2b50438798f6f00553ba2, type: 3}
-  forwardSprite: {fileID: 1182694992, guid: 7ccc4ccfe9a2b50438798f6f00553ba2, type: 3}
-  backwardSprite: {fileID: 1809410136, guid: 7ccc4ccfe9a2b50438798f6f00553ba2, type: 3}
+  neutralSprite: {fileID: 1923970596, guid: f6d7dd8c7fc3b6c4d8d4f2edc87fbb6d, type: 3}
+  leftSprite: {fileID: -698922032, guid: f6d7dd8c7fc3b6c4d8d4f2edc87fbb6d, type: 3}
+  rightSprite: {fileID: 1824650243, guid: f6d7dd8c7fc3b6c4d8d4f2edc87fbb6d, type: 3}
+  forwardSprite: {fileID: 560147791, guid: f6d7dd8c7fc3b6c4d8d4f2edc87fbb6d, type: 3}
+  backwardSprite: {fileID: 1494933571, guid: f6d7dd8c7fc3b6c4d8d4f2edc87fbb6d, type: 3}
   hopTime: 0.25
 --- !u!114 &2183610243410141910
 MonoBehaviour:
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f01aac204d3dca4eb63324259dda7fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: 0
+  player: 1
 --- !u!1 &218694845945193675
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 8585667286185788274}
   - component: {fileID: 1285877906569116060}
   - component: {fileID: 5626062971606887198}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Left eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabBody: {fileID: 218694845457630422}
-  player: 0
+  player: 1
 --- !u!114 &5626062971606887198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 9170906815058705039}
   - component: {fileID: 6857483014978434791}
   - component: {fileID: 1849067481046745841}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Right eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabBody: {fileID: 218694845457630422}
-  player: 0
+  player: 1
 --- !u!114 &1849067481046745841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -712,7 +712,7 @@ GameObject:
   - component: {fileID: 3053167044032592878}
   - component: {fileID: 6279783704794995087}
   - component: {fileID: 4767206338716826500}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: rc snip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -837,7 +837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8113730814535233997}
   - component: {fileID: 7708359874333747098}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: lc swing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -921,7 +921,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2484998457805243808}
   - component: {fileID: 368165989320829576}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Right claw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -967,7 +967,7 @@ MonoBehaviour:
   clawBack: {fileID: 6314958215251734521}
   clawLunge: {fileID: 4547958336472793098}
   clawSnip: {fileID: 836231075925714231}
-  player: 0
+  player: 1
   clawSide: 1
 --- !u!1 &2684093872793539053
 GameObject:
@@ -980,7 +980,7 @@ GameObject:
   - component: {fileID: 2192410215038733196}
   - component: {fileID: 6827312584938780828}
   - component: {fileID: 692361784626983732}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: rc block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1107,7 +1107,7 @@ GameObject:
   - component: {fileID: 8658225509165862441}
   - component: {fileID: 35347753579229378}
   - component: {fileID: 2995273936243653791}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: rc neutral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1237,7 +1237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4508548854652432766}
   - component: {fileID: 1550148898181546527}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: rc swing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1322,7 +1322,7 @@ GameObject:
   - component: {fileID: 1639299940214966674}
   - component: {fileID: 5166172938380211268}
   - component: {fileID: 1934822474023651154}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: lc back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1452,7 +1452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2157542101809152454}
   - component: {fileID: 7961662766296599688}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Left claw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1498,7 +1498,7 @@ MonoBehaviour:
   clawBack: {fileID: 5082087439381841703}
   clawLunge: {fileID: 1747719189212468740}
   clawSnip: {fileID: 5934793999099826804}
-  player: 0
+  player: 1
   clawSide: 0
 --- !u!1 &5934793999099826804
 GameObject:
@@ -1511,7 +1511,7 @@ GameObject:
   - component: {fileID: 7545934962170579222}
   - component: {fileID: 69631416327485375}
   - component: {fileID: 9115774955322406430}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: lc snip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1639,7 +1639,7 @@ GameObject:
   - component: {fileID: 818408532718090150}
   - component: {fileID: 9188037937695336039}
   - component: {fileID: 117968498185350956}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: lc neutral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1770,7 +1770,7 @@ GameObject:
   - component: {fileID: 2643094193132316482}
   - component: {fileID: 8577560752784612208}
   - component: {fileID: 6392170839975888736}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: rc back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1902,7 +1902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2773779328312577253}
   - component: {fileID: 904416839584256076}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Blocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1937,7 +1937,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.5, y: 0}
+  m_Offset: {x: -2.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}

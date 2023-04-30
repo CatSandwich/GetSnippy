@@ -61,8 +61,13 @@ public class CrabBody : MonoBehaviour
         cc2d = GetComponent<CapsuleCollider2D>();
         input = GetComponent<Input.CrabInput>();
 
-        input.input.Move += OnMove;
-        input.input.ChangeDirection += OnChangeDirection;
+        if (input.inputManager != null)
+        {
+            input.inputManager.Move += OnMove;
+            input.inputManager.ChangeDirection += OnChangeDirection;
+        }
+        input.playerInput.Move += OnMove;
+        input.playerInput.ChangeDirection += OnChangeDirection;
 
         ChangeDirection?.Invoke(crabDirection);
     }

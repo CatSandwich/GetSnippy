@@ -15,26 +15,26 @@ namespace Input
         [SerializeField]
         private Player player;
 
-        public Input.InputManager input;
+        public Input.InputManager inputManager;
+        public PlayerInput playerInput;
 
         void Awake()
         {
-            input = new Input.InputManager();
-
             if (player == Player.Player1)
             {
-                //input = new PlayerInput(Joystick.all.ElementAtOrDefault(PLAYER1_JOYSTICK1), Joystick.all.ElementAtOrDefault(PLAYER1_JOYSTICK2));
+                inputManager = new Input.InputManager();
+                playerInput = new PlayerInput(Joystick.all.ElementAtOrDefault(PLAYER1_JOYSTICK1), Joystick.all.ElementAtOrDefault(PLAYER1_JOYSTICK2));
             }
             else
             {
-                //input = new PlayerInput(Joystick.all.ElementAtOrDefault(PLAYER2_JOYSTICK1), Joystick.all.ElementAtOrDefault(PLAYER2_JOYSTICK2));
-
+                playerInput = new PlayerInput(Joystick.all.ElementAtOrDefault(PLAYER2_JOYSTICK1), Joystick.all.ElementAtOrDefault(PLAYER2_JOYSTICK2));
             }
         }
 
         private void Update()
         {
-            input.Update();
+            inputManager.Update();
+            playerInput.Update();
         }
     }
 }

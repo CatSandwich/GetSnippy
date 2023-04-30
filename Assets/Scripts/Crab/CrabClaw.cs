@@ -64,6 +64,8 @@ public class CrabClaw : MonoBehaviour
     private ClawSide clawSide;
 
     public event Action<ClawState> StateChanged;
+    public event Action Blocked;
+    public event Action Snipped;
     public event Action Miss;
 
     ClawState clawState = ClawState.Neutral;
@@ -86,9 +88,17 @@ public class CrabClaw : MonoBehaviour
 
     private void Start()
     {
-        input.input.Lunge += OnAttack;
-        input.input.Out += OnOut;
-        input.input.In += OnIn;
+        if (input.inputManager != null)
+        {
+
+            input.inputManager.Lunge += OnAttack;
+            input.inputManager.Out += OnOut;
+            input.inputManager.In += OnIn;
+        }
+
+        input.playerInput.Lunge += OnAttack;
+        input.playerInput.Out += OnOut;
+        input.playerInput.In += OnIn;
     }
 
     private void Update()
@@ -140,9 +150,6 @@ public class CrabClaw : MonoBehaviour
 
         snipCollider.OverlapCollider(contactFilter, colliders);
 
-        Debug.Log("Colldiers: " + colliders);
-        Debug.Log("Colldiers.Count: " + colliders.Count);
-
         // See if we have any claw or eye contact (max of 1 at a time)
         CrabClaw clawContact = null;
         CrabEye eyeContact = null;
@@ -168,18 +175,17 @@ public class CrabClaw : MonoBehaviour
         // Resolve our contacts
         if (clawContact)
         {
-            Debug.Log("clawContact");
             clawContact.crabBody.OnPushed();
             ChangeAttackingState(AttackingState.Recoiling);
+            Blocked?.Invoke();
         }
         else if (eyeContact)
         {
-            Debug.Log("eyeContact");
             eyeContact.Die();
+            Snipped?.Invoke();
         }
         else
         {
-            Debug.Log("Miss");
             Miss?.Invoke();
         }
     }
