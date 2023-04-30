@@ -41,11 +41,17 @@ public class CrabBody : MonoBehaviour
     [SerializeField]
     private Player player;
 
+    [SerializeField]
+    private CrabEye leftEye;
+
+    [SerializeField]
+    private CrabEye rightEye;
+
     public event Action Move;
     public event Action Hop;
     public event Action<CrabDirection> ChangeDirection;
 
-    public int numEyes = 2;
+    private int numEyes = 2;
 
     private CrabDirection crabDirection = CrabDirection.Forward;
     private float hopTimer = 0;
@@ -68,6 +74,9 @@ public class CrabBody : MonoBehaviour
         }
         input.playerInput.Move += OnMove;
         input.playerInput.ChangeDirection += OnChangeDirection;
+
+        leftEye.Snipped += OnEyeSnipped;
+        rightEye.Snipped += OnEyeSnipped;
 
         ChangeDirection?.Invoke(crabDirection);
     }
@@ -129,8 +138,12 @@ public class CrabBody : MonoBehaviour
 
     public void OnPushed()
     {
-        Debug.Log("OnPushed");
         MoveTo(ToVector2Int(CrabDirection.Backward), pushedSpeed);
+    }
+
+    public void OnEyeSnipped()
+    {
+        numEyes -= 1;
     }
 
     void MoveTo(Vector2Int direction, float speed)

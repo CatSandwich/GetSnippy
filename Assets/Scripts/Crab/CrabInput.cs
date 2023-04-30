@@ -27,7 +27,7 @@ namespace Input
             }
             else
             {
-                inputManager = new Input.InputManager();
+                //inputManager = new Input.InputManager();
                 playerInput = new PlayerInput(Joystick.all.ElementAtOrDefault(PLAYER2_JOYSTICK1), Joystick.all.ElementAtOrDefault(PLAYER2_JOYSTICK2));
             }
         }

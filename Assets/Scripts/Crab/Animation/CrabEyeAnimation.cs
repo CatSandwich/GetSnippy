@@ -53,7 +53,7 @@ public class CrabEyeAnimation : MonoBehaviour
         crabEye = GetComponent<CrabEye>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        crabEye.Died += OnEyeDied;
+        crabEye.Snipped += OnEyeDied;
         crabClaw.StateChanged += OnClawStateChanged;
     }
 

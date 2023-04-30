@@ -181,7 +181,7 @@ public class CrabClaw : MonoBehaviour
         }
         else if (eyeContact)
         {
-            eyeContact.Die();
+            eyeContact.GetSnipped();
             Snipped?.Invoke();
         }
         else

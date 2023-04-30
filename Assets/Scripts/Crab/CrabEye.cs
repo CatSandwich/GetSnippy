@@ -13,7 +13,7 @@ public class CrabEye : MonoBehaviour
 
     bool isDead = false;
 
-    public event Action Died;
+    public event Action Snipped;
 
     public Player GetPlayer()
     {
@@ -25,14 +25,13 @@ public class CrabEye : MonoBehaviour
         return isDead;
     }
 
-    public void Die()
+    public void GetSnipped()
     {
         if (!isDead)
         {
             isDead = true;
-            crabBody.numEyes -= 1;
 
-            Died?.Invoke();
+            Snipped?.Invoke();
         }
     }
 }
