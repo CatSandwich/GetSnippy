@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,8 +15,14 @@ namespace Input
 
         void Start()
         {
-            Player1 = new PlayerInput(Joystick.all.ElementAtOrDefault(3), Joystick.all.ElementAtOrDefault(1));
-            Player2 = new PlayerInput(Joystick.all.ElementAtOrDefault(0), Joystick.all.ElementAtOrDefault(2));
+            JoystickInput p1LeftStick = new JoystickInput(Joystick.all.ElementAtOrDefault(3));
+            JoystickInput p1RightStick = new JoystickInput(Joystick.all.ElementAtOrDefault(1), new Vector2IntRotatePreprocessor(7));
+
+            JoystickInput p2LeftStick = new JoystickInput(Joystick.all.ElementAtOrDefault(0), new Vector2IntRotatePreprocessor(1));
+            JoystickInput p2RightStick = new JoystickInput(Joystick.all.ElementAtOrDefault(2));
+
+            Player1 = new PlayerInput(p1LeftStick, p1RightStick);
+            Player2 = new PlayerInput(p2LeftStick, p2RightStick);
 
             Player1.ChangeDirection += v2 => Debug.LogError($"P1 Direction changed: {v2}");
             Player1.Move += () => Debug.LogError("P1 Move");

@@ -18,6 +18,8 @@ namespace Input
         private readonly Dictionary<ButtonColor, ButtonControl> _buttons;
         private readonly Dictionary<ButtonColor, bool> _buttonStates;
 
+        private readonly Vector2IntPreprocessor _preprocessor;
+
         public Vector2Int StickPosition
         {
             get => _stickPosition;
@@ -25,9 +27,14 @@ namespace Input
         }
         private Vector2Int _stickPosition = Vector2Int.zero;
 
-        public JoystickInput(Joystick joystick)
+        public JoystickInput(Joystick joystick) : this(joystick, new Vector2IntPreprocessor())
+        {
+        }
+
+        public JoystickInput(Joystick joystick, Vector2IntPreprocessor preprocessor)
         {
             _joystick = joystick;
+            _preprocessor = preprocessor;
 
             if (joystick == null)
             {
@@ -64,7 +71,8 @@ namespace Input
 
         private void _updateStickPosition()
         {
-            StickPosition = new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round();
+            Vector2Int input = new Vector2(_stick.x.ReadValue(), _stick.y.ReadValue()).Round();
+            StickPosition = _preprocessor.Process(input);
         }
 
         private void _updateButtons()
