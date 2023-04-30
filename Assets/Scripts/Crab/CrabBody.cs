@@ -22,20 +22,13 @@ public class CrabBody : MonoBehaviour
         [Vector2Int.left] = CrabDirection.Forward
     };
 
-    // Crabs are faster side to side
-    [SerializeField]
-    float verticalSpeed = 0.5f;
+    // Distances are in pixels
+    public static float PIXELS_PER_UNIT = 23;
+    int verticalDistance = 12;
+    int pushedDistance = 12;
+    int forwardHopDistance = 12;
+    int backHopDistance = 12;
 
-    [SerializeField]
-    float pushedSpeed = 0.25f;
-
-    [SerializeField]
-    float forwardHopDistance= 0.25f;
-
-    [SerializeField]
-    float backHopDistance = 0.5f;
-
-    [SerializeField]
     float hopTime = 0.5f;
 
     [SerializeField]
@@ -50,6 +43,7 @@ public class CrabBody : MonoBehaviour
     public event Action Move;
     public event Action Hop;
     public event Action<CrabDirection> ChangeDirection;
+    public event Action Died;
 
     private int numEyes = 2;
 
@@ -72,8 +66,11 @@ public class CrabBody : MonoBehaviour
             input.inputManager.Move += OnMove;
             input.inputManager.ChangeDirection += OnChangeDirection;
         }
-        input.playerInput.Move += OnMove;
-        input.playerInput.ChangeDirection += OnChangeDirection;
+        if (input.playerInput != null)
+        {
+            input.playerInput.Move += OnMove;
+            input.playerInput.ChangeDirection += OnChangeDirection;
+        }
 
         leftEye.Snipped += OnEyeSnipped;
         rightEye.Snipped += OnEyeSnipped;
@@ -130,7 +127,7 @@ public class CrabBody : MonoBehaviour
 
         if (direction.y > 0 || direction.y < 0)
         {
-            MoveTo(direction, verticalSpeed);
+            MoveTo(direction, verticalDistance);
 
             Move?.Invoke();
         }
@@ -138,26 +135,33 @@ public class CrabBody : MonoBehaviour
 
     public void OnPushed()
     {
-        MoveTo(ToVector2Int(CrabDirection.Backward), pushedSpeed);
+        MoveTo(ToVector2Int(CrabDirection.Backward), pushedDistance);
     }
 
     public void OnEyeSnipped()
     {
         numEyes -= 1;
+
+        if (numEyes <= 0)
+        {
+            Died?.Invoke();
+        }
     }
 
-    void MoveTo(Vector2Int direction, float speed)
+    void MoveTo(Vector2Int direction, int distanceInPixels)
     {
+        float distanceInUnits = distanceInPixels / PIXELS_PER_UNIT;
+
         string otherPlayer;
         if (player == Player.Player1) otherPlayer = "Player2 Body";
         else otherPlayer = "Player1 Body";
 
         LayerMask layerMask = LayerMask.GetMask("Water", otherPlayer);
-        RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, speed, layerMask);
+        RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, distanceInUnits, layerMask);
         if (hit.collider == null)
         {
             Vector2 vec2 = direction;
-            rb2d.MovePosition(rb2d.position + vec2 * speed);
+            rb2d.MovePosition(rb2d.position + vec2 * distanceInUnits);
         }
     }
 
