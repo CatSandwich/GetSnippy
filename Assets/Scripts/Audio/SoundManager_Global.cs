@@ -10,12 +10,11 @@ public class SoundManager_Global : SoundManager_Base
     public GameManager myGameManager;
 
     public RandomSoundCollection collectionStart;
-    public RandomSoundCollection collectionSnip;
+    public RandomSoundCollection collectionSnipFirstCrab;
+    public RandomSoundCollection collectionSnipSecondCrab;
     public RandomSoundCollection collectionEnd;
 
-    //private const float clawSoundDelay = 0.2f;
-    //private float clawAttackCounter = 0.0f;
-    //private float clawDeflectCounter = 0.0f;
+    private int snipCount = 0;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -23,17 +22,34 @@ public class SoundManager_Global : SoundManager_Base
         base.Start();
 
         myGameManager.GameStart += OnBattleStart;
+        myGameManager.CrabSpawn += OnCrabSpawn;
         myGameManager.GameEnd += OnBattleEnd;
     }
 
     void OnBattleStart()
     {
+        snipCount = 0;
         PlayRandomClipDelayed (collectionStart, 3.0f);
+    }
+
+    void OnCrabSpawn(CrabBody newCrab)
+    {
+        newCrab.LostFirstEye += OnSnip;
     }
 
     void OnSnip()
     {
-        PlayRandomClip(collectionSnip, true);
+        ++snipCount;
+
+        if (snipCount == 1)
+        {
+            PlayRandomClip(collectionSnipFirstCrab, true);
+        }
+        else
+        {
+            PlayRandomClip(collectionSnipSecondCrab, true);
+
+        }
     }
 
     void OnBattleEnd()

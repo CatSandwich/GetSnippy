@@ -63,6 +63,7 @@ public class CrabBody : MonoBehaviour
     public event Action In;
     public event Action Stunned;
     public event Action Died;
+    public event Action LostFirstEye;
 
     private int numEyes = 2;
 
@@ -191,6 +192,10 @@ public class CrabBody : MonoBehaviour
         if (numEyes <= 0)
         {
             Died?.Invoke();
+        }
+        else
+        {
+            LostFirstEye?.Invoke();
         }
     }
 
