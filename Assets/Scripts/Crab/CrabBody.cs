@@ -6,20 +6,36 @@ using UnityEngine;
 
 public class CrabBody : MonoBehaviour
 {
-    private static readonly Dictionary<Vector2Int, CrabDirection> Player1DirectionMapping = new()
+    private static readonly Dictionary<Vector2Int, CrabDirection> Player1InputMapping = new()
     {
-        [Vector2Int.up] = CrabDirection.Left,
-        [Vector2Int.right] = CrabDirection.Forward,
-        [Vector2Int.down] = CrabDirection.Right,
-        [Vector2Int.left] = CrabDirection.Backward
+        [Vector2Int.up] = CrabDirection.Forward,
+        [Vector2Int.right] = CrabDirection.Right,
+        [Vector2Int.down] = CrabDirection.Backward,
+        [Vector2Int.left] = CrabDirection.Left
     };
 
-    private static readonly Dictionary<Vector2Int, CrabDirection> Player2DirectionMapping = new()
+    private static readonly Dictionary<Vector2Int, CrabDirection> Player2InputMapping = new()
     {
-        [Vector2Int.up] = CrabDirection.Right,
-        [Vector2Int.right] = CrabDirection.Backward,
-        [Vector2Int.down] = CrabDirection.Left,
-        [Vector2Int.left] = CrabDirection.Forward
+        [Vector2Int.up] = CrabDirection.Forward,
+        [Vector2Int.right] = CrabDirection.Right,
+        [Vector2Int.down] = CrabDirection.Backward,
+        [Vector2Int.left] = CrabDirection.Left
+    };
+
+    private static readonly Dictionary<CrabDirection, Vector2Int> Player1WorldMapping = new()
+    {
+        [CrabDirection.Forward] = Vector2Int.right,
+        [CrabDirection.Right] = Vector2Int.down,
+        [CrabDirection.Backward] = Vector2Int.left,
+        [CrabDirection.Left] = Vector2Int.up
+    };
+
+    private static readonly Dictionary<CrabDirection, Vector2Int> Player2WorldMapping = new()
+    {
+        [CrabDirection.Forward] = Vector2Int.left,
+        [CrabDirection.Right] = Vector2Int.up,
+        [CrabDirection.Backward] = Vector2Int.right,
+        [CrabDirection.Left] = Vector2Int.down
     };
 
     // Distances are in pixels
@@ -93,21 +109,21 @@ public class CrabBody : MonoBehaviour
             return;
         }
 
-        crabDirection = ToCrabDirection(direction);
+        crabDirection = InputToCrabDirection(direction);
 
         if (hopTimer <= 0)
         {
             if (crabDirection == CrabDirection.Forward)
             {
                 // Hop forward
-                MoveTo(ToVector2Int(CrabDirection.Forward), forwardHopDistance);
+                MoveTo(CrabDirectionToWorldDirection(CrabDirection.Forward), forwardHopDistance);
                 hopTimer = hopTime;
                 Hop?.Invoke();
             }
             else if (crabDirection == CrabDirection.Backward)
             {
                 // Hop Backward
-                MoveTo(ToVector2Int(CrabDirection.Backward), backHopDistance);
+                MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), backHopDistance);
                 hopTimer = hopTime;
                 Hop?.Invoke();
             }
@@ -123,7 +139,7 @@ public class CrabBody : MonoBehaviour
             return;
         }
 
-        Vector2Int direction = ToVector2Int(crabDirection);
+        Vector2Int direction = CrabDirectionToWorldDirection(crabDirection);
 
         if (direction.y > 0 || direction.y < 0)
         {
@@ -135,7 +151,7 @@ public class CrabBody : MonoBehaviour
 
     public void OnPushed()
     {
-        MoveTo(ToVector2Int(CrabDirection.Backward), pushedDistance);
+        MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), pushedDistance);
     }
 
     public void OnEyeSnipped()
@@ -165,27 +181,27 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    CrabDirection ToCrabDirection(Vector2Int direction)
+    CrabDirection InputToCrabDirection(Vector2Int inputDirection)
     {
         if (player == Player.Player1)
         {
-            return Player1DirectionMapping[direction]; 
+            return Player1InputMapping[inputDirection]; 
         }
         else
         {
-            return Player2DirectionMapping[direction];
+            return Player2InputMapping[inputDirection];
         }
     }
 
-    Vector2Int ToVector2Int(CrabDirection direction)
+    Vector2Int CrabDirectionToWorldDirection(CrabDirection crabDirection)
     {
         if (player == Player.Player1)
         {
-            return Player1DirectionMapping.FirstOrDefault(x => x.Value == direction).Key;
+            return Player1WorldMapping[crabDirection];
         }
         else
         {
-            return Player2DirectionMapping.FirstOrDefault(x => x.Value == direction).Key;
+            return Player2WorldMapping[crabDirection];
         }
     }
 }
