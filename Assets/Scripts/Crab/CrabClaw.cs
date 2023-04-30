@@ -90,15 +90,30 @@ public class CrabClaw : MonoBehaviour
     {
         if (input.inputManager != null)
         {
+            if (clawSide == ClawSide.Left)
+            {
+                input.inputManager.LungeLeft += OnAttack;
+            }
+            else
+            {
+                input.inputManager.LungeRight += OnAttack;
+            }
 
-            input.inputManager.Lunge += OnAttack;
             input.inputManager.Out += OnOut;
             input.inputManager.In += OnIn;
         }
 
         if (input.playerInput != null)
         {
-            input.playerInput.LungeRight += OnAttack;
+            if (clawSide == ClawSide.Left)
+            {
+                input.playerInput.LungeLeft += OnAttack;
+            }
+            else
+            {
+                input.playerInput.LungeRight += OnAttack;
+            }
+
             input.playerInput.Out += OnOut;
             input.playerInput.In += OnIn;
         }

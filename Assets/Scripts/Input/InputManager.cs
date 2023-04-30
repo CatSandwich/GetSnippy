@@ -12,7 +12,8 @@ namespace Input
         public event Action<Vector2Int> ChangeDirection;
         public event Action Out;
         public event Action In;
-        public event Action Lunge;
+        public event Action LungeLeft;
+        public event Action LungeRight;
         #endregion
 
         #region Direction Mappings
@@ -143,7 +144,11 @@ namespace Input
         {
             if (GetKeyDown(KeyCode.Space))
             {
-                Lunge?.Invoke();
+                LungeLeft?.Invoke();
+            }
+            if (GetKeyDown(KeyCode.RightControl))
+            {
+                LungeRight?.Invoke();
             }
         }
 
