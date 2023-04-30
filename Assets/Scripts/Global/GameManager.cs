@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Input;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,14 +8,17 @@ public class GameManager : MonoBehaviour
 {
     public GameObject Title;
 
-    public GameObject Crab1Prefab;
-    public GameObject Crab2Prefab;
+    public CrabBody Crab1Prefab;
+    public CrabBody Crab2Prefab;
 
     public Vector3 Crab1SpawnPoint;
     public Vector3 Crab2SpawnPoint;
 
-    protected GameObject Crab1;
-    protected GameObject Crab2;
+    protected CrabBody Crab1;
+    protected CrabBody Crab2;
+
+    private readonly PlayerInput _player1 = PlayerInput.Player1;
+    private readonly PlayerInput _player2 = PlayerInput.Player2;
 
     // Start is called before the first frame update
     void Start()
@@ -25,19 +29,37 @@ public class GameManager : MonoBehaviour
         // When the wave comes down, spawn the crabs offscreen and make them walk on.
         // Once they are in position, switch the crabs to controllable.
 
-        HideTitle();
-        SpawnCrabs();
+        ShowTitle();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        _player1.Update();
+        _player2.Update();
     }
 
-    void HideTitle()
+    void OnGameStart()
     {
-        Title.SetActive(false);
+        StartCoroutine(OnGameStartCoroutine());
+    }
+
+    void OnGameEnd()
+    {
+        StartCoroutine(OnGameEndCoroutine());
+    }
+
+    IEnumerator OnGameStartCoroutine()
+    {
+        HideTitle();
+        SpawnCrabs();
+        yield break;
+    }
+
+    IEnumerator OnGameEndCoroutine()
+    {
+        ShowTitle();
+        DespawnCrabs();
+        yield break;
     }
 
     void SpawnCrabs()
@@ -46,15 +68,35 @@ public class GameManager : MonoBehaviour
 
         Crab1 = Instantiate(Crab1Prefab, Crab1SpawnPoint, transform.rotation);
         Crab2 = Instantiate(Crab2Prefab, Crab2SpawnPoint, transform.rotation);
+
+        Crab1.Died += OnGameEnd;
+        Crab2.Died += OnGameEnd;
     }
 
-    void DespawnCrawbs()
+    void DespawnCrabs()
     {
         Assert.IsTrue(Crab1 && Crab2);
+        
+        Crab1.Died -= OnGameEnd;
+        Crab2.Died -= OnGameEnd;
 
         Destroy(Crab1);
         Destroy(Crab2);
 
         // TODO: Clean up severed eye stalks.
+    }
+
+    void ShowTitle()
+    {
+        Title.SetActive(true);
+        _player1.AnyInput += OnGameStart;
+        _player2.AnyInput += OnGameStart;
+    }
+
+    void HideTitle()
+    {
+        Title.SetActive(false);
+        _player1.AnyInput -= OnGameStart;
+        _player2.AnyInput -= OnGameStart;
     }
 }
