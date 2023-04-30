@@ -6,20 +6,20 @@ using UnityEngine;
 
 public class CrabBody : MonoBehaviour
 {
-    private static readonly Dictionary<Vector2, CrabDirection> Player1DirectionMapping = new()
+    private static readonly Dictionary<Vector2Int, CrabDirection> Player1DirectionMapping = new()
     {
-        [Vector2.up] = CrabDirection.Left,
-        [Vector2.right] = CrabDirection.Forward,
-        [Vector2.down] = CrabDirection.Right,
-        [Vector2.left] = CrabDirection.Backward
+        [Vector2Int.up] = CrabDirection.Left,
+        [Vector2Int.right] = CrabDirection.Forward,
+        [Vector2Int.down] = CrabDirection.Right,
+        [Vector2Int.left] = CrabDirection.Backward
     };
 
-    private static readonly Dictionary<Vector2, CrabDirection> Player2DirectionMapping = new()
+    private static readonly Dictionary<Vector2Int, CrabDirection> Player2DirectionMapping = new()
     {
-        [Vector2.up] = CrabDirection.Right,
-        [Vector2.right] = CrabDirection.Backward,
-        [Vector2.down] = CrabDirection.Left,
-        [Vector2.left] = CrabDirection.Forward
+        [Vector2Int.up] = CrabDirection.Right,
+        [Vector2Int.right] = CrabDirection.Backward,
+        [Vector2Int.down] = CrabDirection.Left,
+        [Vector2Int.left] = CrabDirection.Forward
     };
 
     // Crabs are faster side to side
@@ -27,40 +27,69 @@ public class CrabBody : MonoBehaviour
     float verticalSpeed = 0.5f;
 
     [SerializeField]
-    float horizontalSpeed = 0.25f;
-
-    [SerializeField]
     float pushedSpeed = 0.25f;
 
     [SerializeField]
-    private Input.InputManager inputManager;
+    float forwardHopDistance= 0.25f;
+
+    [SerializeField]
+    float backHopDistance = 0.5f;
+
+    [SerializeField]
+    float hopTime = 0.5f;
 
     [SerializeField]
     private Player player;
 
-    public event Action Move;
-    public event Action<CrabDirection> DirectionChanged;
+    [SerializeField]
+    private CrabEye leftEye;
 
-    public int numEyes = 2;
+    [SerializeField]
+    private CrabEye rightEye;
+
+    public event Action Move;
+    public event Action Hop;
+    public event Action<CrabDirection> ChangeDirection;
+
+    private int numEyes = 2;
 
     private CrabDirection crabDirection = CrabDirection.Forward;
+    private float hopTimer = 0;
 
     private Rigidbody2D rb2d;
     private CapsuleCollider2D cc2d;
+    private Input.CrabInput input;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         cc2d = GetComponent<CapsuleCollider2D>();
+        input = GetComponent<Input.CrabInput>();
 
-        inputManager.Move += OnMove;
-        inputManager.DirectionChanged += OnDirectionChanged;
+        if (input.inputManager != null)
+        {
+            input.inputManager.Move += OnMove;
+            input.inputManager.ChangeDirection += OnChangeDirection;
+        }
+        input.playerInput.Move += OnMove;
+        input.playerInput.ChangeDirection += OnChangeDirection;
 
-        DirectionChanged?.Invoke(crabDirection);
+        leftEye.Snipped += OnEyeSnipped;
+        rightEye.Snipped += OnEyeSnipped;
+
+        ChangeDirection?.Invoke(crabDirection);
     }
 
-    void OnDirectionChanged(Vector2 direction)
+    private void Update()
+    {
+        if (hopTimer > 0)
+        {
+            hopTimer -= Time.deltaTime;
+        }
+    }
+
+    void OnChangeDirection(Vector2Int direction)
     {
         if (numEyes <= 0)
         {
@@ -68,7 +97,26 @@ public class CrabBody : MonoBehaviour
         }
 
         crabDirection = ToCrabDirection(direction);
-        DirectionChanged?.Invoke(crabDirection);
+
+        if (hopTimer <= 0)
+        {
+            if (crabDirection == CrabDirection.Forward)
+            {
+                // Hop forward
+                MoveTo(ToVector2Int(CrabDirection.Forward), forwardHopDistance);
+                hopTimer = hopTime;
+                Hop?.Invoke();
+            }
+            else if (crabDirection == CrabDirection.Backward)
+            {
+                // Hop Backward
+                MoveTo(ToVector2Int(CrabDirection.Backward), backHopDistance);
+                hopTimer = hopTime;
+                Hop?.Invoke();
+            }
+        }
+
+        ChangeDirection?.Invoke(crabDirection);
     }
 
     void OnMove()
@@ -78,47 +126,42 @@ public class CrabBody : MonoBehaviour
             return;
         }
 
-        Vector2 direction = ToVector2(crabDirection);
-        float speed;
+        Vector2Int direction = ToVector2Int(crabDirection);
 
         if (direction.y > 0 || direction.y < 0)
         {
-            speed = verticalSpeed;
-        }
-        else if (direction.x > 0 || direction.x < 0)
-        {
-            speed = horizontalSpeed;
-        }
-        else
-        {
-            speed = 0;
-        }
+            MoveTo(direction, verticalSpeed);
 
-        MoveTo(direction, speed);
-
-        Move?.Invoke();
+            Move?.Invoke();
+        }
     }
 
     public void OnPushed()
     {
-        MoveTo(ToVector2(CrabDirection.Backward), pushedSpeed);
+        MoveTo(ToVector2Int(CrabDirection.Backward), pushedSpeed);
     }
 
-    void MoveTo(Vector2 direction, float speed)
+    public void OnEyeSnipped()
+    {
+        numEyes -= 1;
+    }
+
+    void MoveTo(Vector2Int direction, float speed)
     {
         string otherPlayer;
-        if (player == Player.Player1) otherPlayer = "Player2";
-        else otherPlayer = "Player1";
+        if (player == Player.Player1) otherPlayer = "Player2 Body";
+        else otherPlayer = "Player1 Body";
 
         LayerMask layerMask = LayerMask.GetMask("Water", otherPlayer);
         RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, speed, layerMask);
         if (hit.collider == null)
         {
-            rb2d.MovePosition(rb2d.position + direction * speed);
+            Vector2 vec2 = direction;
+            rb2d.MovePosition(rb2d.position + vec2 * speed);
         }
     }
 
-    CrabDirection ToCrabDirection(Vector2 direction)
+    CrabDirection ToCrabDirection(Vector2Int direction)
     {
         if (player == Player.Player1)
         {
@@ -130,7 +173,7 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    Vector2 ToVector2(CrabDirection direction)
+    Vector2Int ToVector2Int(CrabDirection direction)
     {
         if (player == Player.Player1)
         {

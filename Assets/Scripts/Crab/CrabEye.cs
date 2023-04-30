@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,20 +13,25 @@ public class CrabEye : MonoBehaviour
 
     bool isDead = false;
 
+    public event Action Snipped;
+
     public Player GetPlayer()
     {
         return player;
     }
 
-    public void Die()
+    public bool IsDead()
+    {
+        return isDead;
+    }
+
+    public void GetSnipped()
     {
         if (!isDead)
         {
             isDead = true;
-            // TODO
-            transform.eulerAngles = new Vector3(90, 0, 0);
 
-            crabBody.numEyes -= 1;
+            Snipped?.Invoke();
         }
     }
 }

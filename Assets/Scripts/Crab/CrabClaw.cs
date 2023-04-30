@@ -11,7 +11,7 @@ public class CrabClaw : MonoBehaviour
         Right
     }
 
-    enum ClawState
+    public enum ClawState
     {
         Neutral,
         Blocking,
@@ -31,13 +31,16 @@ public class CrabClaw : MonoBehaviour
     {
         [AttackingState.None] = 0,
         [AttackingState.WindingUp] = 0.3f,
-        [AttackingState.Lunging] = 0.1f,
+        [AttackingState.Lunging] = 0.05f,
         [AttackingState.Snipping] = 0.3f,
         [AttackingState.Recoiling] = 0.3f,
     };
 
     [SerializeField]
     private CrabBody crabBody;
+
+    [SerializeField]
+    private Input.CrabInput input;
 
     [SerializeField]
     private GameObject clawNeutral;
@@ -60,6 +63,11 @@ public class CrabClaw : MonoBehaviour
     [SerializeField]
     private ClawSide clawSide;
 
+    public event Action<ClawState> StateChanged;
+    public event Action Blocked;
+    public event Action Snipped;
+    public event Action Miss;
+
     ClawState clawState = ClawState.Neutral;
     AttackingState attackingState = AttackingState.None;
     CrabDirection crabDirection;
@@ -75,16 +83,26 @@ public class CrabClaw : MonoBehaviour
 
     private void Awake()
     {
-        crabBody.DirectionChanged += OnDirectionChanged;
+        crabBody.ChangeDirection += OnChangeDirection;
+    }
+
+    private void Start()
+    {
+        if (input.inputManager != null)
+        {
+
+            input.inputManager.Lunge += OnAttack;
+            input.inputManager.Out += OnOut;
+            input.inputManager.In += OnIn;
+        }
+
+        input.playerInput.Lunge += OnAttack;
+        input.playerInput.Out += OnOut;
+        input.playerInput.In += OnIn;
     }
 
     private void Update()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
-        {
-            OnAttack();
-        }
-
         if (clawState == ClawState.Attacking)
         {
             if (attackTimer <= 0)
@@ -96,11 +114,12 @@ public class CrabClaw : MonoBehaviour
                 else if (attackingState == AttackingState.Lunging)
                 {
                     ChangeAttackingState(AttackingState.Snipping);
+                    Snip();
                 }
                 else if (attackingState == AttackingState.Snipping || attackingState == AttackingState.Recoiling)
                 {
                     ChangeClawState(ClawState.Neutral);
-                    OnDirectionChanged(crabDirection);
+                    OnChangeDirection(crabDirection);
                 }
             }
             else
@@ -112,32 +131,105 @@ public class CrabClaw : MonoBehaviour
         UpdateClaw();
     }
 
+    // Call this when we enter Snipping attackState
+    // If we hit a claw, recoil.
+    // Else, if we hit an eye, kill that eye.
+    void Snip()
+    {
+        UpdateClaw();
+
+        Collider2D snipCollider = clawSnip.GetComponent<Collider2D>();
+        List<Collider2D> colliders = new List<Collider2D>();
+
+        // Make contact filter
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        string otherPlayer;
+        if (player == Player.Player1) otherPlayer = "Player2 Parts";
+        else otherPlayer = "Player1 Parts";
+        contactFilter.SetLayerMask(LayerMask.GetMask(otherPlayer));
+
+        snipCollider.OverlapCollider(contactFilter, colliders);
+
+        // See if we have any claw or eye contact
+        CrabClaw clawContact = null;
+        List<CrabEye> eyeContact = new List<CrabEye>();
+
+        foreach (Collider2D collider in colliders)
+        {
+            CrabClaw hitClaw = collider.gameObject.GetComponentInParent<CrabClaw>();
+            CrabEye hitEye = collider.gameObject.GetComponent<CrabEye>();
+
+            if (hitClaw && hitClaw.isActiveAndEnabled)
+            {
+                clawContact = hitClaw;
+                break;
+            }
+            else if (hitEye && !hitEye.IsDead())
+            {
+                eyeContact.Add(hitEye);
+            }
+        }
+
+        // Resolve our contacts
+        if (clawContact)
+        {
+            clawContact.crabBody.OnPushed();
+            ChangeAttackingState(AttackingState.Recoiling);
+            Blocked?.Invoke();
+        }
+        else if (eyeContact.Count > 0)
+        {
+            int closestEyeIndex = 0;
+            float closestEyeDistance = 1000;
+
+            for (int i = 0; i < eyeContact.Count - 1; ++i)
+            {
+                float distance = Vector3.Distance(eyeContact[i].transform.position, transform.position);
+
+                if (distance < closestEyeDistance)
+                {
+                    closestEyeIndex = i;
+                    closestEyeDistance = distance;
+                }
+            }
+
+            eyeContact[closestEyeIndex].GetSnipped();
+            Snipped?.Invoke();
+        }
+        else
+        {
+            Miss?.Invoke();
+        }
+    }
+
     // Set claw state based on CrabDirection
-    void OnDirectionChanged(CrabDirection direction)
+    void OnChangeDirection(CrabDirection direction)
     {
         crabDirection = direction;
 
         if (clawState != ClawState.Attacking)
         {
-            if (direction == CrabDirection.Forward)
+            if (direction == CrabDirection.Left)
             {
-                ChangeClawState(ClawState.Neutral);
-            }
-            else if (direction == CrabDirection.Backward)
-            {
-                ChangeClawState(ClawState.Blocking);
-            }
-            else if (direction == CrabDirection.Left)
-            {
-                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Blocking);
+                if (clawSide == ClawSide.Right) ChangeClawState(ClawState.Blocking);
                 else ChangeClawState(ClawState.Neutral);
             }
             else if (direction == CrabDirection.Right)
             {
-                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Neutral);
-                else ChangeClawState(ClawState.Blocking);
+                if (clawSide == ClawSide.Left) ChangeClawState(ClawState.Blocking);
+                else ChangeClawState(ClawState.Neutral);
             }
         }
+    }
+
+    void OnOut()
+    {
+        ChangeClawState(ClawState.Neutral);
+    }
+
+    void OnIn()
+    {
+        ChangeClawState(ClawState.Blocking);
     }
 
     void OnAttack()
@@ -159,6 +251,8 @@ public class CrabClaw : MonoBehaviour
         }
 
         clawAnimDirty = true;
+
+        StateChanged?.Invoke(clawState);
     }
 
     void ChangeAttackingState(AttackingState newState)
@@ -207,40 +301,6 @@ public class CrabClaw : MonoBehaviour
             else if (attackingState == AttackingState.Snipping)
             {
                 clawSnip.SetActive(true);
-            }
-        }
-    }
-
-    // If we are attacking and hit a claw, recoil.
-    // Else, if we hit an eye and we are snipping, kill that eye.
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (clawState == ClawState.Attacking)
-        {
-            CrabClaw hitClaw = collision.gameObject.GetComponent<CrabClaw>();
-            CrabBody hitBody = collision.gameObject.GetComponent<CrabBody>();
-
-            if (hitBody != null)
-            {
-                hitBody.OnPushed();
-                ChangeAttackingState(AttackingState.Recoiling);
-            }
-            else if (hitClaw)
-            {
-                hitClaw.crabBody.OnPushed();
-                ChangeAttackingState(AttackingState.Recoiling);
-            }
-            else
-            {
-                CrabEye hitEye = collision.gameObject.GetComponent<CrabEye>();
-
-                if (hitEye != null && hitEye.GetPlayer() != player)
-                {
-                    if (attackingState == AttackingState.Snipping)
-                    {
-                        hitEye.Die();
-                    }
-                }
             }
         }
     }

@@ -13,8 +13,18 @@ public class CrabBodyAnimation : MonoBehaviour
     [SerializeField]
     private Sprite rightSprite;
 
+    [SerializeField]
+    private Sprite forwardSprite;
+
+    [SerializeField]
+    private Sprite backwardSprite;
+
+    [SerializeField]
+    float hopTime = 0.25f;
+
     private CrabDirection crabDirection;
     private bool isNeutral = true;
+    private float hopTimer = 0;
 
     private CrabBody crabBody;
     private SpriteRenderer spriteRenderer;
@@ -24,34 +34,69 @@ public class CrabBodyAnimation : MonoBehaviour
         crabBody = GetComponent<CrabBody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        crabBody.DirectionChanged += OnDirectionChanged;
+        crabBody.ChangeDirection += OnChangeDirection;
         crabBody.Move += OnMove;
+        crabBody.Hop += OnHop;
     }
 
-    void OnDirectionChanged(CrabDirection direction)
+    private void Update()
+    {
+        if (hopTimer > 0)
+        {
+            hopTimer -= Time.deltaTime;
+            UpdateSprite();
+        }
+    }
+
+    void OnChangeDirection(CrabDirection direction)
     {
         crabDirection = direction;
         isNeutral = true;
 
-        SetSprite();
+        UpdateSprite();
     }
 
     void OnMove()
     {
         isNeutral = !isNeutral;
-        SetSprite();
+        UpdateSprite();
     }
 
-    void SetSprite()
+    void OnHop()
     {
-        if (!isNeutral)
+        hopTimer = hopTime;
+        UpdateSprite();
+    }
+
+    void UpdateSprite()
+    {
+        if (crabDirection == CrabDirection.Forward)
         {
-            if (crabDirection == CrabDirection.Left)
+            if (hopTimer > 0)
+            {
+                spriteRenderer.sprite = forwardSprite;
+                return;
+            }
+        }
+        else if (crabDirection == CrabDirection.Backward)
+        {
+            if (hopTimer > 0)
+            {
+                spriteRenderer.sprite = backwardSprite;
+                return;
+            }
+        }
+        else if (crabDirection == CrabDirection.Left)
+        {
+            if (!isNeutral)
             {
                 spriteRenderer.sprite = leftSprite;
                 return;
             }
-            else if (crabDirection == CrabDirection.Right)
+        }
+        else if (crabDirection == CrabDirection.Right)
+        {
+            if (!isNeutral)
             {
                 spriteRenderer.sprite = rightSprite;
                 return;

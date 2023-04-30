@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 23
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -103,7 +103,204 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Upper_V0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 11, y: 32}
+        - {x: 6, y: 34}
+        - {x: -1, y: 34}
+        - {x: -4, y: 33}
+        - {x: -8, y: 28}
+        - {x: -8, y: 25}
+        - {x: -6, y: 23}
+        - {x: -1, y: 22}
+        - {x: -6, y: 20}
+        - {x: -6, y: 18}
+        - {x: -2, y: 13}
+        - {x: 1, y: 12}
+        - {x: 6, y: 12}
+        - {x: 10, y: 15}
+        - {x: 14, y: 7}
+        - {x: 17, y: 8}
+        - {x: 18, y: 13}
+        - {x: 16, y: 18}
+        - {x: 16, y: 25}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: e74963f6c8e27e74b9bdf39d98412974
+      internalID: -501982420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Upper_V0_1
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 18, y: 12}
+        - {x: 18, y: 15}
+        - {x: 6, y: 23}
+        - {x: 0, y: 23}
+        - {x: -5, y: 19}
+        - {x: -7, y: 14}
+        - {x: -7, y: 5}
+        - {x: -6, y: 2}
+        - {x: -2, y: -1}
+        - {x: 3, y: 1}
+        - {x: 7, y: 5}
+        - {x: 9, y: 10}
+        - {x: 15, y: 9}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: be42633daba25e14194e0fcd0c8bde86
+      internalID: 2022598912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Upper_V0_2
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 22, y: 33}
+        - {x: 17, y: 39}
+        - {x: 14, y: 40}
+        - {x: 10, y: 40}
+        - {x: 8, y: 38}
+        - {x: 8, y: 36}
+        - {x: 11, y: 27}
+        - {x: 8, y: 24}
+        - {x: 4, y: 26}
+        - {x: 2, y: 24}
+        - {x: 2, y: 21}
+        - {x: 5, y: 16}
+        - {x: 10, y: 13}
+        - {x: 11, y: 10}
+        - {x: 14, y: 7}
+        - {x: 17, y: 8}
+        - {x: 18, y: 14}
+        - {x: 23, y: 24}
+        - {x: 23, y: 30}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: a4ab12421d28e554aa774156e6181838
+      internalID: -127212585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Upper_V0_3
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 19, y: 26}
+        - {x: 22, y: 29}
+        - {x: 22, y: 30}
+        - {x: 20, y: 35}
+        - {x: 17, y: 39}
+        - {x: 14, y: 40}
+        - {x: 4, y: 40}
+        - {x: 1, y: 39}
+        - {x: -12, y: 33}
+        - {x: -14, y: 31}
+        - {x: -21, y: 25}
+        - {x: -22, y: 21}
+        - {x: -22, y: 18}
+        - {x: -20, y: 15}
+        - {x: -15, y: 13}
+        - {x: -12, y: 12}
+        - {x: -1, y: 12}
+        - {x: 3, y: 13}
+        - {x: 8, y: 14}
+        - {x: 14, y: 8}
+        - {x: 17, y: 9}
+        - {x: 18, y: 12}
+        - {x: 19, y: 19}
+        - {x: 18, y: 20}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: 34e34ea6ae7cf0d48a6764dba1c49f15
+      internalID: -1610963945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Upper_V0_4
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 1, y: 24}
+        - {x: -3, y: 29}
+        - {x: -5, y: 30}
+        - {x: -17, y: 30}
+        - {x: -22, y: 23}
+        - {x: -22, y: 18}
+        - {x: -20, y: 15}
+        - {x: -15, y: 13}
+        - {x: -9, y: 12}
+        - {x: -4, y: 14}
+        - {x: 3, y: 16}
+        - {x: 7, y: 15}
+        - {x: 14, y: 8}
+        - {x: 17, y: 9}
+        - {x: 18, y: 14}
+        - {x: 14, y: 19}
+        - {x: 5, y: 23}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: fb84d8277071c48469563b0e1221256b
+      internalID: -2025287253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -114,7 +311,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Crab_Right_Claw_Upper_V0_3: -1610963945
+      Crab_Right_Claw_Upper_V0_0: -501982420
+      Crab_Right_Claw_Upper_V0_2: -127212585
+      Crab_Right_Claw_Upper_V0_1: 2022598912
+      Crab_Right_Claw_Upper_V0_4: -2025287253
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

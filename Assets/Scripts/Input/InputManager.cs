@@ -5,15 +5,14 @@ using UnityEngine.InputSystem;
 
 namespace Input
 {
-    public class InputManager : MonoBehaviour
+    public class InputManager
     {
-        public static InputManager Instance;
-
         #region Events
         public event Action Move;
-        public event Action<Vector2> DirectionChanged;
+        public event Action<Vector2Int> ChangeDirection;
         public event Action Out;
         public event Action In;
+        public event Action Lunge;
         #endregion
 
         #region Direction Mappings
@@ -64,33 +63,10 @@ namespace Input
         private Vector2 _rightStick = Vector2.zero;
 
         #region Unity Events
-        public void Awake()
-        {
-            // Singleton pattern
-            if (Instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
-        public void Start()
-        {
-            DirectionChanged += dir =>
-            {
-                Debug.Log(DirectionStrings[dir]);
-            };
-
-            Out += () => Debug.Log("Out");
-            In += () => Debug.Log("In");
-            Move += () => Debug.Log("Move");
-        }
-
         public void Update()
         {
+            CheckLunge();
+
             // Update joystick configurations, and exit if nothing changed
             if (!UpdateSticks())
             {
@@ -142,7 +118,7 @@ namespace Input
             {
                 if (_leftStick == dir && _rightStick == dir)
                 {
-                    DirectionChanged?.Invoke(dir);
+                    ChangeDirection?.Invoke(Vector2Int.RoundToInt(dir));
                 }
             }
         }
@@ -160,6 +136,14 @@ namespace Input
             if (_leftStick == Vector2.left && _rightStick == Vector2.right)
             {
                 Out?.Invoke();
+            }
+        }
+
+        private void CheckLunge()
+        {
+            if (GetKeyDown(KeyCode.Space))
+            {
+                Lunge?.Invoke();
             }
         }
 
