@@ -22,20 +22,13 @@ public class CrabBody : MonoBehaviour
         [Vector2Int.left] = CrabDirection.Forward
     };
 
-    // Crabs are faster side to side
-    [SerializeField]
-    float verticalSpeed = 0.5f;
+    // Distances are in pixels
+    public static float PIXELS_PER_UNIT = 23;
+    int verticalDistance = 12;
+    int pushedDistance = 12;
+    int forwardHopDistance = 12;
+    int backHopDistance = 12;
 
-    [SerializeField]
-    float pushedSpeed = 0.25f;
-
-    [SerializeField]
-    float forwardHopDistance= 0.25f;
-
-    [SerializeField]
-    float backHopDistance = 0.5f;
-
-    [SerializeField]
     float hopTime = 0.5f;
 
     [SerializeField]
@@ -134,7 +127,7 @@ public class CrabBody : MonoBehaviour
 
         if (direction.y > 0 || direction.y < 0)
         {
-            MoveTo(direction, verticalSpeed);
+            MoveTo(direction, verticalDistance);
 
             Move?.Invoke();
         }
@@ -142,7 +135,7 @@ public class CrabBody : MonoBehaviour
 
     public void OnPushed()
     {
-        MoveTo(ToVector2Int(CrabDirection.Backward), pushedSpeed);
+        MoveTo(ToVector2Int(CrabDirection.Backward), pushedDistance);
     }
 
     public void OnEyeSnipped()
@@ -155,18 +148,22 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    void MoveTo(Vector2Int direction, float speed)
+    void MoveTo(Vector2Int direction, int distanceInPixels)
     {
+        float distanceInUnits = distanceInPixels / PIXELS_PER_UNIT;
+        Debug.Log("distanceInPixels: " + distanceInPixels);
+        Debug.Log("distanceInUnits: " + distanceInUnits);
+
         string otherPlayer;
         if (player == Player.Player1) otherPlayer = "Player2 Body";
         else otherPlayer = "Player1 Body";
 
         LayerMask layerMask = LayerMask.GetMask("Water", otherPlayer);
-        RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, speed, layerMask);
+        RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, distanceInUnits, layerMask);
         if (hit.collider == null)
         {
             Vector2 vec2 = direction;
-            rb2d.MovePosition(rb2d.position + vec2 * speed);
+            rb2d.MovePosition(rb2d.position + vec2 * distanceInUnits);
         }
     }
 
