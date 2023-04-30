@@ -122,6 +122,7 @@ public class CrabClaw : MonoBehaviour
             input.playerInput.In += OnIn;
         }
 
+        crabBody.Stunned += OnStunned;
         crabBody.Died += OnDead;
     }
 
@@ -288,6 +289,12 @@ public class CrabClaw : MonoBehaviour
             ChangeClawState(ClawState.Attacking);
             ChangeAttackingState(AttackingState.WindingUp);
         }
+    }
+
+    void OnStunned()
+    {
+        clawState = ClawState.Attacking;
+        attackingState = AttackingState.Recoiling;
     }
 
     void OnDead()

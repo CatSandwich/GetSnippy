@@ -61,6 +61,7 @@ public class CrabBody : MonoBehaviour
     public event Action<CrabDirection> ChangeDirection;
     public event Action Out;
     public event Action In;
+    public event Action Stunned;
     public event Action Died;
 
     private int numEyes = 2;
@@ -168,9 +169,19 @@ public class CrabBody : MonoBehaviour
         In?.Invoke();
     }
 
-        public void OnPushed()
+    public void OnPushed()
     {
-        MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), pushedDistance);
+        if (numEyes <= 0)
+        {
+            return;
+        }
+
+        bool isStunned = MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), pushedDistance);
+
+        if (isStunned)
+        {
+            Stunned?.Invoke();
+        }
     }
 
     public void OnEyeSnipped()
@@ -183,7 +194,8 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    void MoveTo(Vector2Int direction, int distanceInPixels)
+    // Returns if we should be stunned
+    bool MoveTo(Vector2Int direction, int distanceInPixels)
     {
         float distanceInUnits = distanceInPixels / PIXELS_PER_UNIT;
 
@@ -198,6 +210,15 @@ public class CrabBody : MonoBehaviour
             Vector2 vec2 = direction;
             rb2d.MovePosition(rb2d.position + vec2 * distanceInUnits);
         }
+        else
+        {
+            if (hit.collider.gameObject.GetComponent<Barrier>())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     CrabDirection InputToCrabDirection(Vector2Int inputDirection)
