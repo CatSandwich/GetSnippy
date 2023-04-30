@@ -45,10 +45,26 @@ namespace Input
             RightJoystick.ButtonPressed += _ => OnRightButtonPressed();
             RightJoystick.ButtonReleased += _ => OnRightButtonReleased();
 
-            LeftJoystick.PositionChanged += _ => AnyInput?.Invoke();
-            LeftJoystick.ButtonPressed += _ => AnyInput?.Invoke();
-            RightJoystick.PositionChanged += _ => AnyInput?.Invoke();
-            RightJoystick.ButtonPressed += _ => AnyInput?.Invoke();
+            LeftJoystick.PositionChanged += _ =>
+                {
+                    Debug.LogError("Position changed");
+                    AnyInput?.Invoke();
+                };
+            LeftJoystick.ButtonPressed += _ =>
+                {
+                    Debug.LogError("Button pressed");
+                    AnyInput?.Invoke();
+                };
+            RightJoystick.PositionChanged += _ =>
+                {
+                    Debug.LogError("Position changed");
+                    AnyInput?.Invoke();
+                };
+            RightJoystick.ButtonPressed += _ =>
+                {
+                    Debug.LogError("Button pressed");
+                    AnyInput?.Invoke();
+                };
         }
 
         public void Update()

@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Input;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using PlayerInput = Input.PlayerInput;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,9 +19,6 @@ public class GameManager : MonoBehaviour
 
     protected CrabBody Crab1;
     protected CrabBody Crab2;
-
-    private readonly PlayerInput _player1 = PlayerInput.Player1;
-    private readonly PlayerInput _player2 = PlayerInput.Player2;
 
     // Start is called before the first frame update
     void Start()
@@ -34,19 +34,27 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        _player1.Update();
-        _player2.Update();
+        if (Title.activeSelf)
+        {
+            if (Joystick.all.Any(j => j.stick.x.ReadValue() != 0 || j.stick.y.ReadValue() != 0))
+            {
+                OnGameStart();
+            }
+
+            if (Joystick.all.Any(j => j.allControls.OfType<ButtonControl>().Any(b => b.wasPressedThisFrame)))
+            {
+                OnGameStart();
+            }
+        }
     }
 
     void OnGameStart()
     {
-        Debug.LogError("Game start");
         StartCoroutine(OnGameStartCoroutine());
     }
 
     void OnGameEnd()
     {
-        Debug.LogError("Game end");
         StartCoroutine(OnGameEndCoroutine());
     }
 
@@ -66,7 +74,6 @@ public class GameManager : MonoBehaviour
 
     void SpawnCrabs()
     {
-        Debug.LogError("Spawn crabs");
         Assert.IsTrue(!Crab1 && !Crab2);
 
         Crab1 = Instantiate(Crab1Prefab, Crab1SpawnPoint, transform.rotation);
@@ -78,31 +85,24 @@ public class GameManager : MonoBehaviour
 
     void DespawnCrabs()
     {
-        Debug.LogError("Despawn crabs");
         Assert.IsTrue(Crab1 && Crab2);
         
         Crab1.Died -= OnGameEnd;
         Crab2.Died -= OnGameEnd;
 
-        Destroy(Crab1);
-        Destroy(Crab2);
+        Destroy(Crab1.gameObject);
+        Destroy(Crab2.gameObject);
 
         // TODO: Clean up severed eye stalks.
     }
 
     void ShowTitle()
     {
-        Debug.LogError("Show title");
         Title.SetActive(true);
-        _player1.AnyInput += OnGameStart;
-        _player2.AnyInput += OnGameStart;
     }
 
     void HideTitle()
     {
-        Debug.LogError("Hide title");
         Title.SetActive(false);
-        _player1.AnyInput -= OnGameStart;
-        _player2.AnyInput -= OnGameStart;
     }
 }
