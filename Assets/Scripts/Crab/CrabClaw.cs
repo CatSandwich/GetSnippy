@@ -331,6 +331,10 @@ public class CrabClaw : MonoBehaviour
     {
         if (clawState != ClawState.Stunned)
         {
+            if (clawState != newState)
+            {
+                StateChanged?.Invoke(newState);
+            }
             clawState = newState;
 
             if (clawState != ClawState.Attacking)
@@ -344,7 +348,6 @@ public class CrabClaw : MonoBehaviour
             }
 
             clawAnimDirty = true;
-            StateChanged?.Invoke(clawState);
         }
     }
 

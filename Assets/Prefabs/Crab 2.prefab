@@ -2042,12 +2042,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: ad49a6f24264e284f8d6b276f3ebddb0, type: 3}
     - {fileID: 8300000, guid: c5c67be15aeeebf43af988babbc33b24, type: 3}
     - {fileID: 8300000, guid: b35d7bc30e6494f428ed7062c96ef8d1, type: 3}
-  collectionClawBlock:
-    clips:
-    - {fileID: 8300000, guid: 75eef83e1f5cc72438cec4da60e03738, type: 3}
-  collectionClawNeutral:
-    clips:
-    - {fileID: 8300000, guid: bc6d1c4f80f6fda4abca5be05a6a0241, type: 3}
+  clawBlock: {fileID: 8300000, guid: 75eef83e1f5cc72438cec4da60e03738, type: 3}
+  clawNeutral: {fileID: 8300000, guid: bc6d1c4f80f6fda4abca5be05a6a0241, type: 3}
   myBody: {fileID: 218694845457630422}
   myClawLeft: {fileID: 7961662766296599688}
   myClawRight: {fileID: 368165989320829576}
