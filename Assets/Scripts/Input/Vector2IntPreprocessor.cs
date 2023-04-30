@@ -22,9 +22,9 @@ namespace Input
 
     public class Vector2IntRotatePreprocessor : Vector2IntPreprocessor
     {
-        public static readonly Vector2IntRotatePreprocessor Left = new(1);
-        public static readonly Vector2IntRotatePreprocessor Right = new(7);
-
+        public static Vector2IntRotatePreprocessor Left => new(1);
+        public static Vector2IntRotatePreprocessor Right => new(7);
+        
         private static readonly Vector2Int[] Positions =
         {
             new(0, 1),
