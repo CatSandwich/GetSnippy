@@ -141,13 +141,13 @@ public class CrabClaw : MonoBehaviour
         {
             if (stunnedTimer <= 0)
             {
+                clawState = ClawState.Neutral;
                 ResetClaw();
             }
             else
             {
                 stunnedTimer -= Time.deltaTime;
             }
-
         }
 
         if (clawState == ClawState.Attacking)
