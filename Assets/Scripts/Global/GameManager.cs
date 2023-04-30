@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 
     void SpawnCrabs()
     {
-        Debug.Log("Spawn crabs");
+        Debug.LogError("Spawn crabs");
         Assert.IsTrue(!Crab1 && !Crab2);
 
         Crab1 = Instantiate(Crab1Prefab, Crab1SpawnPoint, transform.rotation);
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
     void DespawnCrabs()
     {
-        Debug.Log("Despawn crabs");
+        Debug.LogError("Despawn crabs");
         Assert.IsTrue(Crab1 && Crab2);
         
         Crab1.Died -= OnGameEnd;
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     void ShowTitle()
     {
-        Debug.Log("Show title");
+        Debug.LogError("Show title");
         Title.SetActive(true);
         _player1.AnyInput += OnGameStart;
         _player2.AnyInput += OnGameStart;
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     void HideTitle()
     {
-        Debug.Log("Hide title");
+        Debug.LogError("Hide title");
         Title.SetActive(false);
         _player1.AnyInput -= OnGameStart;
         _player2.AnyInput -= OnGameStart;
