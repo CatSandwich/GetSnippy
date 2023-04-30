@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Input
 {
@@ -14,32 +13,21 @@ namespace Input
         public event Action Move;
         public event Action Out;
         public event Action In;
-        public event Action Lunge;
+        public event Action LungeLeft;
+        public event Action LungeRight;
 
         public JoystickInput LeftJoystick;
         public JoystickInput RightJoystick;
         
-        #region Direction Mappings
-        private static readonly Vector2Int[] Directions = 
-        {
-            Vector2Int.up,
-            Vector2Int.right,
-            Vector2Int.down,
-            Vector2Int.left
-        };
-        #endregion
-
-        #region Movement Mapping
-        private bool _movementState;
-
         private static readonly Dictionary<bool, (Vector2Int, Vector2Int)> MovementStates = new()
         {
             [false] = (Vector2Int.up, Vector2Int.down),
             [true] = (Vector2Int.down, Vector2Int.up)
         };
-        #endregion
 
-        private int _numButtonsPressed;
+        private int _numLeftButtonsPressed;
+        private int _numRightButtonsPressed;
+        private bool _movementState;
 
         public PlayerInput(JoystickInput leftJoystick, JoystickInput rightJoystick)
         {
@@ -49,11 +37,11 @@ namespace Input
             LeftJoystick.PositionChanged += _ => OnStickMoved();
             RightJoystick.PositionChanged += _ => OnStickMoved();
 
-            LeftJoystick.ButtonPressed += _ => OnButtonPressed();
-            RightJoystick.ButtonPressed += _ => OnButtonPressed();
-
-            LeftJoystick.ButtonReleased += _ => OnButtonReleased();
-            RightJoystick.ButtonReleased += _ => OnButtonReleased();
+            LeftJoystick.ButtonPressed += _ => OnLeftButtonPressed();
+            LeftJoystick.ButtonReleased += _ => OnLeftButtonReleased();
+            
+            RightJoystick.ButtonPressed += _ => OnRightButtonPressed();
+            RightJoystick.ButtonReleased += _ => OnRightButtonReleased();
         }
 
         public void Update()
@@ -70,29 +58,77 @@ namespace Input
             CheckOut();
         }
 
-        private void OnButtonPressed()
+        private void OnLeftButtonPressed()
         {
-            _numButtonsPressed++;
+            _numLeftButtonsPressed++;
 
-            if (_numButtonsPressed == 2)
+            if (_numLeftButtonsPressed == 2)
             {
-                Lunge?.Invoke();
+                LungeLeft?.Invoke();
             }
         }
 
-        private void OnButtonReleased()
+        private void OnLeftButtonReleased()
         {
-            _numButtonsPressed--;
+            _numLeftButtonsPressed--;
+        }
+
+        private void OnRightButtonPressed()
+        {
+            _numRightButtonsPressed++;
+
+            if (_numRightButtonsPressed == 2)
+            {
+                LungeRight?.Invoke();
+            }
+        }
+
+        private void OnRightButtonReleased()
+        {
+            _numRightButtonsPressed--;
         }
 
         private void CheckChangeDirection()
         {
-            foreach (Vector2Int direction in Directions)
+            // Check up with left exact and right approximate
+            if (LeftJoystick.StickPosition == Vector2Int.up && RightJoystick.StickPosition.y == 1)
             {
-                if (LeftJoystick.StickPosition == direction && RightJoystick.StickPosition == direction)
-                {
-                    ChangeDirection?.Invoke(direction);
-                }
+                ChangeDirection?.Invoke(Vector2Int.up);
+            }
+            // Check up with right exact and left approximate
+            else if (RightJoystick.StickPosition == Vector2Int.up && LeftJoystick.StickPosition.y == 1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.up);
+            }
+            // Check right with left exact and right approximate
+            else if (LeftJoystick.StickPosition == Vector2Int.right && RightJoystick.StickPosition.x == 1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.right);
+            }
+            // Check right with right exact and left approximate
+            else if (RightJoystick.StickPosition == Vector2Int.right && LeftJoystick.StickPosition.x == 1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.right);
+            }
+            // Check down with left exact and right approximate
+            else if (LeftJoystick.StickPosition == Vector2Int.down && RightJoystick.StickPosition.y == -1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.down);
+            }
+            // Check down with right exact and left approximate
+            else if (RightJoystick.StickPosition == Vector2Int.down && LeftJoystick.StickPosition.y == -1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.down);
+            }
+            // Check left with left exact and right approximate
+            else if (LeftJoystick.StickPosition == Vector2Int.left && RightJoystick.StickPosition.x == -1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.left);
+            }
+            // Check left with right exact and left approximate
+            else if (RightJoystick.StickPosition == Vector2Int.left && LeftJoystick.StickPosition.x == -1)
+            {
+                ChangeDirection?.Invoke(Vector2Int.left);
             }
         }
 
@@ -100,7 +136,14 @@ namespace Input
         {
             (Vector2Int left, Vector2Int right) = MovementStates[_movementState];
 
-            if (LeftJoystick.StickPosition == left && RightJoystick.StickPosition == right)
+            // Check left exact and right approximate
+            if (LeftJoystick.StickPosition == left && RightJoystick.StickPosition.y == right.y)
+            {
+                Move?.Invoke();
+                _movementState = !_movementState;
+            }
+            // Check right exact and left approximate
+            else if (RightJoystick.StickPosition == right && LeftJoystick.StickPosition.y == left.y)
             {
                 Move?.Invoke();
                 _movementState = !_movementState;
@@ -109,7 +152,13 @@ namespace Input
 
         private void CheckIn()
         {
-            if (LeftJoystick.StickPosition == Vector2Int.right && RightJoystick.StickPosition == Vector2Int.left)
+            // Check with left exact and right approximate
+            if (LeftJoystick.StickPosition == Vector2Int.right && RightJoystick.StickPosition.x == -1)
+            {
+                In?.Invoke();
+            }
+            // Check with right exact and left approximate
+            else if (RightJoystick.StickPosition == Vector2Int.left && LeftJoystick.StickPosition.x == 1)
             {
                 In?.Invoke();
             }
@@ -117,7 +166,13 @@ namespace Input
 
         private void CheckOut()
         {
-            if (LeftJoystick.StickPosition == Vector2Int.left && RightJoystick.StickPosition == Vector2Int.right)
+            // Check with left exact and right approximate
+            if (LeftJoystick.StickPosition == Vector2Int.left && RightJoystick.StickPosition.x == 1)
+            {
+                Out?.Invoke();
+            }
+            // Check with right exact and left approximate
+            else if (RightJoystick.StickPosition == Vector2Int.right && LeftJoystick.StickPosition.x == -1)
             {
                 Out?.Invoke();
             }

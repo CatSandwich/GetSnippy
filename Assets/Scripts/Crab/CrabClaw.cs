@@ -98,7 +98,7 @@ public class CrabClaw : MonoBehaviour
 
         if (input.playerInput != null)
         {
-            input.playerInput.Lunge += OnAttack;
+            input.playerInput.LungeRight += OnAttack;
             input.playerInput.Out += OnOut;
             input.playerInput.In += OnIn;
         }
