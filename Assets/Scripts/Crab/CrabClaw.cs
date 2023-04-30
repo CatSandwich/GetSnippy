@@ -58,6 +58,9 @@ public class CrabClaw : MonoBehaviour
     private GameObject clawSnip;
 
     [SerializeField]
+    private GameObject clawSnipPoint;
+
+    [SerializeField]
     private Player player;
 
     [SerializeField]
@@ -202,7 +205,7 @@ public class CrabClaw : MonoBehaviour
 
             for (int i = 0; i < eyeContact.Count; ++i)
             {
-                float distance = Vector3.Distance(eyeContact[i].transform.position, transform.position);
+                float distance = Vector3.Distance(eyeContact[i].transform.position, clawSnipPoint.transform.position);
 
                 if (distance < closestEyeDistance)
                 {
