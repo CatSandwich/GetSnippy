@@ -180,6 +180,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: c43cb182fa91cc44e8544e0192417a1a, type: 3}
     - {fileID: 8300000, guid: 04dac1059f695894b8bb7d9fa396a6f7, type: 3}
     - {fileID: 8300000, guid: c84f7c61bb19a0347a1182cd271d14d4, type: 3}
+  bigWaveClip: {fileID: 8300000, guid: 0e989a1e9f9e20d40bd6134dea1ef948, type: 3}
 --- !u!82 &1931128505008233648
 AudioSource:
   m_ObjectHideFlags: 0

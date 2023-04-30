@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 {
     public event Action GameStart;
     public event Action GameEnd;
+    public event Action EndWave;
     public event Action<CrabBody> CrabSpawn;
 
     public GameObject Title;
@@ -96,6 +97,7 @@ public class GameManager : MonoBehaviour
     {
         GameEnd?.Invoke();
         yield return new WaitForSeconds(2f);
+        EndWave?.Invoke();
         BigWaveSR.sprite = BigWave1;
         yield return new WaitForSeconds(.5f);
         BigWaveSR.sprite = BigWave2;
