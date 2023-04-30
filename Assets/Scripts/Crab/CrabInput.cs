@@ -34,7 +34,11 @@ namespace Input
 
         private void Update()
         {
-            inputManager.Update();
+            if (inputManager != null)
+            {
+                inputManager.Update();
+            }
+
             playerInput.Update();
         }
     }

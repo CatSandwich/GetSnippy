@@ -275,7 +275,8 @@ MonoBehaviour:
   backHopDistance: 0.5
   hopTime: 0.5
   player: 1
-  numEyes: 2
+  leftEye: {fileID: 1285877906569116060}
+  rightEye: {fileID: 6857483014978434791}
 --- !u!114 &7572187858017421151
 MonoBehaviour:
   m_ObjectHideFlags: 0
