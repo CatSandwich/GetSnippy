@@ -43,7 +43,7 @@ public class SoundManager_Crab : SoundManager_Base
         PlayRandomClip(collectionScuttle, false);
     }
 
-    void OnHop()
+    void OnHop(CrabDirection direction)
     {
         PlayRandomClip(collectionLeap, false);
     }

@@ -62,8 +62,10 @@ public class CrabBodyAnimation : MonoBehaviour
         UpdateSprite();
     }
 
-    void OnHop()
+    void OnHop(CrabDirection direction)
     {
+        crabDirection = direction;
+
         hopTimer = hopTime;
         UpdateSprite();
     }

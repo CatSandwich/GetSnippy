@@ -57,7 +57,7 @@ public class CrabBody : MonoBehaviour
     private CrabEye rightEye;
 
     public event Action Move;
-    public event Action Hop;
+    public event Action<CrabDirection> Hop;
     public event Action<CrabDirection> ChangeDirection;
     public event Action Out;
     public event Action In;
@@ -132,13 +132,13 @@ public class CrabBody : MonoBehaviour
             {
                 MoveTo(CrabDirectionToWorldDirection(CrabDirection.Forward), forwardHopDistance);
                 hopTimer = hopTime;
-                Hop?.Invoke();
+                Hop?.Invoke(newDirection);
             }
             else if (newDirection == CrabDirection.Backward)
             {
                 MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), backHopDistance);
                 hopTimer = hopTime;
-                Hop?.Invoke();
+                Hop?.Invoke(newDirection);
             }
         }
     }
