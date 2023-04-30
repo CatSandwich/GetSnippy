@@ -109,27 +109,31 @@ public class CrabBody : MonoBehaviour
             return;
         }
 
-        crabDirection = InputToCrabDirection(direction);
+        CrabDirection newDirection = InputToCrabDirection(direction);
 
-        if (hopTimer <= 0)
+        if (newDirection == CrabDirection.Left || newDirection == CrabDirection.Right)
         {
-            if (crabDirection == CrabDirection.Forward)
+            // Set new movement direction
+            crabDirection = newDirection;
+        }
+        else if (hopTimer <= 0)
+        {
+            // Hops
+            if (newDirection == CrabDirection.Forward)
             {
-                // Hop forward
                 MoveTo(CrabDirectionToWorldDirection(CrabDirection.Forward), forwardHopDistance);
                 hopTimer = hopTime;
                 Hop?.Invoke();
             }
-            else if (crabDirection == CrabDirection.Backward)
+            else if (newDirection == CrabDirection.Backward)
             {
-                // Hop Backward
                 MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), backHopDistance);
                 hopTimer = hopTime;
                 Hop?.Invoke();
             }
         }
 
-        ChangeDirection?.Invoke(crabDirection);
+        ChangeDirection?.Invoke(newDirection);
     }
 
     void OnMove()
