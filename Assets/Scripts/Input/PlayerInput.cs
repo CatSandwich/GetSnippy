@@ -28,6 +28,7 @@ namespace Input
         private int _numLeftButtonsPressed;
         private int _numRightButtonsPressed;
         private bool _movementState;
+        private float _lastMove = float.MinValue;
 
         public PlayerInput(JoystickInput leftJoystick, JoystickInput rightJoystick)
         {
@@ -135,19 +136,31 @@ namespace Input
         private void CheckMove()
         {
             (Vector2Int left, Vector2Int right) = MovementStates[_movementState];
+            
+            if (IsInMovePosition(left, right))
+            {
+                Move?.Invoke();
+                _movementState = !_movementState;
+                _lastMove = Time.time;
+            }
 
-            // Check left exact and right approximate
-            if (LeftJoystick.StickPosition == left && RightJoystick.StickPosition.y == right.y)
+            // If last move was more a half second ago, accept the other movement state too
+            if (Time.time - _lastMove > .5f)
             {
-                Move?.Invoke();
-                _movementState = !_movementState;
+                (left, right) = MovementStates[!_movementState];
+
+                if (IsInMovePosition(left, right))
+                {
+                    Move?.Invoke();
+                    _lastMove = Time.time;
+                }
             }
-            // Check right exact and left approximate
-            else if (RightJoystick.StickPosition == right && LeftJoystick.StickPosition.y == left.y)
-            {
-                Move?.Invoke();
-                _movementState = !_movementState;
-            }
+        }
+
+        bool IsInMovePosition(Vector2Int left, Vector2Int right)
+        {
+            return LeftJoystick.StickPosition == left && RightJoystick.StickPosition.y == right.y ||
+                   RightJoystick.StickPosition == right && LeftJoystick.StickPosition.y == left.y;
         }
 
         private void CheckIn()
