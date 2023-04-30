@@ -78,6 +78,7 @@ public class CrabClaw : MonoBehaviour
     float attackTimer = 0.0f;
 
     bool clawAnimDirty = false;
+    bool isFullyDead = false;
 
     CrabBody GetBody()
     {
@@ -120,10 +121,17 @@ public class CrabClaw : MonoBehaviour
             input.playerInput.Out += OnOut;
             input.playerInput.In += OnIn;
         }
+
+        crabBody.Died += OnDead;
     }
 
     private void Update()
     {
+        if (isFullyDead)
+        {
+            return;
+        }
+
         if (clawState == ClawState.Attacking)
         {
             if (attackTimer <= 0)
@@ -260,6 +268,11 @@ public class CrabClaw : MonoBehaviour
             ChangeClawState(ClawState.Attacking);
             ChangeAttackingState(AttackingState.WindingUp);
         }
+    }
+
+    void OnDead()
+    {
+        isFullyDead = true;
     }
 
     void ChangeClawState(ClawState newState)
