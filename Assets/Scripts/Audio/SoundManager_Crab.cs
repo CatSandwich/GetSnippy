@@ -12,6 +12,8 @@ public class SoundManager_Crab : SoundManager_Base
     public RandomSoundCollection collectionLeap;
     public RandomSoundCollection collectionScuttle;
     public RandomSoundCollection collectionSnip;
+    public RandomSoundCollection collectionClawBlock;
+    public RandomSoundCollection collectionClawNeutral;
 
     public CrabBody myBody;
     public CrabClaw myClawLeft;
@@ -54,6 +56,14 @@ public class SoundManager_Crab : SoundManager_Base
         {
             PlayRandomClip(collectionAttack, false);
             clawAttackCounter = clawSoundDelay;
+        }
+        else if (newState == ClawState.Blocking)
+        {
+            PlayRandomClip(collectionClawBlock, false);
+        } 
+        else if (newState == ClawState.Neutral || newState == ClawState.Stunned)
+        {
+            PlayRandomClip(collectionClawNeutral, false);
         }
     }
 
