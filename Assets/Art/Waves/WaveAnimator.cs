@@ -21,6 +21,8 @@ public class WaveAnimator : MonoBehaviour
             yield return new WaitForSeconds(Delay);
             SR.sprite = Sprite3;
             yield return new WaitForSeconds(Delay);
+            SR.sprite = null;
+            yield return new WaitForSeconds(Delay);
         }
     }
 }
