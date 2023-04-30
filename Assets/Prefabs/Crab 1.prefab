@@ -432,6 +432,7 @@ MonoBehaviour:
   crabBody: {fileID: 218694845457630422}
   spawnPoint: {fileID: 1545181747989683293}
   splatPrefab: {fileID: 6164517079658340065, guid: 14e1b7fcd4ef1804a84ac485a46e47c5, type: 3}
+  eyePrefab: {fileID: 9190815958311253259, guid: c4718b4ade607144fbb8bb7a0ca1a2d5, type: 3}
   player: 0
 --- !u!114 &5626062971606887198
 MonoBehaviour:
@@ -583,6 +584,7 @@ MonoBehaviour:
   crabBody: {fileID: 218694845457630422}
   spawnPoint: {fileID: 270378432926021602}
   splatPrefab: {fileID: 6164517079658340065, guid: 14e1b7fcd4ef1804a84ac485a46e47c5, type: 3}
+  eyePrefab: {fileID: 9190815958311253259, guid: c4718b4ade607144fbb8bb7a0ca1a2d5, type: 3}
   player: 0
 --- !u!114 &1849067481046745841
 MonoBehaviour:

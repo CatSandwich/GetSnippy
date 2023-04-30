@@ -118,8 +118,6 @@ public class SplatAnimation : MonoBehaviour
 
     void UpdateAnim(int toState)
     {
-        Debug.Log("toState: " + toState);
-        Debug.Log("sprites.Count: " + sprites.Count);
         if (toState <= sprites.Count - 1)
         {
             spriteRenderer.sprite = sprites[toState];
@@ -129,7 +127,6 @@ public class SplatAnimation : MonoBehaviour
 
             if (toState == sprites.Count - 1)
             {
-                Debug.Log("done");
                 done = true;
                 spriteRenderer.sortingOrder = endLayer;
             }

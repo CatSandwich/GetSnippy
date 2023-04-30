@@ -234,6 +234,11 @@ public class CrabClaw : MonoBehaviour
     // Set claw state based on CrabDirection
     void OnChangeDirection(CrabDirection direction)
     {
+        if (isFullyDead)
+        {
+            return;
+        }
+
         crabDirection = direction;
 
         if (clawState != ClawState.Attacking)
@@ -253,16 +258,31 @@ public class CrabClaw : MonoBehaviour
 
     void OnOut()
     {
+        if (isFullyDead)
+        {
+            return;
+        }
+
         ChangeClawState(ClawState.Neutral);
     }
 
     void OnIn()
     {
+        if (isFullyDead)
+        {
+            return;
+        }
+
         ChangeClawState(ClawState.Blocking);
     }
 
     void OnAttack()
     {
+        if (isFullyDead)
+        {
+            return;
+        }
+
         if (clawState == ClawState.Neutral)
         {
             ChangeClawState(ClawState.Attacking);
@@ -272,6 +292,10 @@ public class CrabClaw : MonoBehaviour
 
     void OnDead()
     {
+        ChangeClawState(ClawState.Neutral);
+        OnChangeDirection(crabDirection);
+        UpdateClaw();
+
         isFullyDead = true;
     }
 
