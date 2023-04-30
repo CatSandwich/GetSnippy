@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 23
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -103,7 +103,205 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Lower_V0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 15, y: -21}
+        - {x: 17, y: -17}
+        - {x: 18, y: -12}
+        - {x: 15, y: -9}
+        - {x: 13, y: -9}
+        - {x: 6, y: -12}
+        - {x: 1, y: -12}
+        - {x: -2, y: -13}
+        - {x: -6, y: -18}
+        - {x: -6, y: -20}
+        - {x: -4, y: -22}
+        - {x: 1, y: -22}
+        - {x: -6, y: -23}
+        - {x: -8, y: -25}
+        - {x: -8, y: -28}
+        - {x: -4, y: -33}
+        - {x: -1, y: -34}
+        - {x: 6, y: -34}
+        - {x: 11, y: -32}
+        - {x: 13, y: -30}
+        - {x: 15, y: -25}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: 5f0a97da587a11b458ab8332967630e3
+      internalID: 239284228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Lower_V0_1
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 18, y: -12}
+        - {x: 15, y: -9}
+        - {x: 9, y: -9}
+        - {x: 7, y: -4}
+        - {x: 3, y: 0}
+        - {x: -2, y: 2}
+        - {x: -6, y: -1}
+        - {x: -7, y: -4}
+        - {x: -7, y: -13}
+        - {x: -5, y: -18}
+        - {x: 0, y: -22}
+        - {x: 4, y: -22}
+        - {x: 10, y: -19}
+        - {x: 15, y: -17}
+        - {x: 18, y: -14}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: acc9e1feab8135e478c6fa551b043a8b
+      internalID: -421666398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Lower_V0_2
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 23, y: -24}
+        - {x: 21, y: -16}
+        - {x: 18, y: -11}
+        - {x: 15, y: -8}
+        - {x: 12, y: -9}
+        - {x: 8, y: -15}
+        - {x: 3, y: -18}
+        - {x: 2, y: -21}
+        - {x: 2, y: -25}
+        - {x: 5, y: -26}
+        - {x: 9, y: -24}
+        - {x: 11, y: -27}
+        - {x: 10, y: -30}
+        - {x: 8, y: -38}
+        - {x: 10, y: -40}
+        - {x: 14, y: -40}
+        - {x: 17, y: -39}
+        - {x: 22, y: -33}
+        - {x: 23, y: -30}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: 8eed7334a4911ed4ebd67d73604fb2eb
+      internalID: 1323451346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Lower_V0_3
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 20, y: -22}
+        - {x: 19, y: -21}
+        - {x: 20, y: -13}
+        - {x: 15, y: -8}
+        - {x: 14, y: -8}
+        - {x: 7, y: -15}
+        - {x: 2, y: -15}
+        - {x: -4, y: -12}
+        - {x: -12, y: -12}
+        - {x: -15, y: -13}
+        - {x: -20, y: -15}
+        - {x: -23, y: -19}
+        - {x: -23, y: -25}
+        - {x: -22, y: -28}
+        - {x: -17, y: -33}
+        - {x: -11, y: -37}
+        - {x: -6, y: -39}
+        - {x: 7, y: -39}
+        - {x: 12, y: -37}
+        - {x: 16, y: -34}
+        - {x: 20, y: -25}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: 53674ad82b8eaee4daec1ed846aa57ff
+      internalID: -2044201626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Crab_Right_Claw_Lower_V0_4
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 72
+        height: 96
+      alignment: 5
+      pivot: {x: 1, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 19, y: -13}
+        - {x: 19, y: -12}
+        - {x: 15, y: -8}
+        - {x: 14, y: -8}
+        - {x: 6, y: -15}
+        - {x: 0, y: -17}
+        - {x: -3, y: -14}
+        - {x: -6, y: -13}
+        - {x: -16, y: -12}
+        - {x: -22, y: -17}
+        - {x: -22, y: -23}
+        - {x: -17, y: -29}
+        - {x: -14, y: -30}
+        - {x: -5, y: -30}
+        - {x: 2, y: -23}
+        - {x: 5, y: -23}
+        - {x: 14, y: -19}
+      tessellationDetail: 0.8
+      bones: []
+      spriteID: 44af6ab64e271354cbb07b437bb10263
+      internalID: -681395381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -114,7 +312,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Crab_Right_Claw_Lower_V0_1: -421666398
+      Crab_Right_Claw_Lower_V0_0: 239284228
+      Crab_Right_Claw_Lower_V0_4: -681395381
+      Crab_Right_Claw_Lower_V0_2: 1323451346
+      Crab_Right_Claw_Lower_V0_3: -2044201626
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
