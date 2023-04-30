@@ -151,8 +151,6 @@ public class CrabBody : MonoBehaviour
     void MoveTo(Vector2Int direction, int distanceInPixels)
     {
         float distanceInUnits = distanceInPixels / PIXELS_PER_UNIT;
-        Debug.Log("distanceInPixels: " + distanceInPixels);
-        Debug.Log("distanceInUnits: " + distanceInUnits);
 
         string otherPlayer;
         if (player == Player.Player1) otherPlayer = "Player2 Body";
