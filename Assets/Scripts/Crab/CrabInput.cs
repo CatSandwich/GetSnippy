@@ -33,7 +33,10 @@ namespace Input
                 inputManager.Update();
             }
 
-            playerInput.Update();
+            if (playerInput != null)
+            {
+                playerInput.Update();
+            }
         }
     }
 }

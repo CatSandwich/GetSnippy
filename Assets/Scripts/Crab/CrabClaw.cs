@@ -96,9 +96,12 @@ public class CrabClaw : MonoBehaviour
             input.inputManager.In += OnIn;
         }
 
-        input.playerInput.Lunge += OnAttack;
-        input.playerInput.Out += OnOut;
-        input.playerInput.In += OnIn;
+        if (input.playerInput != null)
+        {
+            input.playerInput.Lunge += OnAttack;
+            input.playerInput.Out += OnOut;
+            input.playerInput.In += OnIn;
+        }
     }
 
     private void Update()
@@ -182,7 +185,7 @@ public class CrabClaw : MonoBehaviour
             int closestEyeIndex = 0;
             float closestEyeDistance = 1000;
 
-            for (int i = 0; i < eyeContact.Count - 1; ++i)
+            for (int i = 0; i < eyeContact.Count; ++i)
             {
                 float distance = Vector3.Distance(eyeContact[i].transform.position, transform.position);
 

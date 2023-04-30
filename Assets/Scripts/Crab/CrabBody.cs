@@ -72,8 +72,11 @@ public class CrabBody : MonoBehaviour
             input.inputManager.Move += OnMove;
             input.inputManager.ChangeDirection += OnChangeDirection;
         }
-        input.playerInput.Move += OnMove;
-        input.playerInput.ChangeDirection += OnChangeDirection;
+        if (input.playerInput != null)
+        {
+            input.playerInput.Move += OnMove;
+            input.playerInput.ChangeDirection += OnChangeDirection;
+        }
 
         leftEye.Snipped += OnEyeSnipped;
         rightEye.Snipped += OnEyeSnipped;
