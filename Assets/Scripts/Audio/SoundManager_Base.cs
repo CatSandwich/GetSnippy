@@ -75,4 +75,15 @@ public class SoundManager_Base : MonoBehaviour
             }
         }
     }
+
+    // Always plays on main channel
+    protected void PlayRandomClipDelayed(RandomSoundCollection collection, float delay)
+    {
+        AudioClip clip = collection.GetRandomClip();
+        if (clip != null)
+        {
+            MyAudioSource.clip = clip;
+            MyAudioSource.PlayDelayed(delay);
+        }
+    }
 }

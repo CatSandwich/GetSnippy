@@ -7,11 +7,11 @@ using static CrabClaw;
 
 public class SoundManager_Global : SoundManager_Base
 {
+    public GameManager myGameManager;
+
     public RandomSoundCollection collectionStart;
     public RandomSoundCollection collectionSnip;
     public RandomSoundCollection collectionEnd;
-
-    public GameManager myGameManager;
 
     //private const float clawSoundDelay = 0.2f;
     //private float clawAttackCounter = 0.0f;
@@ -22,12 +22,13 @@ public class SoundManager_Global : SoundManager_Base
     {
         base.Start();
 
-        //myGameManager.OnStart += OnBattleStart;
+        myGameManager.GameStart += OnBattleStart;
+        myGameManager.GameEnd += OnBattleEnd;
     }
 
     void OnBattleStart()
     {
-        PlayRandomClip(collectionStart, true);
+        PlayRandomClipDelayed (collectionStart, 3.0f);
     }
 
     void OnSnip()
@@ -43,11 +44,6 @@ public class SoundManager_Global : SoundManager_Base
     protected override void Update()
     {
         base.Update();
-
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Q))
-        {
-            OnBattleStart();
-        }
 
         //clawDeflectCounter -= Time.deltaTime;
     }
