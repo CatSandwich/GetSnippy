@@ -166,7 +166,8 @@ TextureImporter:
         - {x: -8, y: 14}
         - {x: -7, y: 10}
         - {x: -5, y: 6}
-        - {x: -2, y: 4}
+        - {x: -2, y: 3}
+        - {x: 4, y: 3}
         - {x: 5, y: 5}
         - {x: 5, y: 14}
       tessellationDetail: 0.8
