@@ -65,6 +65,8 @@ namespace Input
         #region Unity Events
         public void Update()
         {
+            CheckLunge();
+
             // Update joystick configurations, and exit if nothing changed
             if (!UpdateSticks())
             {
@@ -134,6 +136,14 @@ namespace Input
             if (_leftStick == Vector2.left && _rightStick == Vector2.right)
             {
                 Out?.Invoke();
+            }
+        }
+
+        private void CheckLunge()
+        {
+            if (GetKeyDown(KeyCode.Space))
+            {
+                Lunge?.Invoke();
             }
         }
 

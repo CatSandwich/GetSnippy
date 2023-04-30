@@ -42,6 +42,7 @@ public class CrabBody : MonoBehaviour
     private Player player;
 
     public event Action Move;
+    public event Action Hop;
     public event Action<CrabDirection> ChangeDirection;
 
     public int numEyes = 2;
@@ -83,6 +84,24 @@ public class CrabBody : MonoBehaviour
 
         crabDirection = ToCrabDirection(direction);
 
+        if (hopTimer <= 0)
+        {
+            if (crabDirection == CrabDirection.Forward)
+            {
+                // Hop forward
+                MoveTo(ToVector2Int(CrabDirection.Forward), forwardHopDistance);
+                hopTimer = hopTime;
+                Hop?.Invoke();
+            }
+            else if (crabDirection == CrabDirection.Backward)
+            {
+                // Hop Backward
+                MoveTo(ToVector2Int(CrabDirection.Backward), backHopDistance);
+                hopTimer = hopTime;
+                Hop?.Invoke();
+            }
+        }
+
         ChangeDirection?.Invoke(crabDirection);
     }
 
@@ -105,14 +124,15 @@ public class CrabBody : MonoBehaviour
 
     public void OnPushed()
     {
+        Debug.Log("OnPushed");
         MoveTo(ToVector2Int(CrabDirection.Backward), pushedSpeed);
     }
 
     void MoveTo(Vector2Int direction, float speed)
     {
         string otherPlayer;
-        if (player == Player.Player1) otherPlayer = "Player2";
-        else otherPlayer = "Player1";
+        if (player == Player.Player1) otherPlayer = "Player2 Body";
+        else otherPlayer = "Player1 Body";
 
         LayerMask layerMask = LayerMask.GetMask("Water", otherPlayer);
         RaycastHit2D hit = Physics2D.CapsuleCast(rb2d.position, cc2d.size, cc2d.direction, transform.eulerAngles.z, direction, speed, layerMask);

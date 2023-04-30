@@ -20,14 +20,16 @@ public class CrabEye : MonoBehaviour
         return player;
     }
 
+    public bool IsDead()
+    {
+        return isDead;
+    }
+
     public void Die()
     {
         if (!isDead)
         {
             isDead = true;
-            // TODO
-            transform.eulerAngles = new Vector3(90, 0, 0);
-
             crabBody.numEyes -= 1;
 
             Died?.Invoke();
