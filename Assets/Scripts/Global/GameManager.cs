@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ using PlayerInput = Input.PlayerInput;
 
 public class GameManager : MonoBehaviour
 {
+    public event Action GameStart;
+    public event Action GameEnd;
+    public event Action<CrabBody> CrabSpawn;
+
     public GameObject Title;
 
     public CrabBody Crab1Prefab;
@@ -16,6 +21,11 @@ public class GameManager : MonoBehaviour
 
     public Vector3 Crab1SpawnPoint;
     public Vector3 Crab2SpawnPoint;
+
+    public SpriteRenderer BigWaveSR;
+    public Sprite BigWave1;
+    public Sprite BigWave2;
+    public Sprite BigWave3;
 
     protected CrabBody Crab1;
     protected CrabBody Crab2;
@@ -63,16 +73,38 @@ public class GameManager : MonoBehaviour
 
     IEnumerator OnGameStartCoroutine()
     {
+        GameStart?.Invoke();
+        BigWaveSR.sprite = BigWave1;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave2;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave3;
         HideTitle();
         SpawnCrabs();
-        yield break;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave2;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave1;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = null;
     }
 
     IEnumerator OnGameEndCoroutine()
     {
+        GameEnd?.Invoke();
+        BigWaveSR.sprite = BigWave1;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave2;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave3;
         ShowTitle();
         DespawnCrabs();
-        yield break;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave2;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = BigWave1;
+        yield return new WaitForSeconds(.5f);
+        BigWaveSR.sprite = null;
     }
 
     void SpawnCrabs()
@@ -84,6 +116,9 @@ public class GameManager : MonoBehaviour
 
         Crab1.Died += OnGameEnd;
         Crab2.Died += OnGameEnd;
+
+        CrabSpawn?.Invoke(Crab1);
+        CrabSpawn?.Invoke(Crab2);
     }
 
     void DespawnCrabs()
@@ -95,8 +130,6 @@ public class GameManager : MonoBehaviour
 
         Destroy(Crab1.gameObject);
         Destroy(Crab2.gameObject);
-
-        // TODO: Clean up severed eye stalks.
     }
 
     void ShowTitle()
