@@ -40,8 +40,11 @@ public class GameManager : MonoBehaviour
             {
                 OnGameStart();
             }
-
-            if (Joystick.all.Any(j => j.allControls.OfType<ButtonControl>().Any(b => b.wasPressedThisFrame)))
+            else if (Joystick.all.Any(j => j.allControls.OfType<ButtonControl>().Any(b => b.wasPressedThisFrame)))
+            {
+                OnGameStart();
+            }
+            else if (UnityEngine.Input.anyKeyDown)
             {
                 OnGameStart();
             }
