@@ -29,11 +29,6 @@ public class CrabEye : MonoBehaviour
         return player;
     }
 
-    private void Update()
-    {
-        //GetSnipped();
-    }
-
     public bool IsDead()
     {
         return isDead;
