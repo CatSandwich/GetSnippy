@@ -9,6 +9,12 @@ public class CrabEye : MonoBehaviour
     private CrabBody crabBody;
 
     [SerializeField]
+    private Transform spawnPoint;
+
+    [SerializeField]
+    private GameObject splatPrefab;
+
+    [SerializeField]
     private Player player;
 
     bool isDead = false;
@@ -30,6 +36,8 @@ public class CrabEye : MonoBehaviour
         if (!isDead)
         {
             isDead = true;
+
+            GameObject newSplat = Instantiate(splatPrefab, spawnPoint);
 
             Snipped?.Invoke();
         }
