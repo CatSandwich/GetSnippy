@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
     IEnumerator OnGameEndCoroutine()
     {
         GameEnd?.Invoke();
+        yield return new WaitForSeconds(2f);
         BigWaveSR.sprite = BigWave1;
         yield return new WaitForSeconds(.5f);
         BigWaveSR.sprite = BigWave2;
