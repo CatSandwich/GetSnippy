@@ -31,7 +31,7 @@ public class CrabClaw : MonoBehaviour
     {
         [AttackingState.None] = 0,
         [AttackingState.WindingUp] = 0.3f,
-        [AttackingState.Lunging] = 0.1f,
+        [AttackingState.Lunging] = 0.05f,
         [AttackingState.Snipping] = 0.3f,
         [AttackingState.Recoiling] = 0.3f,
     };
@@ -150,14 +150,12 @@ public class CrabClaw : MonoBehaviour
 
         snipCollider.OverlapCollider(contactFilter, colliders);
 
-        // See if we have any claw or eye contact (max of 1 at a time)
+        // See if we have any claw or eye contact
         CrabClaw clawContact = null;
-        CrabEye eyeContact = null;
+        List<CrabEye> eyeContact = new List<CrabEye>();
 
         foreach (Collider2D collider in colliders)
         {
-            Debug.Log(collider.gameObject);
-
             CrabClaw hitClaw = collider.gameObject.GetComponentInParent<CrabClaw>();
             CrabEye hitEye = collider.gameObject.GetComponent<CrabEye>();
 
@@ -168,7 +166,7 @@ public class CrabClaw : MonoBehaviour
             }
             else if (hitEye && !hitEye.IsDead())
             {
-                eyeContact = hitEye;
+                eyeContact.Add(hitEye);
             }
         }
 
@@ -179,9 +177,23 @@ public class CrabClaw : MonoBehaviour
             ChangeAttackingState(AttackingState.Recoiling);
             Blocked?.Invoke();
         }
-        else if (eyeContact)
+        else if (eyeContact.Count > 0)
         {
-            eyeContact.GetSnipped();
+            int closestEyeIndex = 0;
+            float closestEyeDistance = 1000;
+
+            for (int i = 0; i < eyeContact.Count - 1; ++i)
+            {
+                float distance = Vector3.Distance(eyeContact[i].transform.position, transform.position);
+
+                if (distance < closestEyeDistance)
+                {
+                    closestEyeIndex = i;
+                    closestEyeDistance = distance;
+                }
+            }
+
+            eyeContact[closestEyeIndex].GetSnipped();
             Snipped?.Invoke();
         }
         else
@@ -197,11 +209,7 @@ public class CrabClaw : MonoBehaviour
 
         if (clawState != ClawState.Attacking)
         {
-            if (direction == CrabDirection.Forward || direction == CrabDirection.Backward)
-            {
-                ChangeClawState(ClawState.Neutral);
-            }
-            else if (direction == CrabDirection.Left)
+            if (direction == CrabDirection.Left)
             {
                 if (clawSide == ClawSide.Right) ChangeClawState(ClawState.Blocking);
                 else ChangeClawState(ClawState.Neutral);
