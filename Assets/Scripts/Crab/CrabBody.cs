@@ -57,13 +57,13 @@ public class CrabBody : MonoBehaviour
     private CrabEye rightEye;
 
     public event Action Move;
-    public event Action<CrabDirection> Hop;
+    public event Action Hop;
     public event Action<CrabDirection> ChangeDirection;
     public event Action Out;
     public event Action In;
     public event Action Stunned;
     public event Action Died;
-    public event Action LostFirstEye;
+    public event Action Destroyed;
 
     private int numEyes = 2;
 
@@ -85,8 +85,8 @@ public class CrabBody : MonoBehaviour
         {
             input.inputManager.Move += OnMove;
             input.inputManager.ChangeDirection += OnChangeDirection;
-            input.inputManager.Out += OnOut;
-            input.inputManager.In += OnIn;
+            input.playerInput.Out += OnOut;
+            input.playerInput.In += OnIn;
         }
         if (input.playerInput != null)
         {
@@ -102,6 +102,10 @@ public class CrabBody : MonoBehaviour
         ChangeDirection?.Invoke(crabDirection);
     }
 
+    private void OnDestroy()
+    {
+        Destroyed?.Invoke();
+    }
     private void Update()
     {
         if (hopTimer > 0)
@@ -132,13 +136,13 @@ public class CrabBody : MonoBehaviour
             {
                 MoveTo(CrabDirectionToWorldDirection(CrabDirection.Forward), forwardHopDistance);
                 hopTimer = hopTime;
-                Hop?.Invoke(newDirection);
+                Hop?.Invoke();
             }
             else if (newDirection == CrabDirection.Backward)
             {
                 MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), backHopDistance);
                 hopTimer = hopTime;
-                Hop?.Invoke(newDirection);
+                Hop?.Invoke();
             }
         }
     }
@@ -162,17 +166,11 @@ public class CrabBody : MonoBehaviour
 
     void OnOut()
     {
-        crabDirection = CrabDirection.Forward;
-        ChangeDirection?.Invoke(crabDirection);
-
         Out?.Invoke();
     }
 
     void OnIn()
     {
-        crabDirection = CrabDirection.Forward;
-        ChangeDirection?.Invoke(crabDirection);
-
         In?.Invoke();
     }
 
@@ -198,10 +196,6 @@ public class CrabBody : MonoBehaviour
         if (numEyes <= 0)
         {
             Died?.Invoke();
-        }
-        else
-        {
-            LostFirstEye?.Invoke();
         }
     }
 
