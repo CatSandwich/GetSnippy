@@ -8,7 +8,7 @@ namespace Input
     public class InputManager
     {
         #region Events
-        public event Action Move;
+        public event Action<CrabDirection> Move;
         public event Action<Vector2Int> ChangeDirection;
         public event Action Out;
         public event Action In;
@@ -51,7 +51,10 @@ namespace Input
         #endregion
 
         #region Movement Mapping
+        public const float c_MoveThreshold = 0.3f;
         private bool _movementState;
+        private float _lastMoveTime = float.MinValue;
+        private CrabDirection _currentMoveDirection = CrabDirection.Left;
 
         private static readonly Dictionary<bool, (Vector2, Vector2)> MovementStates = new()
         {
@@ -154,12 +157,45 @@ namespace Input
 
         private void CheckMove()
         {
+            if (Time.time - _lastMoveTime > c_MoveThreshold)
+            {
+                CheckNewMove();
+            }
+            else
+            {
+                CheckContinueMove();
+            }
+        }
+
+        private void CheckNewMove()
+        {
+            if (_leftStick == Vector2Int.up && _rightStick == Vector2Int.down)
+            {
+                // Start moving left
+                _currentMoveDirection = CrabDirection.Left;
+                Move?.Invoke(_currentMoveDirection);
+                _movementState = true;
+                _lastMoveTime = Time.time;
+            }
+            else if (_leftStick == Vector2Int.down && _rightStick == Vector2Int.up)
+            {
+                // Start moving right
+                _currentMoveDirection = CrabDirection.Right;
+                Move?.Invoke(_currentMoveDirection);
+                _movementState = false;
+                _lastMoveTime = Time.time;
+            }
+        }
+
+        private void CheckContinueMove()
+        {
             (Vector2 left, Vector2 right) = MovementStates[_movementState];
 
             if (_leftStick == left && _rightStick == right)
             {
-                Move?.Invoke();
+                Move?.Invoke(_currentMoveDirection);
                 _movementState = !_movementState;
+                _lastMoveTime = Time.time;
             }
         }
 

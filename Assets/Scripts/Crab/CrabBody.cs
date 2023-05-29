@@ -143,14 +143,14 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    void OnMove()
+    void OnMove(CrabDirection moveDirection)
     {
         if (numEyes <= 0)
         {
             return;
         }
 
-        Vector2Int direction = CrabDirectionToWorldDirection(crabDirection);
+        Vector2Int direction = CrabDirectionToWorldDirection(moveDirection);
 
         if (direction.y > 0 || direction.y < 0)
         {

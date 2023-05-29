@@ -10,19 +10,19 @@ namespace Input
         private Player player;
 
         public Input.InputManager inputManager;
-        public PlayerInput playerInput;
+        public PlayerInput2 playerInput;
 
         void Awake()
         {
             if (player == Player.Player1)
             {
                 inputManager = new Input.InputManager();
-                playerInput = PlayerInput.Player1;
+                playerInput = PlayerInput2.Player1;
             }
             else
             {
                 //inputManager = new Input.InputManager();
-                playerInput = PlayerInput.Player2;
+                playerInput = PlayerInput2.Player2;
             }
         }
 
