@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Input
 {
-    public class PlayerInput2
+    public class PlayerInput2 : Input.IPlayerInput
     {
         public static PlayerInput2 Player1 => new(JoystickInput.Joystick1, JoystickInput.Joystick2);
         public static PlayerInput2 Player2 => new(JoystickInput.Joystick3, JoystickInput.Joystick4);
 
+        // IPlayerInput
         public event Action<CrabDirection> Move;
         public event Action<CrabClawPose> ChangeClawPose;
         public event Action LungeLeft;

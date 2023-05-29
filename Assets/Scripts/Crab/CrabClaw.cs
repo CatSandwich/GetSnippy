@@ -117,6 +117,20 @@ public class CrabClaw : MonoBehaviour
             input.playerInput.ChangeClawPose += OnChangeClawPose;
         }
 
+        if (input.gamepadInput != null)
+        {
+            if (clawSide == ClawSide.Left)
+            {
+                input.gamepadInput.LungeLeft += OnAttack;
+            }
+            else
+            {
+                input.gamepadInput.LungeRight += OnAttack;
+            }
+
+            input.gamepadInput.ChangeClawPose += OnChangeClawPose;
+        }
+
         crabBody.Stunned += OnStunned;
         crabBody.Died += OnDead;
     }
@@ -293,7 +307,6 @@ public class CrabClaw : MonoBehaviour
     void OnDead()
     {
         ChangeClawState(ClawState.Neutral);
-        //OnChangeDirection(crabDirection);
         UpdateClaw();
 
         isFullyDead = true;
