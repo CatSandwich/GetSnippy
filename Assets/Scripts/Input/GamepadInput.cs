@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
+// Todo: We don't currently do a good job handling controllers added/removed during play.
+// Todo: Handle input fuzzing better - similar to the joystick where we allow one stick diagonal so long as the other one is straight.
+// Todo: Make better use of the IPlayerInput interface, to genericize some code on the Crab side.
+
 namespace Input
 {
     public class GamepadInput : Input.IPlayerInput
@@ -20,7 +24,7 @@ namespace Input
 
         private readonly Gamepad _gamepad;
 
-        private const float c_StickThreshold = 0.65f;
+        private const float c_StickThreshold = 0.55f;
         private const float c_MoveTimeThreshold = 0.4f;
         private float _lastMoveTime = float.MinValue;
         private CrabDirection _currentMoveDirection = CrabDirection.Left;
