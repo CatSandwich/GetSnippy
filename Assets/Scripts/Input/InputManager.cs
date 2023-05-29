@@ -9,9 +9,7 @@ namespace Input
     {
         #region Events
         public event Action<CrabDirection> Move;
-        public event Action<Vector2Int> ChangeDirection;
-        public event Action Out;
-        public event Action In;
+        public event Action<CrabClawPose> ChangeClawPose;
         public event Action LungeLeft;
         public event Action LungeRight;
         #endregion
@@ -51,7 +49,7 @@ namespace Input
         #endregion
 
         #region Movement Mapping
-        public const float c_MoveThreshold = 0.3f;
+        public const float c_MoveThreshold = 0.4f;
         private bool _movementState;
         private float _lastMoveTime = float.MinValue;
         private CrabDirection _currentMoveDirection = CrabDirection.Left;
@@ -80,7 +78,7 @@ namespace Input
             CheckDirectionChange();
             CheckIn();
             CheckOut();
-            CheckMove();
+            CheckMoveSideways();
         }
         #endregion
 
@@ -118,12 +116,21 @@ namespace Input
 
         private void CheckDirectionChange()
         {
-            foreach (Vector2 dir in Directions)
+            if (_leftStick == Vector2.up && _rightStick == Vector2.up)
             {
-                if (_leftStick == dir && _rightStick == dir)
-                {
-                    ChangeDirection?.Invoke(Vector2Int.RoundToInt(dir));
-                }
+                Move?.Invoke(CrabDirection.Forward);
+            }
+            else if (_leftStick == Vector2.down && _rightStick == Vector2.down)
+            {
+                Move?.Invoke(CrabDirection.Backward);
+            }
+            else if (_leftStick == Vector2.right && _rightStick == Vector2.right)
+            {
+                ChangeClawPose?.Invoke(CrabClawPose.Right);
+            }
+            else if (_leftStick == Vector2.left && _rightStick == Vector2.left)
+            {
+                ChangeClawPose?.Invoke(CrabClawPose.Left);
             }
         }
 
@@ -131,7 +138,7 @@ namespace Input
         {
             if (_leftStick == Vector2.right && _rightStick == Vector2.left)
             {
-                In?.Invoke();
+                ChangeClawPose?.Invoke(CrabClawPose.Closed);
             }
         }
 
@@ -139,7 +146,7 @@ namespace Input
         {
             if (_leftStick == Vector2.left && _rightStick == Vector2.right)
             {
-                Out?.Invoke();
+                ChangeClawPose?.Invoke(CrabClawPose.Open);
             }
         }
 
@@ -155,7 +162,7 @@ namespace Input
             }
         }
 
-        private void CheckMove()
+        private void CheckMoveSideways()
         {
             if (Time.time - _lastMoveTime > c_MoveThreshold)
             {

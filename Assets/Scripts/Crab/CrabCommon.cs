@@ -15,3 +15,11 @@ public enum CrabDirection
     Left,
     Right
 }
+
+public enum CrabClawPose
+{
+    Open,
+    Closed,
+    Left,
+    Right
+}

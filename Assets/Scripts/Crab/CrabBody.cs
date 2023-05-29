@@ -68,6 +68,7 @@ public class CrabBody : MonoBehaviour
     private int numEyes = 2;
 
     private CrabDirection crabDirection = CrabDirection.Forward;
+    private CrabClawPose clawPose = CrabClawPose.Open;
     private float hopTimer = 0;
 
     private Rigidbody2D rb2d;
@@ -84,16 +85,10 @@ public class CrabBody : MonoBehaviour
         if (input.inputManager != null)
         {
             input.inputManager.Move += OnMove;
-            input.inputManager.ChangeDirection += OnChangeDirection;
-            input.playerInput.Out += OnOut;
-            input.playerInput.In += OnIn;
         }
         if (input.playerInput != null)
         {
             input.playerInput.Move += OnMove;
-            input.playerInput.ChangeDirection += OnChangeDirection;
-            input.playerInput.Out += OnOut;
-            input.playerInput.In += OnIn;
         }
 
         leftEye.Snipped += OnEyeSnipped;
@@ -110,39 +105,6 @@ public class CrabBody : MonoBehaviour
         }
     }
 
-    void OnChangeDirection(Vector2Int direction)
-    {
-        if (numEyes <= 0)
-        {
-            return;
-        }
-
-        CrabDirection newDirection = InputToCrabDirection(direction);
-
-        if (newDirection == CrabDirection.Left || newDirection == CrabDirection.Right)
-        {
-            // Set new movement direction
-            crabDirection = newDirection;
-            ChangeDirection?.Invoke(newDirection);
-        }
-        else if (hopTimer <= 0)
-        {
-            // Hops
-            if (newDirection == CrabDirection.Forward)
-            {
-                MoveTo(CrabDirectionToWorldDirection(CrabDirection.Forward), forwardHopDistance);
-                hopTimer = hopTime;
-                Hop?.Invoke(newDirection);
-            }
-            else if (newDirection == CrabDirection.Backward)
-            {
-                MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), backHopDistance);
-                hopTimer = hopTime;
-                Hop?.Invoke(newDirection);
-            }
-        }
-    }
-
     void OnMove(CrabDirection moveDirection)
     {
         if (numEyes <= 0)
@@ -150,30 +112,51 @@ public class CrabBody : MonoBehaviour
             return;
         }
 
+        if (moveDirection == CrabDirection.Left || moveDirection == CrabDirection.Right)
+        {
+            MoveSideways(moveDirection);
+        }
+        else
+        {
+            MoveHop(moveDirection);
+        }
+    }
+
+    private void MoveSideways(CrabDirection moveDirection)
+    {
         Vector2Int direction = CrabDirectionToWorldDirection(moveDirection);
 
         if (direction.y > 0 || direction.y < 0)
         {
+            if (crabDirection != moveDirection)
+            {
+                crabDirection = moveDirection;
+                ChangeDirection?.Invoke(crabDirection);
+            }
+
             MoveTo(direction, verticalDistance);
 
             Move?.Invoke();
         }
     }
 
-    void OnOut()
+    private void MoveHop(CrabDirection hopDirection)
     {
-        crabDirection = CrabDirection.Forward;
-        ChangeDirection?.Invoke(crabDirection);
-
-        Out?.Invoke();
-    }
-
-    void OnIn()
-    {
-        crabDirection = CrabDirection.Forward;
-        ChangeDirection?.Invoke(crabDirection);
-
-        In?.Invoke();
+        if (hopTimer <= 0)
+        {
+            if (hopDirection == CrabDirection.Forward)
+            {
+                MoveTo(CrabDirectionToWorldDirection(CrabDirection.Forward), forwardHopDistance);
+                hopTimer = hopTime;
+                Hop?.Invoke(hopDirection);
+            }
+            else if (hopDirection == CrabDirection.Backward)
+            {
+                MoveTo(CrabDirectionToWorldDirection(CrabDirection.Backward), backHopDistance);
+                hopTimer = hopTime;
+                Hop?.Invoke(hopDirection);
+            }
+        }
     }
 
     public void OnPushed()
@@ -230,18 +213,6 @@ public class CrabBody : MonoBehaviour
         }
 
         return false;
-    }
-
-    CrabDirection InputToCrabDirection(Vector2Int inputDirection)
-    {
-        if (player == Player.Player1)
-        {
-            return Player1InputMapping[inputDirection]; 
-        }
-        else
-        {
-            return Player2InputMapping[inputDirection];
-        }
     }
 
     Vector2Int CrabDirectionToWorldDirection(CrabDirection crabDirection)

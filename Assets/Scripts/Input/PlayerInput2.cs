@@ -9,10 +9,8 @@ namespace Input
         public static PlayerInput2 Player1 => new(JoystickInput.Joystick1, JoystickInput.Joystick2);
         public static PlayerInput2 Player2 => new(JoystickInput.Joystick3, JoystickInput.Joystick4);
 
-        public event Action<Vector2Int> ChangeDirection;
         public event Action<CrabDirection> Move;
-        public event Action Out;
-        public event Action In;
+        public event Action<CrabClawPose> ChangeClawPose;
         public event Action LungeLeft;
         public event Action LungeRight;
 
@@ -25,7 +23,7 @@ namespace Input
             [true] = (Vector2Int.down, Vector2Int.up)
         };
 
-        public const float c_MoveThreshold = 0.3f;
+        public const float c_MoveThreshold = 0.4f;
         private int _numLeftButtonsPressed;
         private int _numRightButtonsPressed;
         private bool _movementState;
@@ -56,7 +54,7 @@ namespace Input
         private void OnStickMoved()
         {
             CheckChangeDirection();
-            CheckMove();
+            CheckMoveSideways();
             CheckIn();
             CheckOut();
         }
@@ -91,51 +89,52 @@ namespace Input
             _numRightButtonsPressed--;
         }
 
+        // Checks for input where both sticks are in the same direction.
         private void CheckChangeDirection()
         {
             // Check up with left exact and right approximate
             if (LeftJoystick.StickPosition == Vector2Int.up && RightJoystick.StickPosition.y == 1)
             {
-                ChangeDirection?.Invoke(Vector2Int.up);
+                Move?.Invoke(CrabDirection.Forward);
             }
             // Check up with right exact and left approximate
             else if (RightJoystick.StickPosition == Vector2Int.up && LeftJoystick.StickPosition.y == 1)
             {
-                ChangeDirection?.Invoke(Vector2Int.up);
+                Move?.Invoke(CrabDirection.Forward);
             }
             // Check right with left exact and right approximate
             else if (LeftJoystick.StickPosition == Vector2Int.right && RightJoystick.StickPosition.x == 1)
             {
-                ChangeDirection?.Invoke(Vector2Int.right);
+                ChangeClawPose?.Invoke(CrabClawPose.Right);
             }
             // Check right with right exact and left approximate
             else if (RightJoystick.StickPosition == Vector2Int.right && LeftJoystick.StickPosition.x == 1)
             {
-                ChangeDirection?.Invoke(Vector2Int.right);
+                ChangeClawPose?.Invoke(CrabClawPose.Right);
             }
             // Check down with left exact and right approximate
             else if (LeftJoystick.StickPosition == Vector2Int.down && RightJoystick.StickPosition.y == -1)
             {
-                ChangeDirection?.Invoke(Vector2Int.down);
+                Move?.Invoke(CrabDirection.Backward);
             }
             // Check down with right exact and left approximate
             else if (RightJoystick.StickPosition == Vector2Int.down && LeftJoystick.StickPosition.y == -1)
             {
-                ChangeDirection?.Invoke(Vector2Int.down);
+                Move?.Invoke(CrabDirection.Backward);
             }
             // Check left with left exact and right approximate
             else if (LeftJoystick.StickPosition == Vector2Int.left && RightJoystick.StickPosition.x == -1)
             {
-                ChangeDirection?.Invoke(Vector2Int.left);
+                ChangeClawPose?.Invoke(CrabClawPose.Left);
             }
             // Check left with right exact and left approximate
             else if (RightJoystick.StickPosition == Vector2Int.left && LeftJoystick.StickPosition.x == -1)
             {
-                ChangeDirection?.Invoke(Vector2Int.left);
+                ChangeClawPose?.Invoke(CrabClawPose.Left);
             }
         }
 
-        private void CheckMove()
+        private void CheckMoveSideways()
         {
             if (Time.time - _lastMoveTime > c_MoveThreshold)
             {
@@ -192,12 +191,12 @@ namespace Input
             // Check with left exact and right approximate
             if (LeftJoystick.StickPosition == Vector2Int.right && RightJoystick.StickPosition.x == -1)
             {
-                In?.Invoke();
+                ChangeClawPose?.Invoke(CrabClawPose.Closed);
             }
             // Check with right exact and left approximate
             else if (RightJoystick.StickPosition == Vector2Int.left && LeftJoystick.StickPosition.x == 1)
             {
-                In?.Invoke();
+                ChangeClawPose?.Invoke(CrabClawPose.Closed);
             }
         }
 
@@ -206,12 +205,12 @@ namespace Input
             // Check with left exact and right approximate
             if (LeftJoystick.StickPosition == Vector2Int.left && RightJoystick.StickPosition.x == 1)
             {
-                Out?.Invoke();
+                ChangeClawPose?.Invoke(CrabClawPose.Open);
             }
             // Check with right exact and left approximate
             else if (RightJoystick.StickPosition == Vector2Int.right && LeftJoystick.StickPosition.x == -1)
             {
-                Out?.Invoke();
+                ChangeClawPose?.Invoke(CrabClawPose.Open);
             }
         }
     }
