@@ -9,6 +9,9 @@ public class CrabEye : MonoBehaviour
     private CrabBody crabBody;
 
     [SerializeField]
+    private CrabClaw crabClaw;
+
+    [SerializeField]
     private Transform spawnPoint;
 
     [SerializeField]
@@ -35,6 +38,11 @@ public class CrabEye : MonoBehaviour
     public bool IsDead()
     {
         return isDead;
+    }
+
+    public bool IsBlocked()
+    {
+        return crabClaw.IsBlocking();
     }
 
     public void GetSnipped()

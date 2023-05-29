@@ -83,8 +83,9 @@ public class CrabClaw : MonoBehaviour
     bool clawAnimDirty = false;
     bool isFullyDead = false;
 
-    private void Awake()
+    public bool IsBlocking()
     {
+        return clawState == ClawState.Blocking;
     }
 
     private void Start()
@@ -215,7 +216,7 @@ public class CrabClaw : MonoBehaviour
             CrabClaw hitClaw = collider.gameObject.GetComponentInParent<CrabClaw>();
             CrabEye hitEye = collider.gameObject.GetComponent<CrabEye>();
 
-            if (hitClaw && hitClaw.isActiveAndEnabled)
+            if ((hitClaw && hitClaw.isActiveAndEnabled) || (hitEye && hitEye.IsBlocked()))
             {
                 clawContact = hitClaw;
                 break;

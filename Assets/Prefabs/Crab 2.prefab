@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabBody: {fileID: 218694845457630422}
+  crabClaw: {fileID: 7961662766296599688}
   spawnPoint: {fileID: 2246798968837386085}
   splatPrefab: {fileID: 6164517079658340065, guid: 14e1b7fcd4ef1804a84ac485a46e47c5, type: 3}
   eyePrefab: {fileID: 5035981080912076391, guid: b868db7d79928794dbc442414cba3f0d, type: 3}
@@ -586,6 +587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crabBody: {fileID: 218694845457630422}
+  crabClaw: {fileID: 368165989320829576}
   spawnPoint: {fileID: 6401923798175007186}
   splatPrefab: {fileID: 6164517079658340065, guid: 14e1b7fcd4ef1804a84ac485a46e47c5, type: 3}
   eyePrefab: {fileID: 5035981080912076391, guid: b868db7d79928794dbc442414cba3f0d, type: 3}
