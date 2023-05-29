@@ -59,8 +59,6 @@ public class CrabBody : MonoBehaviour
     public event Action Move;
     public event Action<CrabDirection> Hop;
     public event Action<CrabDirection> ChangeDirection;
-    public event Action Out;
-    public event Action In;
     public event Action Stunned;
     public event Action Died;
     public event Action LostFirstEye;
