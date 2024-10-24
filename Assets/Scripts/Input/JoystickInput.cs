@@ -10,9 +10,9 @@ namespace Input
     public class JoystickInput
     {
         public static JoystickInput Joystick1 => new(Joystick.all.ElementAtOrDefault(3));
-        public static JoystickInput Joystick2 => new(Joystick.all.ElementAtOrDefault(1), Vector2IntRotatePreprocessor.Right);
+        public static JoystickInput Joystick2 => new(Joystick.all.ElementAtOrDefault(2), Vector2IntRotatePreprocessor.Right);
         public static JoystickInput Joystick3 => new(Joystick.all.ElementAtOrDefault(0), Vector2IntRotatePreprocessor.Left);
-        public static JoystickInput Joystick4 => new(Joystick.all.ElementAtOrDefault(2));
+        public static JoystickInput Joystick4 => new(Joystick.all.ElementAtOrDefault(1));
 
         public event Action<Vector2Int> PositionChanged;
         public event Action<ButtonColor> ButtonPressed;
